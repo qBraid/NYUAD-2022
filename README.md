@@ -9,13 +9,13 @@ March 30 - April 1, 2022
 
 *Apply one or more quantum algorithms to a social good problem of your choice.*
 
-Quantum algorithm examples:
+**Quantum algorithm examples**:
 - Shor's algorithm
 - Grover's search
 - Variational Quantum Eigensolver (VQE)
 - Quantum Approximate Optimization Algorithm (QAOA)
 
-Social good examples:
+**Social good topic examples**:
 - Healthcare
 - Science (e.g. AI, cryptography, biochemistry)
 - Environment (climate)
@@ -25,11 +25,11 @@ Social good examples:
 - Financial Modeling
 - Gaming
 
-Implementation requirements:
+**Implementation requirements**:
 - Must utilize quantum hardware available through AWS Braket
 - Must utilize the AWS Braket OpenQASM parser
 
-Bonus requirements:
+**Bonus requirements**:
 - Incorporate noisy simulation through AWS Braket
 - Incorporate a hybrid quantum-classical task through AWS Braket
 
