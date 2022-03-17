@@ -7,7 +7,7 @@ March 30 - April 1, 2022
 
 ## Technical challenge
 
-*Apply one or more quantum algorithms to a social good problem of your choice.*
+*Create a program that applies one or more quantum algorithms to a social good problem of your choice.*
 
 **Quantum algorithm examples**:
 - Shor's algorithm
