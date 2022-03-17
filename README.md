@@ -9,13 +9,13 @@ March 30 - April 1, 2022
 
 Apply one or more quantum algorithms to a social good problem of your choice.
 
-Quantum algorithms examples:
+Quantum algorithm examples:
 - Shor's algorithm
 - Grover's search
 - Variational Quantum Eigensolver (VQE)
 - Quantum Approximate Optimization Algorithm (QAOA)
 
-Social good topic examples:
+Social good examples:
 - Healthcare
 - Science (e.g. AI, cryptography, biochemistry)
 - Environment (climate)
