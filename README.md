@@ -27,6 +27,7 @@ March 30 - April 1, 2022
 **Implementation requirements**:
 - Must utilize quantum hardware available through AWS Braket
 - Must utilize the AWS Braket OpenQASM parser
+- You are also free to use any technology which allows you to solve the challenge.
 
 **Bonus requirements**:
 - Incorporate noisy simulation through AWS Braket
