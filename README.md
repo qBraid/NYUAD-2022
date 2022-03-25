@@ -53,6 +53,7 @@ The repository is structured as follows:
   * [**Install Braket in qBraid-Lab**](qbraid_braket_setup/Install_Braket.ipynb)
 
   * [**Enable Braket QPU access through qBraid-CLI**](qbraid_braket_setup/Enable_account.ipynb)
+  * [**Braket setup on qBraid Youtube video**](https://youtu.be/vXpS29HrdgY)
 ---
 ## <a name="simple">Simple circuits and algorithms</a>
 
