@@ -34,8 +34,8 @@ March 30 - April 1, 2022
 - Incorporate a hybrid quantum-classical task through AWS Braket
 
 **Device pricing and availability**:
-- [Amazon Braket pricing](https://aws.amazon.com/jp/braket/pric...)
-- [Amazon Braket supported devices](https://docs.aws.amazon.com/braket/la...)
+- [Amazon Braket pricing](https://aws.amazon.com/jp/braket/pricing/)
+- [Amazon Braket supported devices](https://docs.aws.amazon.com/braket/latest/developerguide/braket-devices.html)
 # qBraid/Braket Tutorials
 Here, we provide useful tutorials on how to use qBraid-Lab, along with tutorials on quantum computing, using Amazon Braket. The ladder were provided by the [amazon-braket-examples](https://github.com/aws/amazon-braket-examples) github repository.
 
