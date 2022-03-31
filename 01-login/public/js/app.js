@@ -179,9 +179,9 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: 'your.mapbox.access.token'
 }).addTo(map);
 
-var coords1 = [24.46, 54.37]
-var coords2 = [24.46, 54.37]
-var coords3 = [24.45, 54.39]
+// var coords1 = [24.46, 54.37]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
 
 class Coordinate {
   
@@ -285,32 +285,23 @@ var markers = [];
 
 // organise our code here
 
-// create a function to add a marker 
+
 
 // fetch marker coords from backend
 
 // finish work on authentication
 
-// add a function that draws paths between markers 
-
-// add a buntton in the ui that gets the location and console log
-
 // validate coodrinates (ad)
 
 
+//validate form responses 
 
-//validate form responses
+var coords1 = [24.47, 54.36]
+var coords2 = [24.46, 54.37]
+var coords3 = [24.45, 54.39]
+var coords4 = [24.67, 54.46]
 
-
-//email
-var emailInput = document.getElementById('emailInput');
-var phoneNumberInput = document.getElementById('phoneNumberInput');
-var requestBtn = document.getElementById('call-api')
-
-// function checkNumber(value){
-
-// }
-
+var coordinates = [coords1, coords2, coords3, coords4]
 //this function needs to be called upon pressing the request button
 function validateLoc(user_lat, user_long){
   //top left = 24.475137206036116, 54.34893416592737
@@ -321,44 +312,64 @@ function validateLoc(user_lat, user_long){
    //prevent the request button from working
   }
  }
+//everything related to distance calculator
 
-function distanceMatrix(coordinates) {
-  //need length of passed array
-  var nodesNum= coordinates.length;
-  var matrix = [];
-  for (var i=0;i<nodesNum;i++) { 
-    matrix[i] = [];
-    var data;
-    var rows = [];//distance from row node to all the column nodes
-for (var j=0;j<nodesNum;j++)//columns
-{
-  var routeControl=L.Routing.control({
+function drawPath(cordinate1,cordinate2) {//function that draws paths between markers
+  L.Routing.control({
       waypoints: [
-          L.latLng(coordinates[i][0], coordinates[i][1]),
-          L.latLng(coordinates[j][0], coordinates[j][1])
+          L.latLng(cordinate1[0], cordinate1[1]),
+          L.latLng(cordinate2[0], cordinate2[1])
       ],
       lineOptions: { styles: [{ color: '#242C81', weight: 2 }] },
       draggableWaypoints: false,
-      show: false //hides information for the route
-  }).addTo(map);//drawPath(myArray[0],myArray[2]);
-  routeControl.on('routesfound', function(e) {
-      var routes = e.routes;
-      var summary = routes[0].summary;
-      // alert time and distance in km and minutes
-      data=summary.totalDistance
-      console.log(data);
-      //console.log('Total distance is ' + summary.totalDistance / 1000 + ' km noom');
-    });
-  matrix[i][j] = data;
-}
-//twoDimensionalArray.push(data);
-}
-console.log(matrix)
+      show: false //shows information for the route
+  }).addTo(map);
 }
 
+//function that draws the entire path
+function drawEntirePath(coordinates){
+  for (let i = 0; i < coordinates.length-1; i++){
+    drawPath(coordinates[i], coordinates[i+1])
+  }
+}
 
-function validateForm(value) {
+drawEntirePath(coordinates)
 
+function distanceMatrix(coordinates) {
+  var matrix = []
+  //need length of passed array
+  var nodesNum= coordinates.length;
+  for (var i = 0; i < nodesNum;i++) { 
+    matrix.push([])
+    var row = matrix[i]
+    for (var j=0; j<nodesNum; j++) {
+
+      var fromMarker = L.latLng(coordinates[i]);
+      var toMarker = L.latLng(coordinates[j]);
+
+      var distance = fromMarker.distanceTo(toMarker);
+      matrix[i].push(distance)
+    // console.log(data);
+        }
+      }
+    console.log(matrix)
+  }
+
+ console.log("hey!")
+distanceMatrix(coordinates)
+
+
+
+
+
+
+
+//email
+var emailInput = document.getElementById('emailInput');
+var phoneNumberInput = document.getElementById('phoneNumberInput');
+var requestBtn = document.getElementById('call-api')
+
+function validateForm() {
 
   //validate email
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -387,19 +398,7 @@ function validateForm(value) {
   } else if (isNaN(numbers[2]) || numbers[2].length != 7) {
     correct = false
   }
-
   phoneNumberInput.style.color = correct ? "black" : "red"
-
 }
 
-var coords1 = [24.47, 54.36]
-var coords2 = [24.46, 54.37]
-var coords3 = [24.45, 54.39]
-///var marker1 = L.marker(coords1).addTo(map);
-//var marker2 = L.marker(coords2).addTo(map);
-//var marker2 = L.marker(coords3).addTo(map);
-var myArray = [];
-myArray.push(coords1);
-myArray.push(coords2);
-myArray.push(coords3);
-distanceMatrix(myArray);
+requestBtn.onclick = validateForm
