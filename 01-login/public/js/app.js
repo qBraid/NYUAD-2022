@@ -432,3 +432,87 @@ function validateForm() {
 }
 
 requestBtn.onclick = validateForm
+
+
+// async function getURL(){
+//   let url = "http://localhost:3000/map"
+//   try{
+//     let res = await fetch(url, {
+//       method: 'GET',
+//       mode: 'cors',
+//       cache: 'default',
+//       credentials: 'same-origin',
+//       headers: {'Content-Type': 'application/json'}
+//     });
+//   } catch(error){
+//     console.log(error);
+//   }
+// }
+
+var urlCoordinates = "http://localhost/5000/coordinates"
+var urlVehicles = "http://localhost/5000/vehicles"
+
+// async function postCoordinates(urlCoordinates){
+//   fetch('urlCoordinates', {
+//   method: "POST",
+//   body: JSON.stringify(_data),
+//   headers: {"Content-type": "application/json; charset=UTF-8"}
+// }).then(response => response.json()) 
+// .then(json => console.log(json));
+// .catch(err => console.log(err));
+// }
+
+
+async function fetchCoordinates(urlVehicles){
+  let response;
+  try {
+      response = await fetch(urlCoordinates, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'default',
+      credentials: 'same-origin',
+      headers: {'Content-Type': 'application/json'}
+    });
+  } catch(error) {
+    console.log(error)
+  }
+
+  let data = await response.json()
+  return data
+}
+
+async function fetchCoordinates(urlVehicles){
+  let response;
+  try {
+      response = await fetch(urlCoordinates, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default',
+      credentials: 'same-origin',
+      headers: {'Content-Type': 'application/json'}
+    });
+  } catch(error) {
+    console.log(error)
+  }
+
+  let data = await response.json()
+  return data
+}
+
+async function fetchBuses(urlVehicles){
+  let response;
+  try {
+      response = await fetch(urlVehicles, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default',
+      credentials: 'same-origin',
+      headers: {'Content-Type': 'application/json'}
+    });
+  } catch(error) {
+    console.log(error)
+  }
+
+  let data = await response.json()
+  return data
+}
