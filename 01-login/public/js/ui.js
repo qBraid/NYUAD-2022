@@ -4,7 +4,9 @@ const router = {
   "/profile": () =>
     requireAuth(() => showContent("content-profile"), "/profile"),
   "/login": () => login(),
-  "/map": () => showContent("content-map")
+  "/map": () => showContent("content-map"),
+  "/request": () =>
+    requireAuth(() => showContent("content-external-api"), "/request"),
 };
 
 //Declare helper functions

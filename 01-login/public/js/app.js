@@ -50,7 +50,8 @@ const configureClient = async () => {
 
   auth0 = await createAuth0Client({
     domain: config.domain,
-    client_id: config.clientId
+    client_id: config.clientId,
+    audience: config.audience
   });
 };
 
@@ -67,6 +68,32 @@ const requireAuth = async (fn, targetUrl) => {
   }
 
   return login(targetUrl);
+};
+
+/**
+ * Calls the API endpoint with an authorization token
+ */
+const callApi = async () => {
+  try {
+    const token = await auth0.getTokenSilently();
+
+    const response = await fetch("/api/external", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const responseData = await response.json();
+    const responseElement = document.getElementById("api-call-result");
+
+    responseElement.innerText = JSON.stringify(responseData, {}, 2);
+
+    document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
+
+    eachElement(".result-block", (c) => c.classList.add("show"));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 // Will run when page finishes loading
@@ -90,6 +117,9 @@ window.onload = async () => {
         e.preventDefault();
         window.history.pushState({ url }, {}, url);
       }
+    } else if (e.target.getAttribute("id") === "call-api") {
+      e.preventDefault();
+      callApi();
     }
   });
 
@@ -128,6 +158,7 @@ window.onload = async () => {
 };
 
 
+
 // maps
 
 var map = L.map('map').setView([24.47, 54.36], 12.5);
@@ -144,7 +175,7 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: 'your.mapbox.access.token'
 }).addTo(map);
 
-var coords1 =   
+var coords1 = [24.46, 54.37]
 var coords2 = [24.46, 54.37]
 var coords3 = [24.45, 54.39]
 
@@ -175,30 +206,6 @@ L.Routing.control({
 
 // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
-const callApi = async () => {
-  try {
-
-    // Get the access token from the Auth0 client
-    const token = await auth0.getTokenSilently();
-
-    // Make the call to the API, setting the token
-    // in the Authorization header
-    const response = await fetch("http://localhost:3010/api/private", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    // Fetch the JSON result
-    const responseData = await response.json();
-
-    console.log(responseData)
-
-  } catch (e) {
-    // Display errors in the console
-    console.error(e);
-  }
-};
 
 // organise our code here
 
@@ -213,5 +220,3 @@ const callApi = async () => {
 // add a buntton in the ui that gets the location and console log
 
 // validate coodrinates (ad)
-
-
