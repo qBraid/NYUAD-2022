@@ -2,7 +2,7 @@
 
 
 # Background:
-
+nnnn
 With the increasing risk of cybersecurity looming over, SeQured uses quantum randomness to anonymize medical data. The aim is to maintain the privacy of the patient's medical data, while at the same time enabling the ability of sharing it with medical practitioners in an easy and secure way. SeQured uses the Electrocardiogram as a use case to demonstrate the added value of the solution.
 
 
@@ -22,7 +22,7 @@ With the increasing risk of cybersecurity looming over, SeQured uses quantum ran
 
 	- The medical interface: The medical interface is the platform where the system re-creates the original signal for the patient/medical practitioner from the data encoded in the created QR code. This will enable easier access to the medical record.
 
-heuiwduwj
+
 
 
 
