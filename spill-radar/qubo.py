@@ -2,9 +2,8 @@ import argparse
 import json
 
 from qiskit_optimization import QuadraticProgram
-from qiskit_optimization.algorithms import GurobiOptimizer as Optimizer, OptimizationResult, OptimizationResultStatus
 from qiskit import BasicAer, Aer
-from qiskit.algorithms import QAOA
+from qiskit.algorithms import QAOA, NumPyMinimumEigensolver
 from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit.algorithms.optimizers import COBYLA, SLSQP, ADAM
 
@@ -75,11 +74,13 @@ qubo = create_oil_qubo(SHIPS, oilspill)
 
 if args.quantum:
     backend = Aer.get_backend('statevector_simulator')
-    qaoa = QAOA(optimizer = ADAM(), quantum_instance = backend, reps=1)
-    eigen_optimizer = MinimumEigenOptimizer(min_eigen_solver = qaoa)
+    qaoa = QAOA(optimizer=ADAM(), quantum_instance=backend, reps=1)
+    eigen_optimizer = MinimumEigenOptimizer(min_eigen_solver=qaoa)
     solution = eigen_optimizer.solve(qubo)
 else:
-    solution = Optimizer().solve(qubo)
+    exact_mes = NumPyMinimumEigensolver()
+    eigen_optimizer = MinimumEigenOptimizer(min_eigen_solver=exact_mes)
+    solution = eigen_optimizer.solve(qubo)
 
 #print(solution)
 solution_json = {
