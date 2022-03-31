@@ -201,6 +201,7 @@ class Coordinate {
 
 var coordinates = [];
 var markers = [];
+var buses = [[24.474, 54.368]];
 
 
 
@@ -299,7 +300,7 @@ var markers = [];
 var coords1 = [24.47, 54.36]
 var coords2 = [24.46, 54.37]
 var coords3 = [24.45, 54.39]
-var coords4 = [24.67, 54.46]
+var coords4 = [24.47, 54.3766]
 
 var coordinates = [coords1, coords2, coords3, coords4]
 
@@ -315,6 +316,33 @@ function validateLoc(user_lat, user_long){
    //prevent the request button from working
   }
  }
+
+ var LeafIcon = L.Icon.extend({
+  options: {
+     iconSize:     [30, 30],
+     shadowSize:   [0, 0],
+     iconAnchor:   [22, 94],
+     shadowAnchor: [4, 62],
+     popupAnchor:  [-3, -76]
+  }
+});
+
+ var busIcon = new LeafIcon({
+  iconUrl: '../images/briefcase.png',
+  shadowUrl: '../images/briefcase.png'
+})
+
+function drawBuses(buses){
+  for (let i = 0; i < buses.length; i++){
+    L.marker(buses[i], {
+      icon: busIcon,
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      radius: 50
+  }).addTo(map);
+  }
+}
 
 function drawPath(cordinate1,cordinate2) {//function that draws paths between markers
   L.Routing.control({
@@ -335,7 +363,12 @@ function drawEntirePath(coordinates){
   }
 }
 
-drawEntirePath(coordinates)
+function drawEverything(coordinates){
+  drawEntirePath(coordinates)
+  drawBuses(buses)
+}
+
+drawEverything(coordinates)
 
 function distanceMatrix(coordinates) {
   var matrix = []
@@ -359,11 +392,6 @@ function distanceMatrix(coordinates) {
 
  console.log("hey!")
 distanceMatrix(coordinates)
-
-
-
-
-
 
 
 //email
