@@ -302,6 +302,9 @@ var coords3 = [24.45, 54.39]
 var coords4 = [24.67, 54.46]
 
 var coordinates = [coords1, coords2, coords3, coords4]
+
+//everything related to distance calculator
+
 //this function needs to be called upon pressing the request button
 function validateLoc(user_lat, user_long){
   //top left = 24.475137206036116, 54.34893416592737
@@ -312,7 +315,6 @@ function validateLoc(user_lat, user_long){
    //prevent the request button from working
   }
  }
-//everything related to distance calculator
 
 function drawPath(cordinate1,cordinate2) {//function that draws paths between markers
   L.Routing.control({
