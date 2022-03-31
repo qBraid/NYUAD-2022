@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { styled } from 'buttered';
+import axios from 'axios';
 
 import dynamic from 'next/dynamic'
 
@@ -66,14 +67,18 @@ let BasisGateCircuitWrapper = styled('div')`
 `;
 
 export default function Home() {
-  let [value, setValue] = useState("");
+  let [code, setCode] = useState("");
 
-  let onEditorChange = (newValue) => {
-    setValue(newValue);
+  let onEditorChange = (newCode) => {
+    setCode(newCode);
   }
 
-  let onClickCompile = () => {
-    console.log(value);
+  let onClickCompile = async () => {
+    let payload = { code }
+
+    axios.post(`http://127.0.0.1:5000/`, payload).then(res => {
+      console.log(res);
+    });
   }
 
   return (
@@ -81,7 +86,7 @@ export default function Home() {
       <LeftWrapper>
         <EditorWrapper>
           <DynamicComponentWithNoSSR
-            value={value}
+            value={code}
             onChange={onEditorChange}
           />
         </EditorWrapper>
