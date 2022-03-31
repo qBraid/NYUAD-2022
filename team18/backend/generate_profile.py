@@ -102,11 +102,11 @@ def remove_profile(directory, optimization_level):
 	for item in files:
 		if item == ("gate_stats_op_lv_" + str(optimization_level) + ".txt"):
 			os.remove(os.path.join(directory, item))
-			print("successfully removed: ", item)
+			# print("successfully removed: ", item)
 
 
 # generate profile for different optimization levels
-def generate_profile(optimization_level=1, max_contols=5, basis_gates=None):
+def generate_profile(optimization_level: int = 1, max_contols: int = 5, basis_gates=None):
 	# remove previous profile with this optimization_level
 	if basis_gates is None:
 		basis_gates = ['id', 'rz', 'sx', 'x', 'cx']
