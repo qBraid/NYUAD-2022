@@ -7,6 +7,7 @@ from setuptools import setup, find_namespace_packages
 
 REQUIREMENTS = [
     "qiskit",
+    "qiskit-optimization",
 ]
 
 EXTRA_REQUIREMENTS = {

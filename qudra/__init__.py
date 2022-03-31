@@ -3,7 +3,7 @@ qudra: quantum energy management
 """
 import os
 
-from .test import *
+from .optimizers import *
 
 with open(
     os.path.abspath(os.path.join(os.path.dirname(__file__), "VERSION.txt")), "r"
