@@ -302,7 +302,16 @@ var coords3 = [24.45, 54.39]
 var coords4 = [24.67, 54.46]
 
 var coordinates = [coords1, coords2, coords3, coords4]
-
+//this function needs to be called upon pressing the request button
+function validateLoc(user_lat, user_long){
+  //top left = 24.475137206036116, 54.34893416592737
+  //bottom right = 24.46994245833937, 54.38484229259571
+  if( user_lat < 24.475137206036116 || user_lat > 24.46994245833937 || user_long < 54.34893416592737 || user_long > 54.38484229259571){
+   //print the alert
+   alert('We currently don’t provide service in your location');
+   //prevent the request button from working
+  }
+ }
 //everything related to distance calculator
 
 function drawPath(cordinate1,cordinate2) {//function that draws paths between markers
