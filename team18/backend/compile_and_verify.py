@@ -4,6 +4,7 @@ Created on Thu Mar 31 19:59:59 2022
 
 """
 from qiskit import QuantumCircuit, transpile
+from qiskit.circuit.library import XGate
 from qiskit.test.mock import FakeAthens, FakeBackend
 from mqt import qcec
 
@@ -19,7 +20,9 @@ def compile_and_verify(circuit_original: QuantumCircuit, backend: FakeBackend = 
     circ_comp.draw(fold=-1, filename="images/compiled_pic.png", output='mpl')
 
     if introduce_error:
-        circ_comp.data.pop(0)
+        error = QuantumCircuit(circ_comp.num_qubits)
+        error.x(0)
+        circ_comp = error + circ_comp
 
     # initialize the equivalence checker
     ecm = qcec.EquivalenceCheckingManager(circuit_original, circ_comp)
