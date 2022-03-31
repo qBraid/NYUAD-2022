@@ -46,7 +46,7 @@ setup(
     author="Asil Qraini, Fouad Afiouni, Gargi Chandrakar, Nurgazy Seidaliev, Sahar Ben Rached, Salem Al Haddad, Sarthak Prasad Malla. Mentors: Akash Kant, Shantanu Jha.",
     author_email="shantanu.rajesh.jha@gmail.com",
     license="MIT",
-    packages=find_namespace_packages(exclude=["tutorials*",]),
+    packages=find_namespace_packages(exclude=["tutorials*"]),
     install_requires=REQUIREMENTS,
     extras_require=EXTRA_REQUIREMENTS,
     classifiers=[
@@ -61,7 +61,7 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     keywords="qubo energy vqe quantum computing",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     project_urls={
         "Documentation": "https://github.com/Q-Energy-2022/NYUAD-2022",
         "Source Code": "https://github.com/Q-Energy-2022/NYUAD-2022",
