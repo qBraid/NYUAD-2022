@@ -1,0 +1,23 @@
+site_name: qudra
+
+theme:
+  name: "material"
+  palette:
+    primary: green
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+      - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: summary.md
+  - section-index
+  - mkdocstrings:
+      watch:
+      - docs
+      - qudra
+
+nav:
+  - About: index.md
+  - Code Reference: reference/
