@@ -2,6 +2,8 @@ site_name: qudra
 
 theme:
   name: "material"
+  palette:
+    primary: green
 
 plugins:
   - search

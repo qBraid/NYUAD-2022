@@ -48,6 +48,11 @@ Set yourself up to use the `[dev]` dependencies. Then, from the command line run
 mkdocs build
 ```
 
+Then, when you're ready to deploy, run:
+```bash
+mkdocs gh-deploy
+```
+
 ## Acknowledgements
 
 **Core Devs:** [Asil Qraini](https://github.com/AsilQ), [Fouad Afiouni](https://github.com/fo-ui), [Gargi Chandrakar](https://github.com/gargi2718), [Nurgazy Seidaliev](https://github.com/nursei7), [Sahar Ben Rached](https://github.com/saharbenrached), [Salem Al Haddad](https://github.com/salemalhaddad), [Sarthak Prasad Malla](https://github.com/SarthakMalla1154)
