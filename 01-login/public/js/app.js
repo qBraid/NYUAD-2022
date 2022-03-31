@@ -70,6 +70,36 @@ const requireAuth = async (fn, targetUrl) => {
   return login(targetUrl);
 };
 
+/**
+ * Calls the API endpoint with an authorization token
+ */
+const callApi = async () => {
+  try {
+    const token = await auth0.getTokenSilently();
+
+    const response = await fetch("/api/external", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        position: [0, 0]
+      })
+    });
+
+    const responseData = await response.json();
+    const responseElement = document.getElementById("api-call-result");
+
+    responseElement.innerText = JSON.stringify(responseData, {}, 2);
+
+    document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
+
+    eachElement(".result-block", (c) => c.classList.add("show"));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 // Will run when page finishes loading
 window.onload = async () => {
   await configureClient();
@@ -175,252 +205,234 @@ var buses = [[24.474, 54.368]];
 
 
 
-async function getLocation() {
-  navigator.geolocation.getCurrentPosition(position => {
-    const { latitude, longitude } = position.coords;
-    console.log(latitude, longitude)
-    return new Coordinate(latitude, longitude)
-  });
-}
+// async function getLocation() {
+//     navigator.geolocation.getCurrentPosition(position => {
+//     const { latitude, longitude } = position.coords;
+//     console.log(latitude, longitude)
+//     return new Coordinate(latitude, longitude)
+//   }); 
+// }
 
-function getPositionWrapped(options) {
-  return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject, options)
-  );
-}
 
-const getposition = async () => {
-  try {
-    const positionRaw = await getPositionWrapped({});
-    return [positionRaw.coords.latitude, positionRaw.coords.longitude]
-  } catch (err) {
-    console.log(err.message)
+// async function addCoordinates(coordinates){
+
+//   coordinate = await getLocation();
+//   coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
+
+// console.log(array[0].getLatitude(), array[0].getLongitude)
+
+// for(let i = 0; i < array.length; i++){
+//   L.marker(array[i]).addTo(map)
+//   console.log("array[0] has been marked.")
+// }
+// L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
+
+// console.log("random")
+
+// }
+
+// setTimeout(addCoordinates(coordinates, map), 1)
+
+
+// //function to add marker
+// function addMarker(coord, map){
+//   var marker = L.marker(coord).addTo(map);
+//   markers.push(marker);
+//   marker.dragging.disable();
+// }
+
+// console.log()
+
+// console.log(coordinates[0]);
+
+
+// coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
+
+
+
+// var coords1 = [24.7, 24.9]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
+
+// var marker1 = L.marker(coords1).addTo(map);
+// var marker2 = L.marker(coords2).addTo(map);
+// var marker2 = L.marker(coords3).addTo(map);
+
+
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords1[0], coords1[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   color: "blue",
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords3[0], coords3[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
+
+// fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
+
+
+// organise our code here
+
+
+
+// fetch marker coords from backend
+
+// finish work on authentication
+
+// validate coodrinates (ad)
+
+
+//validate form responses 
+
+var coords1 = [24.47, 54.36]
+var coords2 = [24.46, 54.37]
+var coords3 = [24.45, 54.39]
+var coords4 = [24.47, 54.3766]
+
+var coordinates = [coords1, coords2, coords3, coords4]
+
+//everything related to distance calculator
+
+//this function needs to be called upon pressing the request button
+function validateLoc(user_lat, user_long) {
+  //top left = 24.475137206036116, 54.34893416592737
+  //bottom right = 24.46994245833937, 54.38484229259571
+  if (user_lat < 24.475137206036116 || user_lat > 24.46994245833937 || user_long < 54.34893416592737 || user_long > 54.38484229259571) {
+    //print the alert
+    alert('We currently don’t provide service in your location');
+    //prevent the request button from working
   }
 }
 
-async function addCoordinates(coordinates) {
+var LeafIcon = L.Icon.extend({
+  options: {
+    iconSize: [50, 50],
+    shadowSize: [0, 0],
+    //  iconAnchor:   [22, 94],
+    //  shadowAnchor: [4, 62],
+    //  popupAnchor:  [-3, -76]
+  }
+});
 
-  //   coordinate = await getLocation();
-  //   coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
+var busIcon = new LeafIcon({
+  iconUrl: '../images/ambulance.png',
+  shadowUrl: '../images/ambulance.png'
+})
 
-  // console.log(array[0].getLatitude(), array[0].getLongitude)
+function drawBuses(buses) {
+  for (let i = 0; i < buses.length; i++) {
+    L.marker(buses[i], {
+      icon: busIcon,
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      radius: 50
+    }).addTo(map);
+  }
+}
 
-  // for(let i = 0; i < array.length; i++){
-  //   L.marker(array[i]).addTo(map)
-  //   console.log("array[0] has been marked.")
-  // }
-  // L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
+function drawPath(cordinate1, cordinate2) {//function that draws paths between markers
+  L.Routing.control({
+    waypoints: [
+      L.latLng(cordinate1[0], cordinate1[1]),
+      L.latLng(cordinate2[0], cordinate2[1])
+    ],
+    lineOptions: { styles: [{ color: '#242C81', weight: 2 }] },
+    draggableWaypoints: false,
+    show: false //shows information for the route
+  }).addTo(map);
+}
 
-  // console.log("random")
+//function that draws the entire path
+function drawEntirePath(coordinates) {
+  for (let i = 0; i < coordinates.length - 1; i++) {
+    drawPath(coordinates[i], coordinates[i + 1])
+  }
+}
 
-  // }
+function drawEverything(coordinates) {
+  drawEntirePath(coordinates)
+  drawBuses(buses)
+}
 
-  // setTimeout(addCoordinates(coordinates, map), 10000)
+drawEverything(coordinates)
+
+function distanceMatrix(coordinates) {
+  var matrix = []
+  //need length of passed array
+  var nodesNum = coordinates.length;
+  for (var i = 0; i < nodesNum; i++) {
+    matrix.push([])
+    var row = matrix[i]
+    for (var j = 0; j < nodesNum; j++) {
+
+      var fromMarker = L.latLng(coordinates[i]);
+      var toMarker = L.latLng(coordinates[j]);
+
+      var distance = fromMarker.distanceTo(toMarker);
+      matrix[i].push(distance)
+      // console.log(data);
+    }
+  }
+  console.log(matrix)
+}
+
+console.log("hey!")
+distanceMatrix(coordinates)
 
 
-  // //function to add marker
-  function addMarker(coord, map) {
-    var marker = L.marker(coord).addTo(map);
-    markers.push(marker);
-    marker.dragging.disable();
+//email
+var emailInput = document.getElementById('emailInput');
+var phoneNumberInput = document.getElementById('phoneNumberInput');
+var requestBtn = document.getElementById('call-api')
+
+function validateForm() {
+
+  //validate email
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  emailInput.type = 'email';
+  emailInput.required = true;
+
+  if (!re.test(emailInput.value)) {
+    emailInput.style.color = "red";
+  } else {
+    emailInput.style.color = "black";
   }
 
-  // console.log()
+  //validate number
+  correct = true
+  numbers = phoneNumberInput.value.trim().split(" ");
 
-  // console.log(coordinates[0]);
+  console.log(numbers)
 
-  coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
+  if (numbers.length != 3) {
+    correct = false
+  } else if (numbers[0] != "+971") {
+    correct = false
+  } else if (isNaN(numbers[1]) || numbers[1].length != 1 && numbers[1].length != 2) {
+    correct = false
+  } else if (isNaN(numbers[2]) || numbers[2].length != 7) {
+    correct = false
+  }
+  phoneNumberInput.style.color = correct ? "black" : "red"
+}
 
-  var coords1 = [24.7, 24.9]
-  var coords2 = [24.46, 54.37]
-  var coords3 = [24.45, 54.39]
-
-  var marker1 = L.marker(coords1).addTo(map);
-  var marker2 = L.marker(coords2).addTo(map);
-  var marker2 = L.marker(coords3).addTo(map);
-
-
-
-
-  L.Routing.control({
-    waypoints: [
-      L.latLng(coords1[0], coords1[1]),
-      L.latLng(coords2[0], coords2[1])
-    ],
-    color: "blue",
-    lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-    draggableWaypoints: false,
-  }).addTo(map);
+requestBtn.onclick = validateForm
 
 
-  L.Routing.control({
-    waypoints: [
-      L.latLng(coords3[0], coords3[1]),
-      L.latLng(coords2[0], coords2[1])
-    ],
-    lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-    draggableWaypoints: false,
-  }).addTo(map);
-
-  // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
 
-  // organise our code here
-
-  // create a function to add a marker
-
-  // fetch marker coords from backend
-
-  // finish work on authentication
-
-  // add a function that draws paths between markers
-
-
-  // validate coodrinates (ad)
-
-
-  const callApi = async () => {
-    try {
-      const position = await getposition();
-      const token = await auth0.getTokenSilently();
-
-      const response = await fetch(`/api/external/${position[0]}/${position[1]}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-      const responseElement = document.getElementById("api-call-result");
-
-      responseElement.innerText = JSON.stringify(responseData, {}, 2);
-
-      document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
-
-      //this function needs to be called upon pressing the request button
-      function validateLoc(user_lat, user_long) {
-        //top left = 24.475137206036116, 54.34893416592737
-        //bottom right = 24.46994245833937, 54.38484229259571
-        if (user_lat < 24.475137206036116 || user_lat > 24.46994245833937 || user_long < 54.34893416592737 || user_long > 54.38484229259571) {
-          //print the alert
-          alert('We currently don’t provide service in your location');
-          //prevent the request button from working
-        }
-      }
-
-      var LeafIcon = L.Icon.extend({
-        options: {
-          iconSize: [50, 50],
-          shadowSize: [0, 0],
-          //  iconAnchor:   [22, 94],
-          //  shadowAnchor: [4, 62],
-          //  popupAnchor:  [-3, -76]
-        }
-      });
-
-      var busIcon = new LeafIcon({
-        iconUrl: '../images/ambulance.png',
-        shadowUrl: '../images/ambulance.png'
-      })
-
-      function drawBuses(buses) {
-        for (let i = 0; i < buses.length; i++) {
-          L.marker(buses[i], {
-            icon: busIcon,
-            color: "red",
-            fillColor: "#f03",
-            fillOpacity: 0.5,
-            radius: 50
-          }).addTo(map);
-        }
-      }
-
-      function drawPath(cordinate1, cordinate2) {//function that draws paths between markers
-        L.Routing.control({
-          waypoints: [
-            L.latLng(cordinate1[0], cordinate1[1]),
-            L.latLng(cordinate2[0], cordinate2[1])
-          ],
-          lineOptions: { styles: [{ color: '#242C81', weight: 2 }] },
-          draggableWaypoints: false,
-          show: false //shows information for the route
-        }).addTo(map);
-      }
-
-      //function that draws the entire path
-      function drawEntirePath(coordinates) {
-        for (let i = 0; i < coordinates.length - 1; i++) {
-          drawPath(coordinates[i], coordinates[i + 1])
-        }
-      }
-
-      function drawEverything(coordinates) {
-        drawEntirePath(coordinates)
-        drawBuses(buses)
-      }
-
-      drawEverything(coordinates)
-
-      function distanceMatrix(coordinates) {
-        var matrix = []
-        //need length of passed array
-        var nodesNum = coordinates.length;
-        for (var i = 0; i < nodesNum; i++) {
-          matrix.push([])
-          var row = matrix[i]
-          for (var j = 0; j < nodesNum; j++) {
-
-            var fromMarker = L.latLng(coordinates[i]);
-            var toMarker = L.latLng(coordinates[j]);
-
-            var distance = fromMarker.distanceTo(toMarker);
-            matrix[i].push(distance)
-            // console.log(data);
-          }
-        }
-        console.log(matrix)
-      }
-
-      console.log("hey!")
-      distanceMatrix(coordinates)
-
-
-      //email
-      var emailInput = document.getElementById('emailInput');
-      var phoneNumberInput = document.getElementById('phoneNumberInput');
-      var requestBtn = document.getElementById('call-api')
-
-      function validateForm() {
-
-        //validate email
-        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-        emailInput.type = 'email';
-        emailInput.required = true;
-
-        if (!re.test(emailInput.value)) {
-          emailInput.style.color = "red";
-        } else {
-          emailInput.style.color = "black";
-        }
-
-        //validate number
-        correct = true
-        numbers = phoneNumberInput.value.trim().split(" ");
-
-        console.log(numbers)
-
-        if (numbers.length != 3) {
-          correct = false
-        } else if (numbers[0] != "+971") {
-          correct = false
-        } else if (isNaN(numbers[1]) || numbers[1].length != 1 && numbers[1].length != 2) {
-          correct = false
-        } else if (isNaN(numbers[2]) || numbers[2].length != 7) {
-          correct = false
-        }
-        phoneNumberInput.style.color = correct ? "black" : "red"
-      }
-
-      requestBtn.onclick = validateForm()
-    }}
