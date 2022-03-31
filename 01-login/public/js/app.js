@@ -183,30 +183,102 @@ var coords1 = [24.46, 54.37]
 var coords2 = [24.46, 54.37]
 var coords3 = [24.45, 54.39]
 
-var marker1 = L.marker(coords1).addTo(map);
-var marker2 = L.marker(coords2).addTo(map);
-var marker2 = L.marker(coords3).addTo(map);
+class Coordinate {
+  
+  constructor(latitude, longitude) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
+
+  getLatitude(){
+    return this.latitude;
+  }
+
+  getLongitude(){
+    return this.longitude;
+  }
+}
+
+var coordinates = [];
+var markers = [];
 
 
-L.Routing.control({
-  waypoints: [
-    L.latLng(coords1[0], coords1[1]),
-    L.latLng(coords2[0], coords2[1])
-  ],
-  color: "blue",
-  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-  draggableWaypoints: false,
-}).addTo(map);
+
+async function getLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    console.log(latitude, longitude)
+    return new Coordinate(latitude, longitude)
+  }); 
+}
 
 
-L.Routing.control({
-  waypoints: [
-    L.latLng(coords3[0], coords3[1]),
-    L.latLng(coords2[0], coords2[1])
-  ],
-  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-  draggableWaypoints: false,
-}).addTo(map);
+async function addCoordinates(coordinates){
+
+  coordinate = await getLocation();
+  coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
+
+  // console.log(array[0].getLatitude(), array[0].getLongitude)
+  
+  // for(let i = 0; i < array.length; i++){
+  //   L.marker(array[i]).addTo(map)
+  //   console.log("array[0] has been marked.")
+  // }
+  // L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
+
+  console.log("random")
+
+}
+
+setTimeout(addCoordinates(coordinates, map), 10000)
+
+
+// //function to add marker
+// function addMarker(coord, map){
+//   var marker = L.marker(coord).addTo(map);
+//   markers.push(marker);
+//   marker.dragging.disable();
+// }
+
+// console.log()
+
+// console.log(coordinates[0]);
+
+
+coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
+
+
+
+// var coords1 = [24.7, 24.9]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
+
+// var marker1 = L.marker(coords1).addTo(map);
+// var marker2 = L.marker(coords2).addTo(map);
+// var marker2 = L.marker(coords3).addTo(map);
+
+
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords1[0], coords1[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   color: "blue",
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords3[0], coords3[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
 
 // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
