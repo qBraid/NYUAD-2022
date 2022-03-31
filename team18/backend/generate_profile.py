@@ -112,7 +112,7 @@ def generate_profile(optimization_level=1, max_contols=5, basis_gates=None):
 		basis_gates = ['id', 'rz', 'sx', 'x', 'cx']
 	remove_profile(cd, optimization_level)
 
-	# example execution of function
+	# execution of create_lookup table function for all possible gates in IBM Qiskit
 	create_lookup_table(single_qubit_gates_no_params, basis_gates, 1, 0, max_contols, optimization_level, cd)
 	create_lookup_table(single_qubit_gates_1_params, basis_gates, 1, 1, max_contols, optimization_level, cd)
 	create_lookup_table(single_qubit_gates_2_params, basis_gates, 1, 2, max_contols, optimization_level, cd)
