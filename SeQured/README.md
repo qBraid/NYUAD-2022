@@ -17,4 +17,3 @@
 
 # 4: Generating QR Codes
 
-
