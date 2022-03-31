@@ -103,11 +103,12 @@ def qubo_classic():
 
     return Response(json.dumps(solution_json, indent=4), mimetype="text/json")
 
+
 @app.after_request
 def apply_caching(response):
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-All=ow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Origin"] = "*"
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=False)
