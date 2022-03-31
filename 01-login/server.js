@@ -58,6 +58,10 @@ app.get("/api/external/:x/:y", checkJwt, jwtUser, async (req, res) => {
   });
 });
 
+app.get("/api/vehicles", async (req, res) => {
+
+})
+
 app.get("/auth_config.json", (req, res) => {
   res.sendFile(join(__dirname, "auth_config.json"));
 });
