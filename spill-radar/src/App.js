@@ -5,10 +5,36 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { useState } from "react";
 
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Image,
+  Easing
+} from 'react-native'
+
+const useMousePosition = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  React.useEffect(() => {
+    const setFromEvent = (e) => setPosition({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", setFromEvent);
+
+    return () => {
+      window.removeEventListener("mousemove", setFromEvent);
+    };
+  }, []);
+
+  return position;
+};
+
 const App = () => {
   const[counter, setCounter] = React.useState(10); //counter
   const interval = React.useRef(null);
   const [circles, setCircles] = useState([]);
+  const position = useMousePosition();
 
   React.useEffect(() => {
     return () => stopCounter();
@@ -33,32 +59,34 @@ const App = () => {
     hegith: '100px',
   };
 
-  const getCoords = (event) => { //doesnt work yet
-    var e = event.target;
-    var dim = e.getBoundingClientRect();
-    var x = event.clientX - dim.left;
-    var y = event.clientY - dim.top;
-    return [x, y];
-  };
+  // const getCoords = (event) => { //doesnt work yet
+  //   var e = event.target;
+  //   var dim = e.getBoundingClientRect();
+  //   var x = event.clientX - dim.left;
+  //   var y = event.clientY - dim.top;
+  //   return [x, y];
+  // };
 
-  const creatObj = (event) => { //doesnt work yet
-    let [x, y] = getCoords(event);
-    console.log(x);
-    console.log(y);
-    let newCircle = ( 
-      <cicle 
-        key={circles.length + 1} 
-        cx={x} 
-        cy={y}
-        r="10"
-        stroke="black"
-        strokeWidth="1"
-        fill="blue"
-        />
-      );
-      let allCircles = [...circles, newCircle];
-      setCircles(allCircles);
-  }
+  
+
+  // const creatObj = (event) => { //doesnt work yet
+  //   let [x, y] = getCoords(event);
+  //   console.log(x);
+  //   console.log(y);
+  //   let newCircle = ( 
+  //     <cicle 
+  //       key={circles.length + 1} 
+  //       cx={x} 
+  //       cy={y}
+  //       r="10"
+  //       stroke="black"
+  //       strokeWidth="1"
+  //       fill="blue"
+  //       />
+  //     );
+  //     let allCircles = [...circles, newCircle];
+  //     setCircles(allCircles);
+  // }
 
   const startCounter = () => { //increment counter
     if(interval.current) return;
@@ -86,6 +114,9 @@ const App = () => {
           onMouseLeave={stopCounter}
           style={elementStyle}
         />
+        {/* <div>
+        {position.x}:{position.y}
+        </div> */}
       </div>
     </div>
   );
