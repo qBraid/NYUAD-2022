@@ -3,17 +3,10 @@
 Created on Thu Mar 31 20:00:08 2022
     
 """
-from qiskit import QuantumCircuit, transpile, Aer, IBMQ
-from qiskit.tools.jupyter import *
-from qiskit.visualization import *
-from qiskit.providers.aer import QasmSimulator
+from qiskit import QuantumCircuit, transpile
 import numpy as np
-from math import pi, sqrt
 import random
-import sys
 import os
-from qiskit.test.mock import FakeAthens
-from mqt import qcec
 
 # single qubit gates with no parameters
 single_qubit_gates_no_params = ["x", "y", "z", "h", "s", "sdg", "t", "tdg", "sx", "sxdg"]
