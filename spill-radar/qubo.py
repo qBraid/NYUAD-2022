@@ -3,12 +3,17 @@ import json
 
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.algorithms import CplexOptimizer, OptimizationResult, OptimizationResultStatus
+from qiskit import BasicAer, Aer
+from qiskit.algorithms import QAOA
+from qiskit_optimization.algorithms import MinimumEigenOptimizer
+from qiskit.algorithms.optimizers import COBYLA, SLSQP, ADAM
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("size", help="Size of the oil spill", type=int)
 parser.add_argument("x", help="x coordinates of the oil spill", type=int)
 parser.add_argument("y", help="y coordinates of the oil spill", type=int)
+parser.add_argument("--quantum", help="use quantum to solve", action="store_true")
 args = parser.parse_args()
 
 PORTS = {
@@ -68,7 +73,13 @@ def create_oil_qubo(ships, oilspill):
 qubo = create_oil_qubo(SHIPS, oilspill)
 #print(qubo.export_as_lp_string())
 
-solution = CplexOptimizer().solve(qubo)
+if args.quantum:
+    backend = Aer.get_backend('statevector_simulator')
+    qaoa = QAOA(optimizer = ADAM(), quantum_instance = backend, reps=1)
+    eigen_optimizer = MinimumEigenOptimizer(min_eigen_solver = qaoa)
+    solution = eigen_optimizer.solve(mod)
+else:
+    solution = CplexOptimizer().solve(qubo)
 
 #print(solution)
 solution_json = {
