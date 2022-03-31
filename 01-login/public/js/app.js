@@ -171,6 +171,7 @@ class Coordinate {
 
 var coordinates = [];
 var markers = [];
+var buses = [[24.474, 54.368]];
 
 
 
@@ -323,6 +324,33 @@ async function addCoordinates(coordinates) {
     }
   }
 
+  var LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [30, 30],
+      shadowSize: [0, 0],
+      iconAnchor: [22, 94],
+      shadowAnchor: [4, 62],
+      popupAnchor: [-3, -76]
+    }
+  });
+
+  var busIcon = new LeafIcon({
+    iconUrl: '../images/briefcase.png',
+    shadowUrl: '../images/briefcase.png'
+  })
+
+  function drawBuses(buses) {
+    for (let i = 0; i < buses.length; i++) {
+      L.marker(buses[i], {
+        icon: busIcon,
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 50
+      }).addTo(map);
+    }
+  }
+
   function drawPath(cordinate1, cordinate2) {//function that draws paths between markers
     L.Routing.control({
       waypoints: [
@@ -342,7 +370,12 @@ async function addCoordinates(coordinates) {
     }
   }
 
-  drawEntirePath(coordinates)
+  function drawEverything(coordinates) {
+    drawEntirePath(coordinates)
+    drawBuses(buses)
+  }
+
+  drawEverything(coordinates)
 
   function distanceMatrix(coordinates) {
     var matrix = []
@@ -366,11 +399,6 @@ async function addCoordinates(coordinates) {
 
   console.log("hey!")
   distanceMatrix(coordinates)
-
-
-
-
-
 
 
   //email
