@@ -8,6 +8,7 @@ from setuptools import setup, find_namespace_packages
 REQUIREMENTS = [
     "qiskit",
     "qiskit-optimization",
+    "dimod",
 ]
 
 EXTRA_REQUIREMENTS = {

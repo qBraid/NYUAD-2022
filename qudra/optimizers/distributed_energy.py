@@ -6,8 +6,22 @@ from typing import Dict, Any, Tuple
 from qiskit_optimization import QuadraticProgram
 from qiskit import Aer
 from qiskit.algorithms import QAOA, VQE, NumPyMinimumEigensolver
-from qiskit_optimization.algorithms import MinimumEigenOptimizer
+from qiskit_optimization.algorithms import MinimumEigenOptimizer, GroverOptimizer
 from qiskit.utils import QuantumInstance, algorithm_globals
+import dimod
+
+
+def gen_model_parameters(cost_types: Dict[str, Any]):
+    """
+    TODO: docstrings
+
+    Args:
+        cost_type:
+            key (str): e.g. CO2 emissions
+            val
+    """
+
+    # for cost_type in cost_types:
 
 
 class DistributedEnergyOptimizer:
@@ -224,6 +238,35 @@ class DistributedEnergyOptimizer:
             opt_type="vqe",
         )
 
+    def run_grover(self, quantum_instance=None, label="grover"):
+        """
+        Grover
+        """
+        if quantum_instance is None:
+            backend = Aer.get_backend("qasm_simulator")
+            quantum_instance = QuantumInstance(
+                backend=backend,
+                seed_simulator=algorithm_globals.random_seed,
+                seed_transpiler=algorithm_globals.random_seed,
+            )
+
+        quadprog = self.quadratic_program
+
+        n = len(self.params["A"])
+        N = self.params["N"]
+        num_qubits = n + N * n
+        optimizer = GroverOptimizer(
+            num_qubits, num_iterations=100, quantum_instance=backend
+        )
+
+        # Get result from optimizer
+        result = optimizer.solve(quadprog)
+
+        self.results[label] = {
+            "results": result,
+        }
+        return self.results[label]
+
     def run_classical(self, label="classical"):
         """
         TODO: docstring
@@ -241,11 +284,31 @@ class DistributedEnergyOptimizer:
         }
         return self.results[label]
 
+    # D-WAVE
+    # ==============================================================================
+    def run_qubo(self, label="qubo"):
+        num_shots = 100
+        offset = 0
+        vartype = dimod.SPIN
+
+        # run classical simulated annealing
+        model = dimod.BinaryQuadraticModel(
+            self.linear_terms, self.quadratic_terms, offset, vartype
+        )
+        sampler = dimod.SimulatedAnnealingSampler()
+        response = sampler.sample(model, num_reads=num_shots)
+
+        # print results
+        self.results[label] = {
+            "results": response,
+        }
+        return self.results[label]
+
     # Visualizations
     # ==============================================================================
     def print_results(self, label="qaoa"):
         """
-        Print QAOA
+        Print results
         """
         qaoa_result = self.results[label]["results"]
         qaoa_eval_count = self.results[label].get("eval_count", 0)
