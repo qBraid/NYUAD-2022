@@ -6,7 +6,7 @@ import ReactDom from 'react-dom';
 import { useState } from "react";
 
 const App = () => {
-  const[counter, setCounter] = React.useState(10);
+  const[counter, setCounter] = React.useState(10); //counter
   const interval = React.useRef(null);
   const [circles, setCircles] = useState([]);
 
@@ -28,13 +28,12 @@ const App = () => {
     boxShadow: '10px 5px 5px #BEBEBE'
   };
 
-  const ClickableSVG = {
+  const ClickableSVG = { //can ignore this
     width: '100px',
     hegith: '100px',
   };
 
-
-  const getCoords = (event) => {
+  const getCoords = (event) => { //doesnt work yet
     var e = event.target;
     var dim = e.getBoundingClientRect();
     var x = event.clientX - dim.left;
@@ -42,7 +41,7 @@ const App = () => {
     return [x, y];
   };
 
-  const creatObj = (event) => {
+  const creatObj = (event) => { //doesnt work yet
     let [x, y] = getCoords(event);
     let newCircle = ( 
       <cicle 
@@ -86,7 +85,6 @@ const App = () => {
           style={elementStyle}
         />
       </div>
-      
     </div>
   );
 }
