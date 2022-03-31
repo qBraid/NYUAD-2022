@@ -3,8 +3,8 @@
 }
 
 .App-map {
-  height: 700px;
-  width: 1100px;
+  height: auto;
+  width: 1200px;
   align-items: center;
 }
 
