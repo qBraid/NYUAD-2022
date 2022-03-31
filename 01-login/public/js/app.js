@@ -204,19 +204,19 @@ var markers = [];
 
 
 
-async function getLocation() {
-    navigator.geolocation.getCurrentPosition(position => {
-    const { latitude, longitude } = position.coords;
-    console.log(latitude, longitude)
-    return new Coordinate(latitude, longitude)
-  }); 
-}
+// async function getLocation() {
+//     navigator.geolocation.getCurrentPosition(position => {
+//     const { latitude, longitude } = position.coords;
+//     console.log(latitude, longitude)
+//     return new Coordinate(latitude, longitude)
+//   }); 
+// }
 
 
-async function addCoordinates(coordinates){
+// async function addCoordinates(coordinates){
 
-  coordinate = await getLocation();
-  coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
+//   coordinate = await getLocation();
+//   coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
 
   // console.log(array[0].getLatitude(), array[0].getLongitude)
   
@@ -226,11 +226,11 @@ async function addCoordinates(coordinates){
   // }
   // L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
 
-  console.log("random")
+  // console.log("random")
 
-}
+// }
 
-setTimeout(addCoordinates(coordinates, map), 10000)
+// setTimeout(addCoordinates(coordinates, map), 1)
 
 
 // //function to add marker
@@ -245,7 +245,7 @@ setTimeout(addCoordinates(coordinates, map), 10000)
 // console.log(coordinates[0]);
 
 
-coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
+// coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
 
 
 
@@ -307,8 +307,44 @@ var emailInput = document.getElementById('emailInput');
 var phoneNumberInput = document.getElementById('phoneNumberInput');
 var requestBtn = document.getElementById('call-api')
 
-function checkNumber(value){
+// function checkNumber(value){
 
+// }
+
+
+
+function distanceMatrix(coordinates) {
+  //need length of passed array
+  var nodesNum= coordinates.length;
+  var matrix = [];
+  for (var i=0;i<nodesNum;i++) { 
+    matrix[i] = [];
+    var data;
+    var rows = [];//distance from row node to all the column nodes
+for (var j=0;j<nodesNum;j++)//columns
+{
+  var routeControl=L.Routing.control({
+      waypoints: [
+          L.latLng(coordinates[i][0], coordinates[i][1]),
+          L.latLng(coordinates[j][0], coordinates[j][1])
+      ],
+      lineOptions: { styles: [{ color: '#242C81', weight: 2 }] },
+      draggableWaypoints: false,
+      show: false //hides information for the route
+  }).addTo(map);//drawPath(myArray[0],myArray[2]);
+  routeControl.on('routesfound', function(e) {
+      var routes = e.routes;
+      var summary = routes[0].summary;
+      // alert time and distance in km and minutes
+      data=summary.totalDistance
+      console.log(data);
+      //console.log('Total distance is ' + summary.totalDistance / 1000 + ' km noom');
+    });
+  matrix[i][j] = data;
+}
+//twoDimensionalArray.push(data);
+}
+console.log(matrix)
 }
 
 
@@ -347,4 +383,14 @@ function validateForm(value) {
 
 }
 
-requestBtn.onclick = validateForm;
+var coords1 = [24.47, 54.36]
+var coords2 = [24.46, 54.37]
+var coords3 = [24.45, 54.39]
+///var marker1 = L.marker(coords1).addTo(map);
+//var marker2 = L.marker(coords2).addTo(map);
+//var marker2 = L.marker(coords3).addTo(map);
+var myArray = [];
+myArray.push(coords1);
+myArray.push(coords2);
+myArray.push(coords3);
+distanceMatrix(myArray);
