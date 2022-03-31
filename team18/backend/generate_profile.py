@@ -3,17 +3,10 @@
 Created on Thu Mar 31 20:00:08 2022
     
 """
-from qiskit import QuantumCircuit, transpile, Aer, IBMQ
-from qiskit.tools.jupyter import *
-from qiskit.visualization import *
-from qiskit.providers.aer import QasmSimulator
+from qiskit import QuantumCircuit, transpile
 import numpy as np
-from math import pi, sqrt
 import random
-import sys
 import os
-from qiskit.test.mock import FakeAthens
-from mqt import qcec
 
 # single qubit gates with no parameters
 single_qubit_gates_no_params = ["x", "y", "z", "h", "s", "sdg", "t", "tdg", "sx", "sxdg"]
@@ -109,17 +102,17 @@ def remove_profile(directory, optimization_level):
 	for item in files:
 		if item == ("gate_stats_op_lv_" + str(optimization_level) + ".txt"):
 			os.remove(os.path.join(directory, item))
-			print("successfully removed: ", item)
+			# print("successfully removed: ", item)
 
 
 # generate profile for different optimization levels
-def generate_profile(optimization_level=1, max_contols=5, basis_gates=None):
+def generate_profile(optimization_level: int = 1, max_contols: int = 5, basis_gates=None):
 	# remove previous profile with this optimization_level
 	if basis_gates is None:
 		basis_gates = ['id', 'rz', 'sx', 'x', 'cx']
 	remove_profile(cd, optimization_level)
 
-	# example execution of function
+	# execution of create_lookup table function for all possible gates in IBM Qiskit
 	create_lookup_table(single_qubit_gates_no_params, basis_gates, 1, 0, max_contols, optimization_level, cd)
 	create_lookup_table(single_qubit_gates_1_params, basis_gates, 1, 1, max_contols, optimization_level, cd)
 	create_lookup_table(single_qubit_gates_2_params, basis_gates, 1, 2, max_contols, optimization_level, cd)
