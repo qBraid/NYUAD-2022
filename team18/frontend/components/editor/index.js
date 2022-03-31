@@ -10,9 +10,12 @@ import "ace-builds/src-noconflict/theme-monokai";
 
 let Wrapper = styled('div')`
   #editor {
-    max-width: 600px;
-    min-width: 600px;
-    min-height: calc(2/3);
+    width: 50vw!important;
+    min-height: 66.667vh!important;
+  }
+
+  .ace_layer {
+    height: 66.667vh!important;
   }
 `;
 

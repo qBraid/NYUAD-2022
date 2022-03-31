@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { styled } from 'buttered';
-import { Button, Textarea } from '@vapor/ui';
-import { ArrowRight } from 'react-feather';
 
 import dynamic from 'next/dynamic'
 
@@ -20,8 +18,11 @@ let Wrapper = styled('div')`
 `;
 
 let LeftWrapper = styled('div')`
-  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+
   border-right: 1px solid var(--vapor-accent-9);
+  background: var(--vapor-background);
 `;
 
 let RightWrapper = styled('div')`
@@ -30,12 +31,24 @@ let RightWrapper = styled('div')`
 `;
 
 let EditorWrapper = styled('div')`
-  min-height: 100vh;
-  background: var(--vapor-background);
-  padding: 60px 0;
-  padding-left: -5px;
   display: flex;
   justify-content: center;
+  align-items: center; 
+  border-bottom: 1px solid var(--vapor-accent-8);
+`;
+
+let Button = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  color: white;
+  font-weight: 600;
+  font-size: 32px;
+  background: var(--vapor-foreground);
+  
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 let DigitalLogicCircuitWrapper = styled('div')`
@@ -59,9 +72,9 @@ export default function Home() {
     setValue(newValue);
   }
 
-  useEffect(() => {
-
-  }, []);
+  let onClickCompile = () => {
+    console.log(value);
+  }
 
   return (
     <Wrapper>
@@ -72,6 +85,10 @@ export default function Home() {
             onChange={onEditorChange}
           />
         </EditorWrapper>
+
+        <Button onClick={onClickCompile}>
+          Compile and Verify
+        </Button>
       </LeftWrapper>
 
       <RightWrapper>
