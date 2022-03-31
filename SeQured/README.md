@@ -22,7 +22,7 @@ With the increasing risk of cybersecurity looming over, SeQured uses quantum ran
 
 	- The medical interface: The medical interface is the platform where the system re-creates the original signal for the patient/medical practitioner from the data encoded in the created QR code. This will enable easier access to the medical record.
 
-
+heuiwduwj
 
 
 
