@@ -1,6 +1,14 @@
+import { useState, useEffect } from 'react';
 import { styled } from 'buttered';
 import { Button, Textarea } from '@vapor/ui';
 import { ArrowRight } from 'react-feather';
+
+import dynamic from 'next/dynamic'
+
+const DynamicComponentWithNoSSR = dynamic(() =>
+  import('../components/editor').then(mod => mod.Editor),
+  { ssr: false }
+)
 
 let Wrapper = styled('div')`
   display: grid;
@@ -24,16 +32,10 @@ let RightWrapper = styled('div')`
 let EditorWrapper = styled('div')`
   min-height: 100vh;
   background: var(--vapor-background);
-  padding: 20px 20px;
-`;
-
-let Editor = styled('textarea')`
-  background: var(--vapor-foreground);
-  border-radius: 5px;
-  height: calc(80vh - 40px);
-  width: 100%;
-  outline: none;
-  border: none;
+  padding: 60px 0;
+  padding-left: -5px;
+  display: flex;
+  justify-content: center;
 `;
 
 let DigitalLogicCircuitWrapper = styled('div')`
@@ -51,13 +53,24 @@ let BasisGateCircuitWrapper = styled('div')`
 `;
 
 export default function Home() {
+  let [value, setValue] = useState("");
+
+  let onEditorChange = (newValue) => {
+    setValue(newValue);
+  }
+
+  useEffect(() => {
+
+  }, []);
+
   return (
     <Wrapper>
       <LeftWrapper>
         <EditorWrapper>
-          <Editor>
-
-          </Editor>
+          <DynamicComponentWithNoSSR
+            value={value}
+            onChange={onEditorChange}
+          />
         </EditorWrapper>
       </LeftWrapper>
 
