@@ -43,6 +43,8 @@ const App = () => {
 
   const creatObj = (event) => { //doesnt work yet
     let [x, y] = getCoords(event);
+    console.log(x);
+    console.log(y);
     let newCircle = ( 
       <cicle 
         key={circles.length + 1} 
