@@ -4,16 +4,8 @@ import './App.css';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { useState } from "react";
+import styled from 'styled-components'
 
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-  Image,
-  Easing
-} from 'react-native'
 
 const useMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -51,13 +43,57 @@ const App = () => {
     width: `${counter}px`,
     background: 'radial-gradient(at 25% 25%, #2b86c5, #562b7c, #ff3cac)',
     borderRadius: '50%',
-    boxShadow: '10px 5px 5px #BEBEBE'
+    boxShadow: '10px 5px 5px #BEBEBE',
+    left:`${position.x}`,
+    top:`${position.y}`
   };
 
   const ClickableSVG = { //can ignore this
     width: '100px',
     hegith: '100px',
   };
+
+  function sayHello() {
+    alert('You clicked me!');
+  }
+
+
+ const Ball=
+()=>
+{
+  let offsetX,offsetY
+  const move=e=>
+  {
+    const el=e.target
+    el.style.left = `${e.pageX-offsetX}px`
+    el.style.top = `${e.pageY-offsetY}px`
+  }
+  const add=e=>
+  {
+    const el=e.target
+    offsetX=e.clientX-el.getBoundingClientRect().left
+    offsetY=e.clientY-el.getBoundingClientRect().top
+    el.addEventListener('mousemove',move)
+  }
+  const remove=e=>{
+    const el=e.target
+    el.removeEventListener('mousemove',move)
+  }
+  const Wrapper=styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 29px;
+  box-shadow: 0 0 6px;
+  position: absolute;
+  top: 40px;
+  left: 227px;
+  background-color: rgb(0,0,0,0.5);
+  cursor:pointer;
+  `
+  return (
+    <Wrapper onMouseDown={add} onMouseUp={remove}/>
+  )
+}
 
   // const getCoords = (event) => { //doesnt work yet
   //   var e = event.target;
@@ -104,20 +140,30 @@ const App = () => {
 
   return (
     <div className="App">
+      
       <div>
         <img className="App-map" src={map} alt="map of persian gulf" />
       </div>
-      <div style={containerStyle}>
-        <div 
+
+      {/* <div 
           onMouseDown={startCounter}
           onMouseUp={stopCounter}
           onMouseLeave={stopCounter}
-          style={elementStyle}
-        />
-        {/* <div>
-        {position.x}:{position.y}
-        </div> */}
-      </div>
+          onMouseMove={useMousePosition}
+          // style={elementStyle}
+          style={ elementStyle }
+          // position={position}
+        /> */}
+
+      
+      <Ball>
+      </Ball>
+      
+
+      
+
+
+      {/* <button onClick={sayHello}>Default</button>; */}
     </div>
   );
 }
