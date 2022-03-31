@@ -22,44 +22,9 @@ const useMousePosition = () => {
   return position;
 };
 
-export const Ball = () =>
-{
-  let offsetX,offsetY
-  const move=e=>
-  {
-    const el=e.target
-    el.style.left = `${e.pageX-offsetX}px`
-    el.style.top = `${e.pageY-offsetY}px`
-  }
-  const add=e=>
-  {
-    const el=e.target
-    offsetX=e.clientX-el.getBoundingClientRect().left
-    offsetY=e.clientY-el.getBoundingClientRect().top
-    el.addEventListener('mousemove',move)
-  }
-  const remove=e=>{
-    const el=e.target
-    el.removeEventListener('mousemove',move)
-  }
-  const Wrapper=styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 29px;
-  box-shadow: 0 0 6px;
-  position: absolute;
-  top: 40px;
-  left: 227px;
-  background-color: rgb(0,0,0,0.5);
-  cursor:pointer;
-  `
-  return (
-    <Wrapper onMouseDown={add} onMouseUp={remove}/>
-  )
-}
 
 const App = () => {
-  const[counter, setCounter] = React.useState(50); //counter
+  const[counter, setCounter] = React.useState(18); //counter
   const interval = React.useRef(null);
   //const [circles, setCircles] = useState([]);
   const position = useMousePosition();
@@ -84,7 +49,7 @@ const App = () => {
     margin: '5px',
     height: `${counter}px`,
     width: `${counter}px`,
-    background: 'radial-gradient(at 25% 25%, #2b86c5, #562b7c, #ff3cac)',
+    background: 'black',
     borderRadius: '50%',
     boxShadow: '10px 5px 5px #BEBEBE',
     position: 'fixed',
@@ -123,7 +88,7 @@ const App = () => {
     if(interval.current) return;
     interval.current = setInterval(() => {
       setCounter((prevCounter) => prevCounter + 1);
-    }, 20);
+    }, 100);
   };
 
   const stopCounter= () => {
@@ -131,13 +96,6 @@ const App = () => {
       clearInterval(interval.current);
       interval.current = null
     }
-  };
-
-  const cursorStyle = {
-    width: `${counter}px`,
-    height: `${counter}px`,
-    color: 'black',
-    boxShadow: '10px' 
   };
 
   return (
@@ -150,6 +108,11 @@ const App = () => {
       >
       </div>
 
+      <button onClick={ 
+        fetch('http://localhost:5000/qubo?size=20&x=0&y=5')
+        .then(response => response.json())
+        .then(data => console.log(data))}></button>
+        
       {/*<div className="cursor"
         style = {{
           left: cursorX + 'px',
@@ -162,15 +125,6 @@ const App = () => {
         <img className="App-map" src={map} alt="map of persian gulf" />
       </div>
 
-      {/* <div 
-          onMouseDown={startCounter}
-          onMouseUp={stopCounter}
-          onMouseLeave={stopCounter}
-          onMouseMove={useMousePosition}
-          // style={elementStyle}
-          style={ elementStyle }
-          // position={position}
-      /> */}
 
       {/* <button onClick={sayHello}>Default</button>; */}
     </div>
