@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-
-
-
-
 <html class="h-100">
   <head>
     <meta charset="UTF-8" />
@@ -58,12 +54,12 @@
   </head>
 
   <body class="h-100">
-   
     <div id="app" class="h-100 d-flex flex-column">
       <div class="nav-container">
         <nav class="navbar navbar-expand-md navbar-light bg-light">
           <div class="container">
-        
+            
+
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -71,6 +67,9 @@
                 </li>
                 <li class="nav-item">
                   <a href="/map" class="nav-link route-link">Map</a>
+                </li>
+                <li class="nav-item">
+                  <a href="/request" class="nav-link route-link">Request</a>
                 </li>
               </ul>
               <ul class="navbar-nav d-none d-md-block">
@@ -184,6 +183,50 @@
 
         <div id="content-map" class="page">
           <div id="map"></div>
+        </div>
+
+        <div class="page" id="content-external-api">
+          <h1>Request Medical Services</h1>
+          <p>Request Our Medical Services</p>
+          <form>
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlInput2">Phone number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="exampleFormControlInput2"
+                placeholder="+97100000000"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Urgency</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>urgent</option>
+                <option>non urgent</option>
+              </select>
+            </div>
+          </form>
+          <p class="mb-5">
+            <a href="#" class="btn btn-primary mt-5" id="call-api">Request</a>
+          </p>
+
+          <div class="result-block-container">
+            <div class="result-block reset-on-nav">
+              <h6 class="muted">Result</h6>
+              <pre>
+                <code class="js rounded" id="api-call-result">JSON.stringify(apiMessage, null, 2)</code>
+              </pre>
+            </div>
+          </div>
         </div>
 
         <div class="page" id="content-profile">
