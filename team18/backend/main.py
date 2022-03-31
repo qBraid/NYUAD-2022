@@ -15,11 +15,16 @@ import os
 from qiskit.test.mock import FakeAthens
 from mqt import qcec
 
+# modules we implemented
 from generate_profile import generate_profile
 from verify_circuit import verify_circuit 
 
+### This file is an example of how to run functions in our modules above
+
+##### !!! THIS IS ONLY RUN ONCE !!! ###
 # generate profile using default values
-generate_profile()
+for i in range(4):
+    generate_profile(optimization_level=i)
 
 # TEST CASE CIRCUIT
 # original circuit, arbitrary

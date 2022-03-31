@@ -120,10 +120,6 @@ def generate_profile(optimization_level=1, max_contols=5, basis_gates=['id', 'rz
     create_lookup_table(single_qubit_gates_3_params, basis_gates, 1, 3, max_contols, optimization_level, cd)
     create_lookup_table(two_qubit_gates, basis_gates, 2, 0, max_contols, optimization_level, cd)
 
-# fixing max optimization level to 4
-# call it directly from external files
-
-
 
 
 
