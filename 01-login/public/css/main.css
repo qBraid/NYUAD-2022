@@ -14,3 +14,10 @@ label {
   height: 70vh;
   width: 100%;
 }
+body {
+  background-image: url("../images/Road.jpg");
+  background-repeat: repeat;
+  backdrop-filter: blur(5px);
+
+
+}
