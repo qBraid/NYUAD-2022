@@ -5,6 +5,7 @@ const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const { join } = require("path");
 const authConfig = require("./auth_config.json");
+const axios = require("axios");
 
 const app = express();
 
@@ -15,6 +16,14 @@ if (!authConfig.domain || !authConfig.audience) {
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.static(join(__dirname, "public")));
+
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
+
+app.use(express.json())
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -29,9 +38,24 @@ const checkJwt = jwt({
   algorithms: ["RS256"]
 });
 
-app.get("/api/external", checkJwt, (req, res) => {
+const jwtUser = async (req, res, next) => {
+  const response = await axios.get(req.user.aud[1], { headers: { 'Authorization': req.headers.authorization } });
+  req.user = response.data.email;
+  next()
+};
+
+app.post("/api/external", checkJwt, jwtUser, async (req, res) => {
+
+  // find user email
+  const resp = await axios.post("http://localhost:5000/test", {
+    position: req.body.position,
+    email: req.user
+  })
+
   res.send({
-    msg: "Your access token was successfully validated!"
+    msg: "Your access token was successfully validated!",
+    status: resp.data.status,
+    email: resp.data.email
   });
 });
 

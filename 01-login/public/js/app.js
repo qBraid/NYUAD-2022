@@ -80,7 +80,11 @@ const callApi = async () => {
     const response = await fetch("/api/external", {
       headers: {
         Authorization: `Bearer ${token}`
-      }
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        position: [0, 0]
+      })
     });
 
     const responseData = await response.json();
