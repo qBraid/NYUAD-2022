@@ -6,6 +6,8 @@
  - Lukas Burgholzer (Mentor), Johannes Kepler University Linz, Austria
  - Geon Tack Lee (Hacker), New York University Abu Dhabi, UAE
  - Karim Wen Rahme (Hacker), New York University Abu Dhabi, UAE
+ - Gayatri Tyagi (Hacker), New York University Tandon, UAE
+ - Elijah Whittle (Hacker), New York University Tandon, UAE
  - Feel free to add yourself here
 
 ### Getting started
