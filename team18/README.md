@@ -4,6 +4,7 @@
 ### People
 
  - Lukas Burgholzer (Mentor), Johannes Kepler University Linz, Austria
+ - Geon Tack Lee (Hacker), New York University Abu Dhabi, UAE
  - Feel free to add yourself here
 
 ### Getting started
