@@ -1,3 +1,3 @@
-qiskit-optimazation[cplex]
+qiskit-optimization[cplex]
 qiskit
 jupyterlab
