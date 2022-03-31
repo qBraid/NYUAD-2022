@@ -70,36 +70,6 @@ const requireAuth = async (fn, targetUrl) => {
   return login(targetUrl);
 };
 
-/**
- * Calls the API endpoint with an authorization token
- */
-const callApi = async () => {
-  try {
-    const token = await auth0.getTokenSilently();
-
-    const response = await fetch("/api/external", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        position: [0, 0]
-      })
-    });
-
-    const responseData = await response.json();
-    const responseElement = document.getElementById("api-call-result");
-
-    responseElement.innerText = JSON.stringify(responseData, {}, 2);
-
-    document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
-
-    eachElement(".result-block", (c) => c.classList.add("show"));
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 // Will run when page finishes loading
 window.onload = async () => {
   await configureClient();
@@ -184,17 +154,17 @@ var coords2 = [24.46, 54.37]
 var coords3 = [24.45, 54.39]
 
 class Coordinate {
-  
+
   constructor(latitude, longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
   }
 
-  getLatitude(){
+  getLatitude() {
     return this.latitude;
   }
 
-  getLongitude(){
+  getLongitude() {
     return this.longitude;
   }
 }
@@ -205,21 +175,35 @@ var markers = [];
 
 
 async function getLocation() {
-    navigator.geolocation.getCurrentPosition(position => {
+  navigator.geolocation.getCurrentPosition(position => {
     const { latitude, longitude } = position.coords;
     console.log(latitude, longitude)
     return new Coordinate(latitude, longitude)
-  }); 
+  });
 }
 
+function getPositionWrapped(options) {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+  );
+}
 
-async function addCoordinates(coordinates){
+const getposition = async () => {
+  try {
+    const positionRaw = await getPositionWrapped({});
+    return [positionRaw.coords.latitude, positionRaw.coords.longitude]
+  } catch (err) {
+    console.log(err.message)
+  }
+}
+
+async function addCoordinates(coordinates) {
 
   coordinate = await getLocation();
   coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
 
   // console.log(array[0].getLatitude(), array[0].getLongitude)
-  
+
   // for(let i = 0; i < array.length; i++){
   //   L.marker(array[i]).addTo(map)
   //   console.log("array[0] has been marked.")
@@ -230,69 +214,91 @@ async function addCoordinates(coordinates){
 
 }
 
-setTimeout(addCoordinates(coordinates, map), 10000)
+// setTimeout(addCoordinates(coordinates, map), 10000)
 
 
 // //function to add marker
-// function addMarker(coord, map){
-//   var marker = L.marker(coord).addTo(map);
-//   markers.push(marker);
-//   marker.dragging.disable();
-// }
+function addMarker(coord, map) {
+  var marker = L.marker(coord).addTo(map);
+  markers.push(marker);
+  marker.dragging.disable();
+}
 
 // console.log()
 
 // console.log(coordinates[0]);
 
-
 coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
 
+var coords1 = [24.7, 24.9]
+var coords2 = [24.46, 54.37]
+var coords3 = [24.45, 54.39]
 
-
-// var coords1 = [24.7, 24.9]
-// var coords2 = [24.46, 54.37]
-// var coords3 = [24.45, 54.39]
-
-// var marker1 = L.marker(coords1).addTo(map);
-// var marker2 = L.marker(coords2).addTo(map);
-// var marker2 = L.marker(coords3).addTo(map);
+var marker1 = L.marker(coords1).addTo(map);
+var marker2 = L.marker(coords2).addTo(map);
+var marker2 = L.marker(coords3).addTo(map);
 
 
 
 
-// L.Routing.control({
-//   waypoints: [
-//     L.latLng(coords1[0], coords1[1]),
-//     L.latLng(coords2[0], coords2[1])
-//   ],
-//   color: "blue",
-//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-//   draggableWaypoints: false,
-// }).addTo(map);
+L.Routing.control({
+  waypoints: [
+    L.latLng(coords1[0], coords1[1]),
+    L.latLng(coords2[0], coords2[1])
+  ],
+  color: "blue",
+  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+  draggableWaypoints: false,
+}).addTo(map);
 
 
-// L.Routing.control({
-//   waypoints: [
-//     L.latLng(coords3[0], coords3[1]),
-//     L.latLng(coords2[0], coords2[1])
-//   ],
-//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-//   draggableWaypoints: false,
-// }).addTo(map);
+L.Routing.control({
+  waypoints: [
+    L.latLng(coords3[0], coords3[1]),
+    L.latLng(coords2[0], coords2[1])
+  ],
+  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+  draggableWaypoints: false,
+}).addTo(map);
 
 // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
 
 // organise our code here
 
-// create a function to add a marker 
+// create a function to add a marker
 
 // fetch marker coords from backend
 
 // finish work on authentication
 
-// add a function that draws paths between markers 
+// add a function that draws paths between markers
 
 // add a buntton in the ui that gets the location and console log
 
 // validate coodrinates (ad)
+
+
+const callApi = async () => {
+  try {
+    const position = await getposition();
+    const token = await auth0.getTokenSilently();
+
+    const response = await fetch(`/api/external/${position[0]}/${position[1]}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const responseData = await response.json();
+    const responseElement = document.getElementById("api-call-result");
+
+    responseElement.innerText = JSON.stringify(responseData, {}, 2);
+
+    document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
+
+    eachElement(".result-block", (c) => c.classList.add("show"));
+  } catch (e) {
+    console.error(e);
+  }
+};

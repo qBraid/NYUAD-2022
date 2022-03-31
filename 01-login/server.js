@@ -17,11 +17,11 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.static(join(__dirname, "public")));
 
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-)
+// app.use(
+//   express.urlencoded({
+//     extended: true
+//   })
+// )
 
 app.use(express.json())
 
@@ -44,18 +44,17 @@ const jwtUser = async (req, res, next) => {
   next()
 };
 
-app.post("/api/external", checkJwt, jwtUser, async (req, res) => {
-
+app.get("/api/external/:x/:y", checkJwt, jwtUser, async (req, res) => {
   // find user email
+  console.log(req.params)
   const resp = await axios.post("http://localhost:5000/test", {
-    position: req.body.position,
+    position: req.params,
     email: req.user
   })
 
   res.send({
     msg: "Your access token was successfully validated!",
-    status: resp.data.status,
-    email: resp.data.email
+    data: resp.data
   });
 });
 
