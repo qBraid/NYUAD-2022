@@ -296,3 +296,55 @@ coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
 // add a buntton in the ui that gets the location and console log
 
 // validate coodrinates (ad)
+
+
+
+//validate form responses
+
+
+//email
+var emailInput = document.getElementById('emailInput');
+var phoneNumberInput = document.getElementById('phoneNumberInput');
+var requestBtn = document.getElementById('call-api')
+
+function checkNumber(value){
+
+}
+
+
+function validateForm(value) {
+
+
+  //validate email
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  emailInput.type = 'email';
+  emailInput.required = true;
+
+  if (!re.test(emailInput.value)){
+    emailInput.style.color = "red";
+  } else {
+    emailInput.style.color = "black";
+  }
+
+  //validate number
+  correct = true
+  numbers = phoneNumberInput.value.trim().split(" ");
+
+  console.log(numbers)
+
+  if (numbers.length != 3){
+    correct = false
+  } else if (numbers[0] != "+971") {
+    correct = false
+  } else if (isNaN(numbers[1]) || numbers[1].length != 1 && numbers[1].length != 2) {
+    correct = false
+  } else if (isNaN(numbers[2]) || numbers[2].length != 7) {
+    correct = false
+  }
+
+  phoneNumberInput.style.color = correct ? "black" : "red"
+
+}
+
+requestBtn.onclick = validateForm;
