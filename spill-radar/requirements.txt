@@ -1,3 +1,2 @@
-qiskit-optimization[cplex]
+qiskit-optimization[gurobi]
 qiskit
-jupyterlab
