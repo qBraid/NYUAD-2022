@@ -319,17 +319,17 @@ function validateLoc(user_lat, user_long){
 
  var LeafIcon = L.Icon.extend({
   options: {
-     iconSize:     [30, 30],
+     iconSize:     [50, 50],
      shadowSize:   [0, 0],
-     iconAnchor:   [22, 94],
-     shadowAnchor: [4, 62],
-     popupAnchor:  [-3, -76]
+    //  iconAnchor:   [22, 94],
+    //  shadowAnchor: [4, 62],
+    //  popupAnchor:  [-3, -76]
   }
 });
 
  var busIcon = new LeafIcon({
-  iconUrl: '../images/briefcase.png',
-  shadowUrl: '../images/briefcase.png'
+  iconUrl: '../images/ambulance.png',
+  shadowUrl: '../images/ambulance.png'
 })
 
 function drawBuses(buses){
