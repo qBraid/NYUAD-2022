@@ -7,11 +7,6 @@ Our team's contribution is supposed to go into the `qudra` folder. So move there
 cd NYUAD-2022/qudra
 ```
 
-Install the requirements from the `requirements.txt` file:
-```console 
-pip install -r qudra/requirements.txt
-```
-
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `qudra` into your conda environment.*
 
 `qudra` is published on PyPI. So, to install, simply run:
