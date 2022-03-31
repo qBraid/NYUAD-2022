@@ -16,9 +16,6 @@ def compile_and_verify(circuit_original: QuantumCircuit, backend: FakeBackend = 
     # compile according to specified optimization level
     circ_comp = transpile(circuit_original, backend=backend, optimization_level=optimization_level)
 
-    circuit_original.draw(fold=-1, filename="images/original_pic.png", output='mpl')
-    circ_comp.draw(fold=-1, filename="images/compiled_pic.png", output='mpl')
-
     if introduce_error:
         error = QuantumCircuit(circ_comp.num_qubits)
         error.x(0)
