@@ -145,10 +145,6 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(map);
 
 
-
-var coordinates = [];
-var markers = [];
-
 class Coordinate {
   
   constructor(latitude, longitude) {
@@ -165,30 +161,24 @@ class Coordinate {
   }
 }
 
-async function getLocation() {
-  navigator.geolocation.getCurrentPosition(position => {
-    const { latitude, longitude } = position.coords;
-    // coordinates.push([latitude, longitude]);
-    // console.log(coordinates[0]);
-    console.log(latitude, longitude)
-    var coordinate = new Coordinate(latitude, longitude);
-    console.log(coordinate.getLatitude(), coordinate.getLongitude())
-  });
-  // const position = await this.getCoordinates(); 
-  // let latitude = position.coords.latitude;
-  // let longitude = position.coords.longitude;
-  // let url = Constants.OSMAP_URL + latitude + "&lon=" + longitude;
+var coordinates = [];
+var markers = [];
 
-  // Actually return a value
-  // return this.reverseGeoCode(url);  
+
+
+async function getLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    console.log(latitude, longitude)
+    return new Coordinate(latitude, longitude)
+  }); 
 }
 
 
+async function addCoordinates(coordinates){
 
-
-async function addCoordinates(map){
-
-  let coordinate = await getLocation()
+  coordinate = await getLocation();
+  coordinates.push([coordinate.getLatitude(), coordinate.getLongitude()])
 
   // console.log(array[0].getLatitude(), array[0].getLongitude)
   
@@ -198,14 +188,11 @@ async function addCoordinates(map){
   // }
   // L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
 
-  await console.log("random")
+  console.log("random")
 
 }
 
-// getLocation();
-
-addCoordinates(map);
-
+setTimeout(addCoordinates(coordinates, map), 10000)
 
 
 // //function to add marker
@@ -217,7 +204,7 @@ addCoordinates(map);
 
 // console.log()
 
-console.log(coordinates[0]);
+// console.log(coordinates[0]);
 
 
 coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
@@ -258,6 +245,7 @@ coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
 // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
 const callApi = async () => {
+
   try {
 
     // Get the access token from the Auth0 client
