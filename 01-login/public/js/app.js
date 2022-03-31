@@ -144,7 +144,7 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: 'your.mapbox.access.token'
 }).addTo(map);
 
-var coords1 =   
+var coords1 = [24.46, 54.37]  
 var coords2 = [24.46, 54.37]
 var coords3 = [24.45, 54.39]
 
