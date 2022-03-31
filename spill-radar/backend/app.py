@@ -62,6 +62,13 @@ def create_oil_qubo(ships, oilspill):
 app = Flask(__name__)
 
 
+@app.route('/')
+def index():
+    return """
+    Use /qubo?size=20&x=5&y=5 to specify your request.
+    """
+
+
 @app.route('/qubo')
 def qubo_classic():
     size = request.args.get('size', type=float)
