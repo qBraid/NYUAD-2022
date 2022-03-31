@@ -144,34 +144,116 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: 'your.mapbox.access.token'
 }).addTo(map);
 
-var coords1 =   
-var coords2 = [24.46, 54.37]
-var coords3 = [24.45, 54.39]
-
-var marker1 = L.marker(coords1).addTo(map);
-var marker2 = L.marker(coords2).addTo(map);
-var marker2 = L.marker(coords3).addTo(map);
 
 
-L.Routing.control({
-  waypoints: [
-    L.latLng(coords1[0], coords1[1]),
-    L.latLng(coords2[0], coords2[1])
-  ],
-  color: "blue",
-  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-  draggableWaypoints: false,
-}).addTo(map);
+var coordinates = [];
+var markers = [];
+
+class Coordinate {
+  
+  constructor(latitude, longitude) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
+
+  getLatitude(){
+    return this.latitude;
+  }
+
+  getLongitude(){
+    return this.longitude;
+  }
+}
+
+async function getLocation() {
+  navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    // coordinates.push([latitude, longitude]);
+    // console.log(coordinates[0]);
+    console.log(latitude, longitude)
+    var coordinate = new Coordinate(latitude, longitude);
+    console.log(coordinate.getLatitude(), coordinate.getLongitude())
+  });
+  // const position = await this.getCoordinates(); 
+  // let latitude = position.coords.latitude;
+  // let longitude = position.coords.longitude;
+  // let url = Constants.OSMAP_URL + latitude + "&lon=" + longitude;
+
+  // Actually return a value
+  // return this.reverseGeoCode(url);  
+}
 
 
-L.Routing.control({
-  waypoints: [
-    L.latLng(coords3[0], coords3[1]),
-    L.latLng(coords2[0], coords2[1])
-  ],
-  lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
-  draggableWaypoints: false,
-}).addTo(map);
+
+
+async function addCoordinates(map){
+
+  let coordinate = await getLocation()
+
+  // console.log(array[0].getLatitude(), array[0].getLongitude)
+  
+  // for(let i = 0; i < array.length; i++){
+  //   L.marker(array[i]).addTo(map)
+  //   console.log("array[0] has been marked.")
+  // }
+  // L.marker([coordinate.getLatitude(), coordinate.getLongitude()]).addTo(map)
+
+  await console.log("random")
+
+}
+
+// getLocation();
+
+addCoordinates(map);
+
+
+
+// //function to add marker
+// function addMarker(coord, map){
+//   var marker = L.marker(coord).addTo(map);
+//   markers.push(marker);
+//   marker.dragging.disable();
+// }
+
+// console.log()
+
+console.log(coordinates[0]);
+
+
+coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
+
+
+
+// var coords1 = [24.7, 24.9]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
+
+// var marker1 = L.marker(coords1).addTo(map);
+// var marker2 = L.marker(coords2).addTo(map);
+// var marker2 = L.marker(coords3).addTo(map);
+
+
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords1[0], coords1[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   color: "blue",
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
+
+
+// L.Routing.control({
+//   waypoints: [
+//     L.latLng(coords3[0], coords3[1]),
+//     L.latLng(coords2[0], coords2[1])
+//   ],
+//   lineOptions: { styles: [{ color: '#242c81', weight: 2 }] },
+//   draggableWaypoints: false,
+// }).addTo(map);
 
 // fetch("http://localhost:3010/api/private").then((res) => res.json()).then((data) => { console.log(data) })
 
