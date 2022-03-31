@@ -64,9 +64,20 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return """
+    return Response("""
     Use /qubo?size=20&x=5&y=5 to specify your request.
-    """
+    See also /ports and /ships for more info.
+    """, mimetype="text/plain")
+
+
+@app.route("/ships")
+def ships():
+    return Response(json.dumps(SHIPS, indent=4), mimetype="text/json")
+
+
+@app.route("/ports")
+def ports():
+    return Response(json.dumps(PORTS, indent=4), mimetype="text/json")
 
 
 @app.route('/qubo')
@@ -86,9 +97,9 @@ def qubo_classic():
         "status": solution.samples[0].status.name,
         "ships": []
     }
-    for i, ship in enumerate(SHIPS):
+    for i, (ship, data) in enumerate(SHIPS.items()):
         if solution.samples[0].x[i] != 0:
-            solution_json["ships"].append(ship)
+            solution_json["ships"].append((ship, *data))
 
     return Response(json.dumps(solution_json, indent=4), mimetype="text/json")
 
