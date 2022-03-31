@@ -9,22 +9,22 @@ from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit.algorithms.optimizers import ADAM
 
 PORTS = {
-    "Zayed Port, Abu Dhabi": [763, 278],
-    "Mina Rashid, Dubai": [854, 363],
-    "Jebel Ali Port, Dubai": [829, 336],
-    "Mina Saqr, Ras Al Khaimah": [923, 421],
-    "Khalifa Port, Abu Dhabi": [789, 311],
-    "Port of Khasab, Oman": [954, 467],
-    "King Abdulaziz Port, KSA": [330, 497],
-    "King Fahd Industrial Port, KSA": [273, 556],
-    "Ras Al Khair Port, KSA": [228, 616],
-    "Shuwaikh Port, Kuwait": [96, 817],
-    "Shuaiba Port, Kuwait": [120, 783],
-    "Doha port, Kuwait": [82, 821],
-    "Port Doha, Qatar": [470, 368],
-    "Hamad port, Qatar": [472, 337],
-    "Al-Ruwais port, Qatar": [434, 462],
-    "Port of Shahid Rajaee, Iran": [569, 934]
+    "Zayed Port, Abu Dhabi": [1098.04, 870.974],
+    "Mina Rashid, Dubai": [1215.77, 766.165],
+    "Jebel Ali Port, Dubai": [1183.42, 799.457],
+    "Mina Saqr, Ras Al Khaimah": [1305.03, 694.649],
+    "Khalifa Port, Abu Dhabi": [1131.68, 830.284],
+    "Port of Khasab, Oman": [1345.13, 637.928],
+    "King Abdulaziz Port, KSA": [537.887, 600.937],
+    "King Fahd Industrial Port, KSA": [464.149, 528.187],
+    "Ras Al Khair Port, KSA": [405.934, 454.205],
+    "Shuwaikh Port, Kuwait": [235.171, 206.363],
+    "Shuaiba Port, Kuwait": [266.219, 248.286],
+    "Doha port, Kuwait": [217.06, 201.43],
+    "Port Doha, Qatar": [719, 760],
+    "Hamad port, Qatar": [721.587, 798.224],
+    "Al-Ruwais port, Qatar": [672.428, 644.094],
+    "Port of Shahid Rajaee, Iran": [847.072, 62.0962]
 }
 
 SHIPS = {
