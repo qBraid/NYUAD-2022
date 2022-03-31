@@ -22,44 +22,7 @@ const useMousePosition = () => {
   return position;
 };
 
-const App = () => {
-  const[counter, setCounter] = React.useState(10); //counter
-  const interval = React.useRef(null);
-  const [circles, setCircles] = useState([]);
-  const position = useMousePosition();
-
-  React.useEffect(() => {
-    return () => stopCounter();
-  }, []);
-
-  const containerStyle = {
-    height: '100px', 
-    width: '100px',
-  };
-
-  const elementStyle = {
-    margin: '5px',
-    height: `${counter}px`,
-    width: `${counter}px`,
-    background: 'radial-gradient(at 25% 25%, #2b86c5, #562b7c, #ff3cac)',
-    borderRadius: '50%',
-    boxShadow: '10px 5px 5px #BEBEBE',
-    left:`${position.x}`,
-    top:`${position.y}`
-  };
-
-  const ClickableSVG = { //can ignore this
-    width: '100px',
-    hegith: '100px',
-  };
-
-  function sayHello() {
-    alert('You clicked me!');
-  }
-
-
- const Ball=
-()=>
+export const Ball = () =>
 {
   let offsetX,offsetY
   const move=e=>
@@ -95,6 +58,40 @@ const App = () => {
   )
 }
 
+const App = () => {
+  const[counter, setCounter] = React.useState(50); //counter
+  const interval = React.useRef(null);
+  //const [circles, setCircles] = useState([]);
+  const position = useMousePosition();
+  const [cursorX, setCursorX] = useState();
+  const [cursorY, setCursorY] = useState();
+
+  window.addEventListener('mousemove', (e) => {
+    setCursorX(e.pageX);
+    setCursorY(e.pageY);
+  })
+
+  React.useEffect(() => {
+    return () => stopCounter();
+  }, []);
+
+  const containerStyle = {
+    height: '100px', 
+    width: '100px',
+  };
+
+  const elementStyle = {
+    margin: '5px',
+    height: `${counter}px`,
+    width: `${counter}px`,
+    background: 'radial-gradient(at 25% 25%, #2b86c5, #562b7c, #ff3cac)',
+    borderRadius: '50%',
+    boxShadow: '10px 5px 5px #BEBEBE',
+    position: 'fixed',
+    left: cursorX - 0.5*counter + 'px',
+    top: cursorY - 0.5*counter + 'px'
+  };
+
   // const getCoords = (event) => { //doesnt work yet
   //   var e = event.target;
   //   var dim = e.getBoundingClientRect();
@@ -102,8 +99,6 @@ const App = () => {
   //   var y = event.clientY - dim.top;
   //   return [x, y];
   // };
-
-  
 
   // const creatObj = (event) => { //doesnt work yet
   //   let [x, y] = getCoords(event);
@@ -138,9 +133,31 @@ const App = () => {
     }
   };
 
+  const cursorStyle = {
+    width: `${counter}px`,
+    height: `${counter}px`,
+    color: 'black',
+    boxShadow: '10px' 
+  };
+
   return (
     <div className="App">
-      
+      <div
+        onMouseDown={startCounter}
+        onMouseUp={stopCounter}
+        onMouseLeave={stopCounter} 
+        style = {elementStyle}
+      >
+      </div>
+
+      {/*<div className="cursor"
+        style = {{
+          left: cursorX + 'px',
+          top: cursorY + 'px'
+        }}
+        > 
+      </div>*/
+      }
       <div>
         <img className="App-map" src={map} alt="map of persian gulf" />
       </div>
@@ -153,15 +170,7 @@ const App = () => {
           // style={elementStyle}
           style={ elementStyle }
           // position={position}
-        /> */}
-
-      
-      <Ball>
-      </Ball>
-      
-
-      
-
+      /> */}
 
       {/* <button onClick={sayHello}>Default</button>; */}
     </div>

@@ -10,6 +10,7 @@
     "react-dom": "^18.0.0",
     "react-motion": "^0.5.2",
     "react-scripts": "5.0.0",
+    "rimraf": "^3.0.2",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
