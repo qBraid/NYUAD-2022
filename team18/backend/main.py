@@ -1,33 +1,42 @@
-from qiskit import QuantumCircuit, transpile
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 31 19:59:19 2022
+
+"""
+from qiskit import QuantumCircuit, transpile, Aer, IBMQ
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+from qiskit.providers.aer import QasmSimulator
+import numpy as np
+from math import pi, sqrt
+import random
+import sys
+import os
 from qiskit.test.mock import FakeAthens
 from mqt import qcec
 
-if __name__ == "__main__":
-    # create your quantum circuit
-    circ = QuantumCircuit(3)
-    circ.h(0)
-    circ.cx(0, 1)
-    circ.cx(0, 2)
-    circ.measure_all()
-    print(circ.draw(fold=-1))
+from generate_profile import generate_profile
+from verify_circuit import verify_circuit 
 
-    # compile circuit to 5 qubit London Architecture
-    circ_comp = transpile(circ, backend=FakeAthens())
-    print(circ_comp.draw(fold=-1))
+# generate profile using default values
+generate_profile()
 
-    # initialize the equivalence checker
-    ecm = qcec.EquivalenceCheckingManager(circ, circ_comp, )
+# TEST CASE CIRCUIT
+# original circuit, arbitrary
+circ = QuantumCircuit(3)
+circ.h(0)
+circ.cx(0, 1)
+circ.cx(0, 2)
+circ.ccx(0, 2, 1)
+circ.measure_all()
 
-    # set the application scheme to be based off a profile
-    ecm.set_application_scheme('gate_cost')
-    ecm.set_gate_cost_profile('dummy.profile')
+# verify using default values
+result = verify_circuit(circ)
+print(result)
 
-    # execute the check
-    ecm.run()
 
-    # obtain the result
-    print(ecm.equivalence())
 
-    # obtain runtime
-    results = ecm.get_results()
-    print('Took:', results.check_time, '[s]')
+
+
+
+
