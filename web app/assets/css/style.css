@@ -15,11 +15,11 @@ body {
 
 a {
   text-decoration: none;
-  color: #5cb874;
+  color: #74dde4;
 }
 
 a:hover {
-  color: #80c792;
+  color: #59c3c3;
   text-decoration: none;
 }
 
@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 15px;
   bottom: 15px;
   z-index: 996;
-  background: #5cb874;
+  background: #59c3c3;
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 0;
 }
 .back-to-top:hover {
-  background: #78c48c;
+  background: #78a7c4;
   color: #fff;
 }
 .back-to-top.active {
@@ -72,10 +72,10 @@ h1, h2, h3, h4, h5, h6 {
   transition: 0.3s;
 }
 #topbar .contact-info a:hover {
-  color: #5cb874;
+  color: #59c3c3;
 }
 #topbar .contact-info i {
-  color: #5cb874;
+  color: #59c3c3;
   line-height: 0;
   margin-right: 5px;
 }
@@ -90,7 +90,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: 0.3s;
 }
 #topbar .social-links a:hover {
-  color: #5cb874;
+  color: #59c3c3;
 }
 
 /*--------------------------------------------------------------
@@ -100,7 +100,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #fff;
   transition: all 0.5s;
   z-index: 997;
-  height: 70px;
+  height: 90px;
 }
 #header.header-scrolled {
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 #header .logo a {
-  color: #5cb874;
+  color: #53cfcf;
 }
 #header .logo img {
   max-height: 40px;
@@ -285,7 +285,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #222222;
 }
 .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
-  color: #5cb874;
+  color: #7de2e4;
 }
 .navbar-mobile .getstarted, .navbar-mobile .getstarted:focus {
   margin: 15px;
@@ -341,7 +341,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .carousel-item::before {
   content: "";
-  background-color: rgba(45, 103, 60, 0.8);
+  background-color: rgba(42, 84, 87, 0.824);
 }
 #hero .carousel-container {
   display: flex;
@@ -464,7 +464,7 @@ h1, h2, h3, h4, h5, h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 310px 0;
 }
 
 .section-bg {
@@ -1198,7 +1198,7 @@ section {
   color: #fff;
   font-size: 14px;
   text-align: center;
-  padding: 30px 0;
+  padding: 20px 0;
   margin: auto;
 }
 #footer h3 {
