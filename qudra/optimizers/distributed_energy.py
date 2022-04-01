@@ -58,6 +58,11 @@ class DistributedEnergyOptimizer:
         self.params["alpha"] = params.get("alpha", 5e5)  # TODO: check if ok default
         self.params["beta"] = params.get("beta", 8)  # TODO: check if ok default
 
+        n = len(self.params["A"])
+        self.params["plant_names"] = params.get(
+            "plant_names", [f"plant_{i}" for i in range(n)]
+        )
+
         self.results: Dict[str, Any] = {}
         self._quadratic_program = None
         self._linear_terms = None
@@ -101,6 +106,10 @@ class DistributedEnergyOptimizer:
         return self._quadratic_program
 
     def gen_coeff(self):
+        """
+        Generate Coefficients
+        """
+
         # setup
         # ==========================================================================
         # parameters
@@ -362,3 +371,10 @@ class DistributedEnergyOptimizer:
         print(
             f"\nThe solution was found within {qaoa_eval_count} evaluations of {label}."
         )
+
+    def plot_histogram(self, label="qaoa"):
+        if label == "qaoa":
+            plant_names = self.params["plant_names"]
+            pass
+        elif label == "vqe":
+            pass
