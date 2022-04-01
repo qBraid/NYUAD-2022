@@ -4,7 +4,7 @@ Our solution applies uses quantum annealing to solve Traveling Salesperson Probl
 
 
 ## Team Members
-![Team Photo](./photo/team22.JPG)
+![Team Photo](./../photo/team22.JPG)
 
 ## Mentors
 Alexandar Degner,  Media University of Applied Sciences Munich, Germany
@@ -58,3 +58,6 @@ Install all the requirements with
 Run it on your machine
 
 `npm start`
+
+
+
