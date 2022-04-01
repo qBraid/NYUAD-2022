@@ -1,5 +1,11 @@
 # qudra
 *Quantum Energy Management*
+
+## Motivation
+
+Leveraging quantum advantage to distributed grids for energy security and sustainability.
+
+*Please check out these slides for more [information](https://www.canva.com/design/DAE8pdmu5A0/F-bEPUubsNa9QMclkktCsg/view).*
 ## Installation
 
 Our team's contribution is supposed to go into the `qudra` folder. So move there
