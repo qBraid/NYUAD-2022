@@ -19,7 +19,8 @@ let Wrapper = styled('div')`
 `;
 
 let ImageComponent = styled('img')`
-  width: 50vw;
+  max-width: 50vw;
+  max-height: 33vh;
 `;
 
 let LeftWrapper = styled('div')`
@@ -65,6 +66,9 @@ let DigitalLogicCircuitWrapper = styled('div')`
 `;
 
 let VerificationWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center; 
   background: var(--vapor-background);
   border-bottom: 1px solid var(--vapor-accent-8);
 `;
@@ -80,8 +84,8 @@ export default function Home() {
   let [code, setCode] = useState("");
 
   let [equivalent, setEquivalent] = useState(false);
-  let [digitalLogicCircuitUrl, setDigitalLogicCircuitUrl] = useState("");
-  let [basisGateCircuitUrl, setBasisGateCircuitUrl] = useState("");
+  let [dlgCircSrc, setDLGCircSrc] = useState("");
+  let [bsgCircSrc, setBSGCircSrc] = useState("");
 
   let [showLogo, setShowLogo] = useState(true);
 
@@ -93,9 +97,11 @@ export default function Home() {
     let payload = { code }
 
     axios.post(`http://127.0.0.1:5000/`, payload).then(res => {
-      console.log(res);
+      setEquivalent(res.data.equivalent);
+      setBSGCircSrc(res.data.bsgCircSrc);
+      setDLGCircSrc(res.data.dlgCircSrc);
 
-      // here stuff has to happen
+      setShowLogo(false);
     }).catch(err => console.log(err));
   }
 
@@ -116,7 +122,7 @@ export default function Home() {
 
       <RightWrapper>
         <DigitalLogicCircuitWrapper>
-          <ImageComponent src={"/placeHolder.png"} />
+          <ImageComponent src={dlgCircSrc ? dlgCircSrc : "/placeHolder.png"} />
         </DigitalLogicCircuitWrapper>
 
         <VerificationWrapper>
@@ -129,7 +135,7 @@ export default function Home() {
         </VerificationWrapper>
 
         <BasisGateCircuitWrapper>
-          <ImageComponent src={"/placeHolder.png"} />
+          <ImageComponent src={bsgCircSrc ? bsgCircSrc : "/placeHolder.png"} />
         </BasisGateCircuitWrapper>
       </RightWrapper>
     </Wrapper>
