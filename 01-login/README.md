@@ -1,68 +1,111 @@
-# Sample 01 - Login
+# MediQal (Team22)
 
-The purpose of this article is to demonstrate how simple it is to set up and use the new Single Page Application SDK, and authenticate a user in your application using Auth0's Universal Login Page.
+Our solution uses quantum annealing to solve Traveling Salesperson Problems to efficiently route mobile healthcare vehicles. We utilize both classical and quantum solvers for this task. Our quantum solutions are obtained by submitting QUBO problems to the DWave quantum annealers via Amazon Braket.
 
-## Running the Sample Application
+<a href = "https://docs.google.com/presentation/d/1xttMPEMyEMe38c13a5HV48R3ZdQXod-m/edit">Presentation</a>
 
-The sample can be run locally, by cloning the repository to your machine and then following the steps below.
+## Team Members
+![Team Photo](./../photo/team22.JPG)
 
-### Specifying Auth0 Credentials
+## Mentors
+Alexandar Degner,  Media University of Applied Sciences Munich, Germany
 
-To specify the application client ID and domain, make a copy of `auth_config.json.example` and rename it to `auth_config.json`. Then open it in a text editor and supply the values for your application:
+Pawel Gora , Quantum AI Foundation, Poland
 
-```json
-{
-  "domain": "dev--r9nce6d.us.auth0.com",
-  "clientId": "PoNe6RWeBfF3XG3TvRA2RINQGGtkmmz4"
-}
+Mohammad Aamir Sohail , University of Michigan, USA
+## Hackers
+Chaimae Abouzahir, New York University Abu Dhabi, UAE
+
+Fatima Alzahra Maaroouf, Lebanese American University, Lebanon
+
+Hamza Boudouche, Mohammed 5 University, Morocco
+
+Malak Mansour, New York University Abu Dhabi, UAE
+
+Mariam Alsafi, Khalifa University, UAE
+
+Sashank Neupane, New York University Abu Dhabi, UAE
+
+Tasnim Ahmed, New York University Abu Dhabi, UAE
+
+Teague Tomesh, Princeton University, USA
+
+Tiemar Semere Berhe, Khalifa University, UAE
+
+Yaphet Elias Weldegebriel, Khalifa University, UAE
+
+Ziad Mohamed Hassan, New York University Abu Dhabi, UAE
+
+## Problem Description
+
+Mobile medical services (e.g. ambulances, medical supply delivery, lab tests) contribute significantly to greenhouse gases and environmental pollution. For example, it is estimated that an average of 31.3kg of carbon dioxide (CO2) is produced per ambulance [1]. The rapid advancement in medical technologies have led to an increase in life expectancy of more than 6 years between 2000 and 2019 [2] resulting in an increase of ageing societies. Thus, it is expected that more people will require mobile medical services in the future. From an algorithmic point of view, the problem of optimal vehicle routing is NP-hard (it is a similar problem to the well-known Vehicle Routing Problem)[3], which means that most likely it would be impossible to find the optimal routing solution for large fleets of emergency vehicles using classical approaches. There is hope that quantum computing will give an advantage in this area especially for large scale problems (i.e. hundreds of vehicles and thousands of patients). We have concluded that optimising routing of medical vehicles is an important social and environmental challenge where the usage of quantum computing is justified, and decided to focus on this topic during the hackathon.
+
+# Getting Started
+
+Clone this repository: https://github.com/hamza-boudouche/NYUAD-2022
+
+Install all the requirements for quantum algorithm:
+
+`pip install -r requirements.txt`
+
+Go to NYUAD-2022/team22 folder
+
+`cd NYUAD-2022/team22`
+
+Install nodejs
+
+<a href= "https://nodejs.org/en/download/">NodeJS</a>
+
+Install all the requirements with
+
+`npm install`
+
+Run it on your machine
+
+`npm start`
+
+After starting the website on a localhost server, you can find a website where you can interactively call for a mediQal request. A new node in your location will be created, and the path will be adapted in real time using quantum annealing.
+
+
+## Explanation of Quantum Algorithm
+
+The code for constructing the problem QUBO and finding a solution via classical or quantum annealing is contained in `vrp_qubo.py`. All that is needed as input is an `edge_list` which is passed into the `wrapper()` function.
+
+As an example, a simple input graph may be represented by the edge list:
+
+```python
+edge_list = [(0,1,{'weight':4.7}), (1,2,{'weight':10.9}), ...]
 ```
 
-### Installation
+Calling this function will 
+1. Construct the problem QUBO
+2. Find a solution via classical or quantum annealing
+3. Return the shortest found path and the cost of traversing that path:
 
-After cloning the repository, run:
-
-```bash
-$ npm install
+```python
+[2,1,5,2,...], 32
 ```
+are the order of coordinates and the total cost of the path, which will be the output of the `wrapper()` function.
 
-This will install all of the necessary packages in order for the sample to run.
+## Resources
+Our QUBO formulation of the problem was adapted from:
+> Borowski, M. et al. (2020). [New Hybrid Quantum Annealing Algorithms for Solving Vehicle Routing Problem](https://link.springer.com/chapter/10.1007/978-3-030-50433-5_42#citeas). In: Computational Science – ICCS 2020. ICCS 2020. Lecture Notes in Computer Science, vol 12142. Springer, Cham. https://doi.org/10.1007/978-3-030-50433-5_42
 
-### Running the Application
+Access to the DWave quantum annealers was made possible by:
+- [Amazon Braket](https://aws.amazon.com/braket/quantum-computers/dwave/)
+- [qBraid](https://account.qbraid.com)
 
-This version of the application uses an [Express](https://expressjs.com) server that can serve the site from a single page. To start the app from the terminal, run:
+We utilized the following APIs:
+- [OpenStreetMap](https://www.openstreetmap.org/copyright): OpenStreetMap® is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF).
+- [Leaflet](https://leafletjs.com)
+- [Auth0](https://auth0.com)
 
-```bash
-$ npm run dev
-```
+---
 
-## Frequently Asked Questions
+## References
 
-We are compiling a list of questions and answers regarding the new JavaScript SDK - if you're having issues running the sample applications, [check the FAQ](https://github.com/auth0/auth0-spa-js/blob/master/FAQ.md)!
+[1] Sheldon, A., 2022. Scoping ambulance emissions: recommendations for reducing engine idling time. <a href="https://www.paramedicpractice.com/features/article/scoping-ambulance-emissions-recommendations-for-reducing-engine-idling-time#:~:text=An%20average%20of%2031.3%20kg,emissions%20and%20public%20health%20emerge"> [online]</a> Journal Of Paramedic Practice. [Accessed 1 April 2022].
 
-## What is Auth0?
+[2] Who.int. n.d. GHE: Life expectancy and healthy life expectancy. <a href="https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-life-expectancy-and-healthy-life-expectancy"> [online]</a> [Accessed 1 April 2022].
 
-Auth0 helps you to:
-
-- Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, among others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-- Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-- Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-- Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
-- Analytics of how, when and where users are logging in.
-- Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
-
-## Create a free Auth0 account
-
-1. Go to [Auth0](https://auth0.com/signup) and click Sign Up.
-2. Use Google, GitHub or Microsoft Account to login.
-
-## Issue Reporting
-
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
-
-## Author
-
-[Auth0](auth0.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+[3] Kumar, S. and Panneerselvam, R., 2012. A Survey on the Vehicle Routing Problem and Its Variants. Intelligent Information Management, 04(03), pp.66-74.

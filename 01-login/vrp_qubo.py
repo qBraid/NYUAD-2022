@@ -6,6 +6,13 @@ import qubovert
 import numpy as np
 import networkx as nx
 
+# In order to access the DWave quantum annealer,
+# install and import the following packages:
+# pip install dwave-ocean-sdk
+# pip install amazon-braket-ocean-plugin
+import dwave.system
+import braket.ocean_plugin
+
 
 class VRPstate:
     def __init__(self, G, num_vehicles):
@@ -67,6 +74,11 @@ class VRPstate:
                     self.qubo[((m, n, 0),)] += A_2
 
     def get_qubo(self, A_1=1, A_2=1000):
+        """
+        This QUBO formulation is adapted from
+
+        Borowski, M. et al. (2020). [New Hybrid Quantum Annealing Algorithms for Solving Vehicle Routing Problem](https://link.springer.com/chapter/10.1007/978-3-030-50433-5_42#citeas). In: Computational Science – ICCS 2020. ICCS 2020. Lecture Notes in Computer Science, vol 12142. Springer, Cham. https://doi.org/10.1007/978-3-030-50433-5_42
+        """
         self.get_cost_matrix()
         self.qubo = qubovert.QUBO()
 
@@ -153,62 +165,100 @@ def generateGraph(edge_list):
     return G
 
 
-def wrapper(edge_list):
+def wrapper(edge_list, quantum=False):
+    """Solve TSP on the graph described by the input edge_list.
+
+    Input
+    -----
+    edge_list: List
+        A list of tuples containing edges and weights: [(0,1,{'weight':1}), ...]
+
+    quantum: Bool
+        Determines whether a quantum or classical annealing algorithm should be used.
+        Note that if quantum=True the necessary packages should be imported at the top
+        of this file, and the proper AWS S3 folder should be set.
+    """
     G = generateGraph(edge_list)
     s = VRPstate(G, 1)
 
     qubo = s.get_qubo()
 
-    result = qubovert.sim.anneal_qubo(
-        qubo.Q, num_anneals=4, anneal_duration=int(1e6))
+    if quantum:
+        arn = "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6"
+        #arn = "arn:aws:braket:::device/qpu/d-wave/Advantage_system1"
+        my_bucket = f"amazon-braket-qbraid-jobs" # the name of the bucket
+        my_prefix = "tomeshteague-40gmail-2ecom" # the name of the folder in the bucket
+        s3_folder = (my_bucket, my_prefix)
 
-    path, cost = s.parse_results(result)
+        shots = 10
 
+        sampler = dwave.system.EmbeddingComposite(
+                    braket.ocean_plugin.BraketDWaveSampler(s3_folder, arn)
+                )
 
-# pip install dwave-ocean-sdk
-# pip install amazon-braket-ocean-plugin
-# import dwave.system
-# import braket.ocean_plugin
+        response = sampler.sample_qubo(qubo.Q, num_reads=shots)
+        record = response.record
 
+        solution = []
+        for row in record.sample:
+            soln_dict = {}
+            for var, assignment in zip(response.variables, row):
+                soln_dict[var] = assignment
+            solution.append(soln_dict)
 
-# arn = "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6"
-# #arn = "arn:aws:braket:::device/qpu/d-wave/Advantage_system1"
-# my_bucket = f"amazon-braket-qbraid-jobs" # the name of the bucket
-# my_prefix = "tomeshteague-40gmail-2ecom" # the name of the folder in the bucket
-# s3_folder = (my_bucket, my_prefix)
+        return_data = [
+            (s, e, n) for s, e, n in zip(solution, record.energy, record.num_occurrences)
+        ]
 
-# shots = 10
+        result = np.rec.array(
+            return_data, dtype=[("solution", "O"), ("energy", "<f8"), ("num_occurrences", "<i8")]
+        )
+        dwave = True
 
-# sampler = dwave.system.EmbeddingComposite(
-#             braket.ocean_plugin.BraketDWaveSampler(s3_folder, arn)
-#         )
+    else:
+        result = qubovert.sim.anneal_qubo(
+            qubo.Q, num_anneals=4, anneal_duration=int(1e6))
+        dwave = False
 
-# # response = sampler.sample_qubo(qubo.Q, num_reads=shots)
-# # record = response.record
-
-# solution = []
-# for row in record.sample:
-#     soln_dict = {}
-#     for var, assignment in zip(response.variables, row):
-#         soln_dict[var] = assignment
-#     solution.append(soln_dict)
-
-# return_data = [
-#     (s, e, n) for s, e, n in zip(solution, record.energy, record.num_occurrences)
-# ]
-
-# return_recarray = np.rec.array(
-#     return_data, dtype=[("solution", "O"), ("energy", "<f8"), ("num_occurrences", "<i8")]
-# )
-
-# #print(return_recarray)
+    path, cost = s.parse_results(result, dwave=dwave)
+    return path, cost
 
 
-# for i, res in enumerate(return_recarray):
-#     print('Anneal', i+1)
-#     state.print_routes(res['solution'])
-#     print('\tQUBO cost:', res['energy'])
-#     print()
+def get_cost(temporary_route, current_position, cost):
+    #Input:
+        #a temporary_route list, current_positions list of vehicles, cost matrix
+    #output 
+        #the cost (int)
+    if(len(temporary_route) == 1):
+        return 0
+    k = current_position 
+    path_cost = 0
+    
+    for i in temporary_route:
+        path_cost += cost[k][i]
+        k = i
+    
+    return path_cost
 
+def get_the_partitioned_path(solution, cost, current_position_list, num_vehicle = 2):
+    #Input:
+        #a solution path list, current_positions list of vehicles, num_vehicles
+    #output 
+        #the path each vehicle should take [[vehicle 0 path],[vehicle 1 path]...[vehicle (num_vehicles-1) path]] 
+    final_route = [[current_position_list[i]] for i in range(num_vehicle)]#starting with the current position
 
-# state.parse_results(return_recarray, dwave=True)
+    for i in solution[0][1:]:#adding the last index to use the vehicle_locations list
+        candidate = -1
+        the_cost = 1e5 #not efficient but it works
+        
+        for k in range(num_vehicle):
+            print(f'Path {final_route[k][-1]} to {i} cost is: {get_cost(final_route[k],current_position_list[k], cost)}')
+            if(the_cost>get_cost(final_route[k]+[i], current_position_list[k], cost)):
+                candidate = k
+                the_cost = get_cost(final_route[k]+[i],current_position_list[k], cost)
+            #update the candidate's route
+        print(f'chosen vehicle {candidate}')
+        final_route[candidate].append(i)  
+        
+    return final_route
+

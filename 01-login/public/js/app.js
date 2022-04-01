@@ -1,7 +1,10 @@
 // The Auth0 client, initialized in configureClient()
 let auth0 = null;
+<<<<<<< HEAD
 let graph = []
 let markers = []
+=======
+>>>>>>> d5782eb1dc1205fdc3a84358b4dfded020e033ca
 
 /**
  * Starts the authentication flow
@@ -24,6 +27,9 @@ const login = async (targetUrl) => {
   }
 };
 
+/**
+ * Executes the logout flow
+ */
 const logout = () => {
   try {
     console.log("Logging out");
@@ -35,8 +41,14 @@ const logout = () => {
   }
 };
 
+/**
+ * Retrieves the auth configuration from the server
+ */
 const fetchAuthConfig = () => fetch("/auth_config.json");
 
+/**
+ * Initializes the Auth0 client
+ */
 const configureClient = async () => {
   const response = await fetchAuthConfig();
   const config = await response.json();
@@ -48,6 +60,11 @@ const configureClient = async () => {
   });
 };
 
+/**
+ * Checks to see if the user is authenticated. If so, `fn` is executed. Otherwise, the user
+ * is prompted to log in
+ * @param {*} fn The function to execute if the user is logged in
+ */
 const requireAuth = async (fn, targetUrl) => {
   const isAuthenticated = await auth0.isAuthenticated();
 
@@ -58,6 +75,9 @@ const requireAuth = async (fn, targetUrl) => {
   return login(targetUrl);
 };
 
+/**
+ * Calls the API endpoint with an authorization token
+ */
 const callApi = async () => {
   try {
     const token = await auth0.getTokenSilently();
@@ -111,7 +131,7 @@ const callApi = async () => {
   }
 };
 
-
+// Will run when page finishes loading
 window.onload = async () => {
   await configureClient();
   const location = await getPosition();
@@ -264,6 +284,12 @@ class Coordinate {
   }
 }
 
+var coordinates = [];
+var markers = [];
+var buses = [[24.474, 54.368]];
+
+
+
 // async function getLocation() {
 //     navigator.geolocation.getCurrentPosition(position => {
 //     const { latitude, longitude } = position.coords;
@@ -308,6 +334,14 @@ class Coordinate {
 // coordinates.forEach((x) => markers.push(L.narker(x.addTo(map))));
 
 
+
+// var coords1 = [24.7, 24.9]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
+
+// var marker1 = L.marker(coords1).addTo(map);
+// var marker2 = L.marker(coords2).addTo(map);
+// var marker2 = L.marker(coords3).addTo(map);
 
 
 
@@ -421,7 +455,7 @@ function drawEverything(coordinates) {
   drawBuses(buses)
 }
 
-// drawEverything(coordinates)
+drawEverything(coordinates)
 
 function distanceMatrix(coordinates) {
   var matrix = []
@@ -454,6 +488,7 @@ var requestBtn = document.getElementById('call-api')
 
 function validateForm() {
 
+  let correct = true
   //validate email
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -461,13 +496,13 @@ function validateForm() {
   emailInput.required = true;
 
   if (!re.test(emailInput.value)) {
+    correct = false;
     emailInput.style.color = "red";
   } else {
     emailInput.style.color = "black";
   }
 
   //validate number
-  correct = true
   numbers = phoneNumberInput.value.trim().split(" ");
 
   console.log(numbers)
@@ -482,6 +517,7 @@ function validateForm() {
     correct = false
   }
   phoneNumberInput.style.color = correct ? "black" : "red"
+  return correct
 }
 
 requestBtn.onclick = validateForm
@@ -565,25 +601,13 @@ function drawMarkers(markers) {
   for (let i = 0; i < markers.length; i++) {
     L.marker(markers[i]).addTo(map);
   }
+
+  let data = await response.json()
+  return data
 }
 
 
 
-// (async () => {
-//   console.log(calculateDistance([21.41, 52.04], [21.11, 52.4]));
-//   drawMarkers([21.41, 52.04], [21.11, 52.4])
-//   L.marker([21.41, 52.04]).addTo(map);
-// })();
-
-
-// var coords1 = [24.7, 54.3]
-// var coords2 = [24.46, 54.37]
-// var coords3 = [24.45, 54.39]
-
-// var marker1 = L.marker(coords1).addTo(map);
-// var marker2 = L.marker(coords2).addTo(map);
-// var marker2 = L.marker(coords3).addTo(map);
-
-
-// console.log(calculateDistance([24.41, 54.04], [22.11, 54.4]));
-// drawMarkers([[24.41, 54.04], [22.11, 54.4]])
+function refreshPage() {
+  window.location.reload();
+}
