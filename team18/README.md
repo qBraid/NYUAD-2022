@@ -4,7 +4,7 @@
 ### Team
 
  - Lukas Burgholzer (Mentor), Johannes Kepler University Linz, Austria
- - Abdelkhalik Aljuneidi (Mentor), 
+ - Abdelkhalik Aljuneidi (Mentor), TODO!!!
  - Geon Tack Lee (Hacker), New York University Abu Dhabi, UAE
  - Karim Wen Rahme (Hacker), New York University Abu Dhabi, UAE
  - Gayatri Tyagi (Hacker), New York University Tandon, UAE
@@ -12,7 +12,7 @@
  - Omar AlRemeithi (Hacker), Khalifa University, UAE
  - Silvey Yu (Hacker), New York University Shanghai, China
  - Wen Rahme (Hacker), New York University Abu Dhabi, UAE
- - Iheb Nassim Aouadj (Hacker), Higher National School of Computer Science Algiers, UAE
+ - Iheb Nassim Aouadj (Hacker), Higher National School of Computer Science Algiers, Algeria
 
 ### Getting started
 
@@ -24,8 +24,7 @@ Our team's contribution is in the `team18` folder. So move there
 ```console
 cd NYUAD-2022/team18
 ```
-A minimum working example can be found in the `main.py` file.
-It shows how to use the MQT QCEC tool to verify that a very simple circuit has been correctly compiled to the 5-qubit IBMQ Athens architecture. 
+A minimum working example showcasing our contributions can be found in the `main.py` file.
 To get this working, create and activate a new virtual environment for the project:
 ```console
 python3 -m venv venv
@@ -33,47 +32,39 @@ python3 -m venv venv
 ```
 Install the requirements from the `requirements.txt` file:
 ```console 
-pip install -r team18/requirements.txt
+pip install -r requirements.txt
 ```
 Then execute the Python script
 ```console 
-python3 team18/main.py
+python3 main.py
+```
+This should yield:
+```console
+Generating profile for verification ...
+... generated profile
+Generating application circuit ...
+... generated application circuit
+Compiling and verifying the circuit ...
+... compiled circuit is equivalent to original circuit: True
+Simulating the resulting circuit and saving histogram ...
+... done
+Compiling and verifying the circuit and introducing an error ...
+... compiled circuit is equivalent to original circuit: False
+Simulating the resulting circuit and saving histogram ...
+... done
 ```
 
-### Designing an efficient strategy
-In order to determine an efficient strategy, a lookup table can be created from the information gathered from the IBM Qiskit quantum circuit compilation flow.
+## Detailed list of contributions
+We developed an easy-to-use web tool that allows to verify that quantum circuits have been correctly compiled.
+To this end, we
+ - Improved the quantum circuit equivalence checking tool MQT QCEC by developing a dedicated profile for verifying compilation results (see `generate_profile.py`)
+ - Implemented a flow for using the generated profile to automatically verify the compilation of a circuit (see `backend/app/compile_and_verify`)
+ - Designed a web application for easily using the developed methods, see the screenshot below
 
-To this end, the following high-level operations shall be supported:
- - **single-qubit** gates: 
-   - "i", "id", "iden": identity gate
-   - "x", "y", "z": Pauli operations
-   - "h": Hadamard gate
-   - "s", "sdg", "t", "tdg": Phase gates
-   - "sx", "sxdg": sqrt-X gate (and inverse)
+TODO !!!
 
- - **two-qubit** gates: 
-   - "swap"
-   - "iswap"
-
-There are some parametrized gates (single-qubit rotations) that need some extra care:
- - "p": arbitrary angle phase gate (generalization of Z, S, T)
- - "rx", "ry", "rz": arbitrary rotations around the X, Y, or Z axis
- - "u2": general rotation specified by two parameters
- - "u", "u3": general rotation specified by three parameters
-For these gates, it is probably best to just choose parameter values at random when determining the corresponding compilation cost.
-
-In addtion, all of the above gates (except for the identity gate) can have arbitrarily many control qubits attached to them, e.g., 
- - "cx": controlled-X or CNOT operation
- - "ccx" controlled-controlled-X or Toffoli gate
- - ...
-
-Typically, there are multiple ways of realizing gates with more than 2 controls. Qiskit offers three different options for that:
- - `mode='noancilla'`
- - `mode='recursion'`
- - `mode='v-chain'`
-
-There should be a different profile for each of these options.
-Furthermore, there should be a different profile for each optimization level of the IBM Qiskit compiler (O0 -- O3)
-
-The target gate-set for compilation should be an argument of the function that computes the decomposition costs.
-In general, you will be targeting the IBM gate-set consisting of `["id", "rz", "sx", "x", "cx"]`.
+## Technologies used
+ - IBM Qiskit: Quantum SDK
+ - MQT QCEC: A tool for quantum circuit equivalence checking
+ - Flask: Backend for the web application
+ - React: Frontend for the web application
