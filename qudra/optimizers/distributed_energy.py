@@ -370,7 +370,7 @@ class DistributedEnergyOptimizer:
         # run BQM: solve with the D-Wave device
         sampler = BraketDWaveSampler(s3_folder, device_arn=device)
         sampler = EmbeddingComposite(sampler)
-        response = sampler.sample(model, num_read=num_shots)
+        response = sampler.sample(model, num_reads=num_shots)
 
         # print results
         self.results[label] = {
