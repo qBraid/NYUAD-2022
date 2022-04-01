@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import dynamic from 'next/dynamic'
 
+import {Images} from './images.js'
+
 const DynamicComponentWithNoSSR = dynamic(() =>
   import('../components/editor').then(mod => mod.Editor),
   { ssr: false }
