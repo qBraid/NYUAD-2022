@@ -151,7 +151,7 @@ class VRPstate:
 
         return sorted(all_paths, key=lambda v: v[1])[0]
 
-
+ 
 def generateGraph(edge_list):
     G = nx.Graph()
     G.add_edges_from(edge_list)
@@ -170,36 +170,32 @@ def wrapper(edge_list):
     return s.parse_results(result)
 
 
-graph = [[0, 1, {"weight": 3}], [0, 2, {"weight": 10}], [0, 3, {"weight": 6}], [0, 4, {"weight": 1}], [0, 5, {"weight": 6}], [0, 6, {"weight": 6}], [0, 7, {"weight": 8}], [1, 2, {"weight": 4}], [1, 3, {"weight": 5}], [1, 4, {"weight": 7}], [1, 5, {"weight": 9}], [1, 6, {"weight": 8}], [1, 7, {"weight": 10}], [2, 3, {"weight": 10}], [
-    2, 4, {"weight": 1}], [2, 5, {"weight": 1}], [2, 6, {"weight": 2}], [2, 7, {"weight": 4}], [3, 4, {"weight": 3}], [3, 5, {"weight": 2}], [3, 6, {"weight": 7}], [3, 7, {"weight": 1}], [4, 5, {"weight": 4}], [4, 6, {"weight": 2}], [4, 7, {"weight": 4}], [5, 6, {"weight": 9}], [5, 7, {"weight": 7}], [6, 7, {"weight": 10}]]
+graph = [[0,1,{ 'weight':7159.410860493759}],[0,2,{ 'weight':233.94604044176444}],[0,3,{ 'weight':3890.5286652701484}],[0,4,{ 'weight':4703.793914383512}],[0,5,{ 'weight':5561.165303906478}],[0,6,{ 'weight':3967.7741322172005}],[0,7,{ 'weight':8722.006472181123}],[1,2,{ 'weight':6970.920516041224}],[1,3,{ 'weight':6044.741521831752}],[1,4,{ 'weight':7664.247010457612}],[1,5,{ 'weight':1666.9607728278909}],[1,6,{ 'weight':4886.368473714739}],[1,7,{ 'weight':6990.199597282921}],[2,3,{ 'weight':3674.389079831615}],[2,4,{ 'weight':4531.737631816009}],[2,5,{ 'weight':5363.002121826112}],[2,6,{ 'weight':3734.7205936745318}],[2,7,{ 'weight':8496.588845476057}],[3,4,{ 'weight':1684.0320296982757}],[3,5,{ 'weight':4494.18361875633}],[3,6,{ 'weight':1162.2516632969364}],[3,7,{ 'weight':4876.677819061241}],[4,5,{ 'weight':6154.675863099172}],[4,6,{ 'weight':2826.472730888577}],[4,7,{ 'weight':4968.2289191662285}],[5,6,{ 'weight':3333.4508779435923}],[5,7,{ 'weight':6368.629368343863}],[6,7,{ 'weight':4873.57496985432}]]
 
 
-markers = [[24.46994245833937, 54.3871], [24.4206036116, 54.3416592737], [24.4694245833937, 54.384859571], [24.4745537206036116, 54.348993416592737], [
-    24.4894245833937, 54.34584229259571], [24.434137206036116, 54.3487416592737], [24.464114245833937, 54.3484229259571], [24.47137206036116, 54.30093416592737]]
+markers = [[24.46994245833937, 54.3871], [24.4206036116, 54.3416592737], [24.4694245833937, 54.384859571], [24.4745537206036116, 54.348993416592737], [24.4894245833937, 54.34584229259571], [24.434137206036116, 54.3487416592737], [24.464114245833937, 54.3484229259571], [24.47137206036116, 54.30093416592737]] 
 
 print(graph)
-
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/qc")
+@app.route("/qc") 
 def qc():
     return {}
-
 
 @app.route("/api/graph", methods=["GET", "POST"])
 def handle_graph():
     global graph
-    print(graph)
+    # print(graph)
     if request.method == "GET":
         return {"graph": graph}
     if request.method == "POST":
         graph = request.get_json().get("graph")
-        return {"ok": True}
-
+        print(graph)
+        return {"ok": True} 
 
 @app.route("/api/markers", methods=["GET", "POST"])
 def handle_markers():
@@ -211,12 +207,10 @@ def handle_markers():
         markers.append(marker)
         return {"ok": True}
 
-
 @app.route("/test", methods=["GET"])
 def test_post():
     global graph
     return {"path": wrapper(graph)}
 
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+      app.run(host='0.0.0.0', port=5050)
