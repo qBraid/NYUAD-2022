@@ -319,7 +319,7 @@ function drawBuses(buses) {
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
-      radius: 50
+      radius: 30
     }).addTo(map);
   }
 }
