@@ -24,6 +24,8 @@ In our system, Quantum computing isn't only used to secure the data of the user,
 
 3. 'pip install -r requirements.txt'
 
+4. Run the Image Processing.ipynb notebook for a step by step runthrough of our method. 
+
 
 
 
