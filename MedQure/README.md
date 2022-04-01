@@ -9,7 +9,7 @@ March 30 - April 1, 2022
 # MedQure
 
 With the recent surging concern over privacy, the use of secure algorithms that
-assure the safety of user data has become more crucial than ever. The _SeQure_
+assure the safety of user data has become more crucial than ever. The _MedQure_
 team proposes a tumour classification system that completely secures the data of
 clients through the use of Blind Quantum Computing. Since healthcare data is one
 of the most private and sensitives data a user worries about, we were motivated
