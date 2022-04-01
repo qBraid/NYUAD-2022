@@ -401,6 +401,7 @@ var requestBtn = document.getElementById('call-api')
 
 function validateForm() {
 
+  let correct = true
   //validate email
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -408,13 +409,13 @@ function validateForm() {
   emailInput.required = true;
 
   if (!re.test(emailInput.value)){
+    correct = false;
     emailInput.style.color = "red";
   } else {
     emailInput.style.color = "black";
   }
 
   //validate number
-  correct = true
   numbers = phoneNumberInput.value.trim().split(" ");
 
   console.log(numbers)
@@ -429,6 +430,7 @@ function validateForm() {
     correct = false
   }
   phoneNumberInput.style.color = correct ? "black" : "red"
+  return correct
 }
 
 requestBtn.onclick = validateForm
