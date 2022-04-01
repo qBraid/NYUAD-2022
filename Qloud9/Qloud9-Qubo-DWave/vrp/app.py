@@ -6,8 +6,7 @@ import googlemaps
 from main_solver import MainSolver
 
 # ASSUMPTIONS
-fuel_efficiency = 1 
-#price_weight = 1
+fuel_efficiency = 1
 price_weight = 1
 fuel_price = 1
 mode = "driving"
@@ -75,6 +74,7 @@ def main():
         total_cost = []
         for i in range(num_dest ** 2):
             ac = price_weight * all_dist[i] * fuel_efficiency * fuel_price
+            # Optional time component:
             # ac += (1 - price_weight) * all_time[i]
             total_cost.append(ac)
         
@@ -85,10 +85,9 @@ def main():
             for j in range(1, num_dest+1):
                 final1.append(i)
                 final2.append(j)
+        
         graph_text = "\n"
-        final.append(final1)
-        final.append(final2)
-        final.append(total_cost)
+        final.extend([final1, final2, total_cost])
         for i in range(num_dest ** 2):
             if final[0][i] != final[1][i]:
                 graph_text += f"{final[0][i]},{final[1][i]},{final[2][i]}\n"
@@ -99,9 +98,6 @@ def main():
             scenario_text += f"{i} 0 0 10\n"
         
         scenario_text += "\n2\n20\n20"
-        # print(graph_text)
-        # print('-'*50)
-        # print(scenario_text)
         solver =  MainSolver(scenario_text = scenario_text, graph_text=graph_text)
         solution = solver.return_value()
 
@@ -111,4 +107,6 @@ def main():
 
         print(final_answer)
         return jsonify(final_answer)
-app.run()
+
+if __name__ == "__main__":
+    app.run()

@@ -1,5 +1,8 @@
 # CVRP approach using quantum computing
 
+*Note* : This code is based on : https://github.com/xBorox1/D-Wave-Leap---CVRP
+
+
 Few quantum approaches for CVRP problems. It isn't fully ended version and it's not well described. If you want to use it, I recommend you to change only file paths in main. I want to improve code and approaches and then create more user-friendly version. Also you need to configure D-Wave Leap first.
 
 ## API Usage
