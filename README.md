@@ -15,7 +15,7 @@ Leveraging quantum advantage to distributed grids for energy security and sustai
 
 Our team's contribution is supposed to go into the `qudra` folder. So move there
 ```console
-cd NYUAD-2022/qudra
+cd qudra
 ```
 
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `qudra` into your conda environment.*
@@ -39,7 +39,7 @@ To check if the installation was successful, run:
 To build `qudra` from source, pip install using:
 
 ```bash
-git clone https://github.com/Q-Energy-2022/NYUAD-2022.git
+git clone https://github.com/Q-Energy-2022/qudra.git
 cd qudra
 pip install --upgrade .
 ```
@@ -51,7 +51,7 @@ If you also want to download the dependencies needed to run optional tutorials, 
 
 If you intend to contribute to this project, please install `qudra` in editable mode as follows:
 ```bash
-git clone https://github.com/Q-Energy-2022/NYUAD-2022.git
+git clone https://github.com/Q-Energy-2022/qudra.git
 cd qudra
 pip install -e .[dev]
 ```
