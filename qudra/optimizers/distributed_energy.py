@@ -11,6 +11,9 @@ from qiskit.utils import QuantumInstance, algorithm_globals
 from braket.ocean_plugin import BraketDWaveSampler
 from dwave.system.composites import EmbeddingComposite
 import dimod
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib import rcParams 
 
 
 # def gen_transportation_losses():
@@ -47,6 +50,16 @@ class DistributedEnergyOptimizer:
     """
     Optimizing unit commitment from a distributed energy network.
     """
+    #helper
+    def z_to_p(self,n,N,arr):
+        p_dict={}
+        i = n
+        while(i<((n+1)*(N+1)-1)):
+            for k in range(N+1):
+                label=("xp%s" % i)
+                p_dict[label]=p_dict.get(label, 0) + arr[i+k]
+            i+=(N+1)  
+        return p_dict
 
     REQUIRED_PARAMS = ["A", "B", "C", "P_min", "P_max", "L", "N"]
 
@@ -403,9 +416,35 @@ class DistributedEnergyOptimizer:
             results = self.results["qubo"]["results"]
             pass
 
-    def plot_histogram(self, label="qaoa"):
-        if label == "qaoa":
+    def plot_histogram(self,label="qaoa"):
+        """
+        Output results in bar chart
+        """
+        
+        if label in ["qaoa", "vqe", "grover","classical","qubo"]:
             plant_names = self.params["plant_names"]
+            P_min = self.params["P_min"]
+            P_max = self.params["P_max"]
+        else :
+            raise ValueError(f"{label} is not a valid label")
+        
+        if label in ["qaoa", "vqe", "grover","classical"]:
+            results = self.results[label]["results"]
+            eval_count = self.results[label].get("eval_count", 0)
+            print(f"Plot using the {label} method:\n")
+        elif label == "qubo":
+            results = self.results["qubo"]["results"]
             pass
-        elif label == "vqe":
-            pass
+
+        n=len(self.params["A"])
+        N=self.params["N"]
+        trial = self.z_to_p(n,N,results.x)
+        P=list(trial.values())
+        fig = plt.figure()
+        barplt = fig.add_axes([0,0,1,1])
+        sns.barplot(x=plant_names,y=P_max,errcolor='.2',edgecolor=".2", facecolor=(1, 1, 1, 0))
+        sns.barplot(x=plant_names,y=P_min,color="gainsboro",edgecolor=".2")
+        sns.barplot(x=plant_names,y=P, color="palegreen",edgecolor=".2")
+        rcParams['figure.figsize'] = 2,3
+        plt.show()
+        return
