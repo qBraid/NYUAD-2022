@@ -75,9 +75,18 @@ edge_list = [(0,1,{'weight':4.7}), (1,2,{'weight':10.9}), ...]
 Calling this function will 
 1. Construct the problem QUBO
 2. Find a solution via classical or quantum annealing
-3. Return the shortest found path and the cost of traversing that path
+3. Return the shortest found path and the cost of traversing that path:
 
 ```python
 [2,1,5,2,...], 32
 ```
 are the order of coordinates and the total cost of the path, which will be the output of the `wrapper()` function.
+
+## Resources
+Our QUBO formulation of the problem was adapted from:
+> Borowski, M. et al. (2020). [New Hybrid Quantum Annealing Algorithms for Solving Vehicle Routing Problem](https://link.springer.com/chapter/10.1007/978-3-030-50433-5_42#citeas). In: Computational Science – ICCS 2020. ICCS 2020. Lecture Notes in Computer Science, vol 12142. Springer, Cham. https://doi.org/10.1007/978-3-030-50433-5_42
+
+We utilized the following APIs:
+- [OpenStreetMap](https://www.openstreetmap.org/copyright): OpenStreetMap® is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF).
+- [Leaflet](https://leafletjs.com)
+- [Auth0](https://auth0.com)

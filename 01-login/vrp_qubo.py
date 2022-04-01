@@ -74,6 +74,11 @@ class VRPstate:
                     self.qubo[((m, n, 0),)] += A_2
 
     def get_qubo(self, A_1=1, A_2=1000):
+        """
+        This QUBO formulation is adapted from
+
+        Borowski, M. et al. (2020). [New Hybrid Quantum Annealing Algorithms for Solving Vehicle Routing Problem](https://link.springer.com/chapter/10.1007/978-3-030-50433-5_42#citeas). In: Computational Science – ICCS 2020. ICCS 2020. Lecture Notes in Computer Science, vol 12142. Springer, Cham. https://doi.org/10.1007/978-3-030-50433-5_42
+        """
         self.get_cost_matrix()
         self.qubo = qubovert.QUBO()
 
