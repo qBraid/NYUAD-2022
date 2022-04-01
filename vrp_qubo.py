@@ -6,6 +6,13 @@ import qubovert
 import numpy as np
 import networkx as nx
 
+# In order to access the DWave quantum annealer,
+# install and import the following packages:
+# pip install dwave-ocean-sdk
+# pip install amazon-braket-ocean-plugin
+import dwave.system
+import braket.ocean_plugin
+
 
 class VRPstate:
     def __init__(self, G, num_vehicles):
@@ -153,62 +160,59 @@ def generateGraph(edge_list):
     return G
 
 
-def wrapper(edge_list):
+def wrapper(edge_list, quantum=False):
+    """Solve TSP on the graph described by the input edge_list.
+
+    Input
+    -----
+    edge_list: List
+        A list of tuples containing edges and weights: [(0,1,{'weight':1}), ...]
+
+    quantum: Bool
+        Determines whether a quantum or classical annealing algorithm should be used.
+        Note that if quantum=True the necessary packages should be imported at the top
+        of this file, and the proper AWS S3 folder should be set.
+    """
     G = generateGraph(edge_list)
     s = VRPstate(G, 1)
 
     qubo = s.get_qubo()
 
-    result = qubovert.sim.anneal_qubo(
-        qubo.Q, num_anneals=4, anneal_duration=int(1e6))
+    if quantum:
+        arn = "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6"
+        #arn = "arn:aws:braket:::device/qpu/d-wave/Advantage_system1"
+        my_bucket = f"amazon-braket-qbraid-jobs" # the name of the bucket
+        my_prefix = "tomeshteague-40gmail-2ecom" # the name of the folder in the bucket
+        s3_folder = (my_bucket, my_prefix)
 
-    path, cost = s.parse_results(result)
+        shots = 10
 
+        sampler = dwave.system.EmbeddingComposite(
+                    braket.ocean_plugin.BraketDWaveSampler(s3_folder, arn)
+                )
 
-# pip install dwave-ocean-sdk
-# pip install amazon-braket-ocean-plugin
-# import dwave.system
-# import braket.ocean_plugin
+        response = sampler.sample_qubo(qubo.Q, num_reads=shots)
+        record = response.record
 
+        solution = []
+        for row in record.sample:
+            soln_dict = {}
+            for var, assignment in zip(response.variables, row):
+                soln_dict[var] = assignment
+            solution.append(soln_dict)
 
-# arn = "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6"
-# #arn = "arn:aws:braket:::device/qpu/d-wave/Advantage_system1"
-# my_bucket = f"amazon-braket-qbraid-jobs" # the name of the bucket
-# my_prefix = "tomeshteague-40gmail-2ecom" # the name of the folder in the bucket
-# s3_folder = (my_bucket, my_prefix)
+        return_data = [
+            (s, e, n) for s, e, n in zip(solution, record.energy, record.num_occurrences)
+        ]
 
-# shots = 10
+        result = np.rec.array(
+            return_data, dtype=[("solution", "O"), ("energy", "<f8"), ("num_occurrences", "<i8")]
+        )
+        dwave = True
 
-# sampler = dwave.system.EmbeddingComposite(
-#             braket.ocean_plugin.BraketDWaveSampler(s3_folder, arn)
-#         )
+    else:
+        result = qubovert.sim.anneal_qubo(
+            qubo.Q, num_anneals=4, anneal_duration=int(1e6))
+        dwave = False
 
-# # response = sampler.sample_qubo(qubo.Q, num_reads=shots)
-# # record = response.record
-
-# solution = []
-# for row in record.sample:
-#     soln_dict = {}
-#     for var, assignment in zip(response.variables, row):
-#         soln_dict[var] = assignment
-#     solution.append(soln_dict)
-
-# return_data = [
-#     (s, e, n) for s, e, n in zip(solution, record.energy, record.num_occurrences)
-# ]
-
-# return_recarray = np.rec.array(
-#     return_data, dtype=[("solution", "O"), ("energy", "<f8"), ("num_occurrences", "<i8")]
-# )
-
-# #print(return_recarray)
-
-
-# for i, res in enumerate(return_recarray):
-#     print('Anneal', i+1)
-#     state.print_routes(res['solution'])
-#     print('\tQUBO cost:', res['energy'])
-#     print()
-
-
-# state.parse_results(return_recarray, dwave=True)
+    path, cost = s.parse_results(result, dwave=dwave)
