@@ -4,6 +4,14 @@ https://nyuad.nyu.edu/en/events/2022/march/nyuad-hackathon-event.html
 
 March 30 - April 1, 2022
 
+## Team 22
+
+Our solution applies uses quantum annealing to solve Traveling Salesperson Problems to efficiently route mobile healthcare vehicles. We utilize both classical and quantum solvers for this task. Our quantum solutions are obtained by submitting QUBO problems to the DWave quantum annealers via Amazon Braket.
+
+
+### Installation
+`pip install -r requirements.txt`
+
 ## Technical challenge
 
 *Create a program that applies one or more quantum algorithms to a social good problem of your choice.*
