@@ -142,18 +142,18 @@ class DistributedEnergyOptimizer:
 
         # cost function
         # ==========================================================================
-        # A_i (1-v_i) done
+        # sum_i A_i (1-v_i) done
         for i in range(n):
             linear_terms[vindx(i)] = -A[i]
             offset += A[i]
 
-        # B_i p_i done
+        # sum_i B_i p_i done
         for i in range(n):
             for k in range(0, N + 1):
                 val = B[i] * (p_min[i] + k * h[i])
                 linear_terms[zindx(i, k)] = val
 
-        # C_i p_i^2 done
+        # sum_i C_i p_i^2 done
         for i in range(n):
             for k in range(0, N + 1):
                 for m in range(k, N + 1):
