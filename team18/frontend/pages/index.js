@@ -37,9 +37,6 @@ let RightWrapper = styled('div')`
 `;
 
 let EditorWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center; 
   border-bottom: 1px solid var(--vapor-accent-8);
 `;
 
@@ -89,12 +86,14 @@ export default function Home() {
 
   let [showLogo, setShowLogo] = useState(true);
 
+  let [introduceError, setIntroduceError] = useState(false);
+
   let onEditorChange = (newCode) => {
     setCode(newCode);
   }
 
   let onClickCompile = async () => {
-    let payload = { code }
+    let payload = { code, introduceError }
 
     axios.post(`http://127.0.0.1:5000/`, payload).then(res => {
       setEquivalent(res.data.equivalent);
@@ -113,6 +112,8 @@ export default function Home() {
             value={code}
             onChange={onEditorChange}
           />
+          <label for="errorBox" style={{ color: 'white' }}>Introduce Error</label>
+          <input name="errorBox" type="checkbox" value={introduceError} onChange={() => setIntroduceError(!introduceError)} />
         </EditorWrapper>
 
         <Button onClick={onClickCompile}>

@@ -13,10 +13,6 @@ let Wrapper = styled('div')`
     width: 50vw!important;
     min-height: 66.667vh!important;
   }
-
-  .ace_layer {
-    height: 66.667vh!important;
-  }
 `;
 
 export let Editor = ({ onChange, value }) => {
