@@ -216,3 +216,4 @@ def wrapper(edge_list, quantum=False):
         dwave = False
 
     path, cost = s.parse_results(result, dwave=dwave)
+    return path, cost
