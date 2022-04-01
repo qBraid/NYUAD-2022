@@ -1,0 +1,7 @@
+opencv-python
+jupyter
+qiskit
+pillow
+matplotlib
+numpy
+qiskit
