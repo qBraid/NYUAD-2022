@@ -4,7 +4,7 @@
 ### Team
 
  - Lukas Burgholzer (Mentor), Johannes Kepler University Linz, Austria
- - Abdelkhalik Aljuneidi (Mentor), TODO!!!
+ - Abdelkhalik Aljuneidi (Mentor), Takalam L.T.D., Palestine
  - Geon Tack Lee (Hacker), New York University Abu Dhabi, UAE
  - Karim Wen Rahme (Hacker), New York University Abu Dhabi, UAE
  - Gayatri Tyagi (Hacker), New York University Tandon, UAE
@@ -61,7 +61,7 @@ To this end, we
  - Implemented a flow for using the generated profile to automatically verify the compilation of a circuit (see `backend/app/compile_and_verify`)
  - Designed a web application for easily using the developed methods, see the screenshot below
 
-TODO !!!
+![demo](images/demo.png)
 
 ## Technologies used
  - IBM Qiskit: Quantum SDK
