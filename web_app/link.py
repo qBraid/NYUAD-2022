@@ -18,11 +18,7 @@ def hello_world():
 	else:
 		user = request.args.get('nm')
 		return redirect(url_for('success',name = user))
-
-@app.route('/success')
-def sucess():
-	return 'hello'
-   
+ 
 
 # main driver function
 if __name__ == '__main__':
