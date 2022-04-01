@@ -1,6 +1,11 @@
 # qudra
 *Quantum Energy Management*
 
+[![License](https://img.shields.io/github/license/Q-Energy-2022/qudra.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![](https://img.shields.io/github/release/Q-Energy-2022/qudra.svg?style=popout-square)](https://github.com/Q-Energy-2022/qudra/releases)
+[![](https://img.shields.io/pypi/dm/qudra.svg?style=popout-square)](https://pypi.org/project/qudra/)
+
+
 ## Motivation
 
 Leveraging quantum advantage to distributed grids for energy security and sustainability.

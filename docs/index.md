@@ -1,6 +1,22 @@
 # qudra
 *Quantum Energy Management*
+
+[![License](https://img.shields.io/github/license/Q-Energy-2022/qudra.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![](https://img.shields.io/github/release/Q-Energy-2022/qudra.svg?style=popout-square)](https://github.com/Q-Energy-2022/qudra/releases)
+[![](https://img.shields.io/pypi/dm/qudra.svg?style=popout-square)](https://pypi.org/project/qudra/)
+
+
+## Motivation
+
+Leveraging quantum advantage to distributed grids for energy security and sustainability.
+
+*Please check out these slides for more [information](https://www.canva.com/design/DAE8pdmu5A0/F-bEPUubsNa9QMclkktCsg/view).*
 ## Installation
+
+Our team's contribution is supposed to go into the `qudra` folder. So move there
+```console
+cd NYUAD-2022/qudra
+```
 
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `qudra` into your conda environment.*
 
@@ -39,6 +55,9 @@ git clone https://github.com/Q-Energy-2022/NYUAD-2022.git
 cd qudra
 pip install -e .[dev]
 ```
+
+python3 -m venv venv
+. venv/bin/activate
 Please use `pip install -e '.[dev]'` if you are a `zsh` user.
 
 #### Building documentation locally
