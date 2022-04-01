@@ -11,17 +11,34 @@ from qiskit.utils import QuantumInstance, algorithm_globals
 import dimod
 
 
-def gen_model_parameters(cost_types: Dict[str, Any]):
-    """
-    TODO: docstrings
+# def gen_transportation_losses():
+#     return "Transportation Loss": [(A1,B1,C1),(A2,B2,C2),(A3,B3,C3)],
 
-    Args:
-        cost_type:
-            key (str): e.g. CO2 emissions
-            val
-    """
+# def gen_model_parameters(cost_types: Dict[str, List[Tuple[float,float,float]]], weights: List[float]):
+#     """
+#     TODO: docstrings
 
-    # for cost_type in cost_types:
+
+#     cost_types = {
+#         "CO2": [(A1,B1,C1),(A2,B2,C2),(A3,B3,C3)],
+#         "Efficiency": [(A1,B1,C1),(A2,B2,C2),(A3,B3,C3)],
+#         "Transportation Loss": [(A1,B1,C1),(A2,B2,C2),(A3,B3,C3)],
+#     }
+#     Args:
+#         cost_type:
+#             key (str): e.g. CO2 emissions
+#             val (list[tuple(float,float,float)]): [(A, B, C),...]
+#     """
+
+#     n = len(list(cost_types.values())[0])
+
+#     A = [0 for _ in range(n)]
+#     B = [0 for _ in range(n)]
+#     C = [0 for _ in range(n)]
+
+#     for cost_type, costs in cost_types.items():
+#         for plant_indx in range(n):
+#             A[plant_indx] +=  weight[costs[plant_indx][0]
 
 
 class DistributedEnergyOptimizer:
@@ -45,6 +62,16 @@ class DistributedEnergyOptimizer:
         self._quadratic_program = None
         self._linear_terms = None
         self._quadratic_terms = None
+        self._offset = None
+
+    @property
+    def offset(self):
+        """
+        Offset
+        """
+        if self._offset is None:
+            self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
+        return self._offset
 
     @property
     def linear_terms(self):
@@ -52,7 +79,7 @@ class DistributedEnergyOptimizer:
         Linear Terms
         """
         if self._linear_terms is None:
-            self._linear_terms, self._quadratic_terms = self.gen_coeff()
+            self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
         return self._linear_terms
 
     @property
@@ -61,7 +88,7 @@ class DistributedEnergyOptimizer:
         Quadratics Terms
         """
         if self._quadratic_terms is None:
-            self._linear_terms, self._quadratic_terms = self.gen_coeff()
+            self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
         return self._quadratic_terms
 
     @property
@@ -101,12 +128,14 @@ class DistributedEnergyOptimizer:
 
         linear_terms: Dict[str, float] = {}
         quadratic_terms: Dict[Tuple[str, str], float] = {}
+        offset = 0.0
 
         # cost function
         # ==========================================================================
         # A_i (1-v_i)
         for i in range(n):
             linear_terms[vindx(i)] = -A[i]
+        offset += alpha
 
         # B_i p_i
         for i in range(n):
@@ -143,6 +172,7 @@ class DistributedEnergyOptimizer:
 
                     label3 = (zindx(i, k), zindx(i, m))
                     quadratic_terms[label3] += 4 * alpha
+        offset += alpha
 
         # sum_i p_i = L
         for i in range(n):
@@ -159,8 +189,9 @@ class DistributedEnergyOptimizer:
                         quadratic_terms[label4] = quadratic_terms.get(
                             label4, 0
                         ) + 4 * beta * (p_min[i] + k * h[i]) * (p_min[j] + m * h[j])
+        offset += beta * L**2
 
-        return linear_terms, quadratic_terms
+        return linear_terms, quadratic_terms, offset
 
     # IBM
     # ==============================================================================
@@ -178,7 +209,11 @@ class DistributedEnergyOptimizer:
                 key_format="z" + str(i) + "{}", keys=list(range(N + 1))
             )
 
-        qubo.minimize(linear=self.linear_terms, quadratic=self.quadratic_terms)
+        qubo.minimize(
+            linear=self.linear_terms,
+            quadratic=self.quadratic_terms,
+            constant=self.offset,
+        )
         return qubo
 
     def _run_gate_based_opt(self, quantum_instance=None, label="qaoa", opt_type="qaoa"):
@@ -287,6 +322,9 @@ class DistributedEnergyOptimizer:
     # D-WAVE
     # ==============================================================================
     def run_qubo(self, label="qubo"):
+        """
+        TODO: qubo
+        """
         num_shots = 100
         offset = 0
         vartype = dimod.SPIN
