@@ -2,7 +2,7 @@
 
 Our solution uses quantum annealing to solve Traveling Salesperson Problems to efficiently route mobile healthcare vehicles. We utilize both classical and quantum solvers for this task. Our quantum solutions are obtained by submitting QUBO problems to the DWave quantum annealers via Amazon Braket.
 
-<a href = "https://docs.google.com/presentation/d/1L9Y3wtI9nylk6LiEo7R4pY5yb72abnx3/edit#slide=id.p1">Presentation</a>
+<a href = "https://docs.google.com/presentation/d/1xttMPEMyEMe38c13a5HV48R3ZdQXod-m/edit">Presentation</a>
 
 ## Team Members
 ![Team Photo](./../photo/team22.JPG)
@@ -54,6 +54,8 @@ Go to NYUAD-2022/team22 folder
 
 Install nodejs
 
+<a href= "https://nodejs.org/en/download/">NodeJS</a>
+
 Install all the requirements with
 
 `npm install`
@@ -62,7 +64,7 @@ Run it on your machine
 
 `npm start`
 
-After starting the website on a localhost server, you can find a website where you can interactively call for mediQal request, and a new node in your location will be created and the path will be adapted in real time with quantum annealing.
+After starting the website on a localhost server, you can find a website where you can interactively call for a mediQal request. A new node in your location will be created, and the path will be adapted in real time using quantum annealing.
 
 
 ## Explanation of Quantum Algorithm
@@ -98,14 +100,12 @@ We utilized the following APIs:
 - [Leaflet](https://leafletjs.com)
 - [Auth0](https://auth0.com)
 
-[1] Sheldon, A., 2022. Scoping ambulance emissions: recommendations for reducing engine idling time. [online] Journal Of Paramedic Practice. 
-
-Available at: https://www.paramedicpractice.com/features/article/scoping-ambulance-emissions-recommendations-for-reducing-engine-idling-time#:~:text=An%20average%20of%2031.3%20kg,emissions%20and%20public%20health%20emerge [Accessed 1 April 2022].
-
-[2] Who.int. n.d. GHE: Life expectancy and healthy life expectancy. [online] Available at: https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-life-expectancy-and-healthy-life-expectancy [Accessed 1 April 2022].
-
-[3] Kumar, S. and Panneerselvam, R., 2012. A Survey on the Vehicle Routing Problem and Its Variants. Intelligent Information Management, 04(03), pp.66-74.
-
 ---
 
+## References
 
+[1] Sheldon, A., 2022. Scoping ambulance emissions: recommendations for reducing engine idling time. <a href="https://www.paramedicpractice.com/features/article/scoping-ambulance-emissions-recommendations-for-reducing-engine-idling-time#:~:text=An%20average%20of%2031.3%20kg,emissions%20and%20public%20health%20emerge"> [online]</a> Journal Of Paramedic Practice. [Accessed 1 April 2022].
+
+[2] Who.int. n.d. GHE: Life expectancy and healthy life expectancy. <a href="https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-life-expectancy-and-healthy-life-expectancy"> [online]</a> [Accessed 1 April 2022].
+
+[3] Kumar, S. and Panneerselvam, R., 2012. A Survey on the Vehicle Routing Problem and Its Variants. Intelligent Information Management, 04(03), pp.66-74.
