@@ -217,3 +217,43 @@ def wrapper(edge_list, quantum=False):
 
     path, cost = s.parse_results(result, dwave=dwave)
     return path, cost
+
+
+def get_cost(temporary_route, current_position, cost):
+    #Input:
+        #a temporary_route list, current_positions list of vehicles, cost matrix
+    #output 
+        #the cost (int)
+    if(len(temporary_route) == 1):
+        return 0
+    k = current_position 
+    path_cost = 0
+    
+    for i in temporary_route:
+        path_cost += cost[k][i]
+        k = i
+    
+    return path_cost
+
+def get_the_partitioned_path(solution, cost, current_position_list, num_vehicle = 2):
+    #Input:
+        #a solution path list, current_positions list of vehicles, num_vehicles
+    #output 
+        #the path each vehicle should take [[vehicle 0 path],[vehicle 1 path]...[vehicle (num_vehicles-1) path]] 
+    final_route = [[current_position_list[i]] for i in range(num_vehicle)]#starting with the current position
+
+    for i in solution[0][1:]:#adding the last index to use the vehicle_locations list
+        candidate = -1
+        the_cost = 1e5 #not efficient but it works
+        
+        for k in range(num_vehicle):
+            print(f'Path {final_route[k][-1]} to {i} cost is: {get_cost(final_route[k],current_position_list[k], cost)}')
+            if(the_cost>get_cost(final_route[k]+[i], current_position_list[k], cost)):
+                candidate = k
+                the_cost = get_cost(final_route[k]+[i],current_position_list[k], cost)
+            #update the candidate's route
+        print(f'chosen vehicle {candidate}')
+        final_route[candidate].append(i)  
+        
+    return final_route
+
