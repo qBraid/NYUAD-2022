@@ -523,4 +523,4 @@ async function fetchBuses(urlVehicles){
 
 function refreshPage(){
     window.location.reload();
-} 
+}

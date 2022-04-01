@@ -1,7 +1,8 @@
 # MediQal (Team22)
 
-Our solution applies uses quantum annealing to solve Traveling Salesperson Problems to efficiently route mobile healthcare vehicles. We utilize both classical and quantum solvers for this task. Our quantum solutions are obtained by submitting QUBO problems to the DWave quantum annealers via Amazon Braket.
+Our solution uses quantum annealing to solve Traveling Salesperson Problems to efficiently route mobile healthcare vehicles. We utilize both classical and quantum solvers for this task. Our quantum solutions are obtained by submitting QUBO problems to the DWave quantum annealers via Amazon Braket.
 
+<a href = "https://docs.google.com/presentation/d/1L9Y3wtI9nylk6LiEo7R4pY5yb72abnx3/edit#slide=id.p1">Presentation</a>
 
 ## Team Members
 ![Team Photo](./../photo/team22.JPG)
@@ -35,7 +36,9 @@ Yaphet Elias Weldegebriel, Khalifa University, UAE
 
 Ziad Mohamed Hassan, New York University Abu Dhabi, UAE
 
+## Problem Description
 
+Mobile medical services (e.g. ambulances, medical supply delivery, lab tests) contribute significantly to greenhouse gases and environmental pollution. For example, it is estimated that an average of 31.3kg of carbon dioxide (CO2) is produced per ambulance [1]. The rapid advancement in medical technologies have led to an increase in life expectancy of more than 6 years between 2000 and 2019 [2] resulting in an increase of ageing societies. Thus, it is expected that more people will require mobile medical services in the future. From an algorithmic point of view, the problem of optimal vehicle routing is NP-hard (it is a similar problem to the well-known Vehicle Routing Problem)[3], which means that most likely it would be impossible to find the optimal routing solution for large fleets of emergency vehicles using classical approaches. There is hope that quantum computing will give an advantage in this area especially for large scale problems (i.e. hundreds of vehicles and thousands of patients). We have concluded that optimising routing of medical vehicles is an important social and environmental challenge where the usage of quantum computing is justified, and decided to focus on this topic during the hackathon.
 
 # Getting Started
 
@@ -90,3 +93,16 @@ We utilized the following APIs:
 - [OpenStreetMap](https://www.openstreetmap.org/copyright): OpenStreetMap® is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF).
 - [Leaflet](https://leafletjs.com)
 - [Auth0](https://auth0.com)
+
+----
+
+
+[1] Sheldon, A., 2022. Scoping ambulance emissions: recommendations for reducing engine idling time. [online] Journal Of Paramedic Practice. 
+
+Available at: https://www.paramedicpractice.com/features/article/scoping-ambulance-emissions-recommendations-for-reducing-engine-idling-time#:~:text=An%20average%20of%2031.3%20kg,emissions%20and%20public%20health%20emerge [Accessed 1 April 2022].
+
+[2] Who.int. n.d. GHE: Life expectancy and healthy life expectancy. [online] Available at: https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-life-expectancy-and-healthy-life-expectancy [Accessed 1 April 2022].
+
+[3] Kumar, S. and Panneerselvam, R., 2012. A Survey on the Vehicle Routing Problem and Its Variants. Intelligent Information Management, 04(03), pp.66-74.
+
+
