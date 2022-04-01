@@ -6,7 +6,7 @@ https://nyuad.nyu.edu/en/events/2022/march/nyuad-hackathon-event.html
 
 March 30 - April 1, 2022
 
-# SeQure
+# MedQure
 
 With the recent surging concern over privacy, the use of secure algorithms that
 assure the safety of user data has become more crucial than ever. The _SeQure_
