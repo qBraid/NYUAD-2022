@@ -94,9 +94,6 @@ We utilized the following APIs:
 - [Leaflet](https://leafletjs.com)
 - [Auth0](https://auth0.com)
 
-----
-
-
 [1] Sheldon, A., 2022. Scoping ambulance emissions: recommendations for reducing engine idling time. [online] Journal Of Paramedic Practice. 
 
 Available at: https://www.paramedicpractice.com/features/article/scoping-ambulance-emissions-recommendations-for-reducing-engine-idling-time#:~:text=An%20average%20of%2031.3%20kg,emissions%20and%20public%20health%20emerge [Accessed 1 April 2022].
@@ -104,5 +101,7 @@ Available at: https://www.paramedicpractice.com/features/article/scoping-ambulan
 [2] Who.int. n.d. GHE: Life expectancy and healthy life expectancy. [online] Available at: https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-life-expectancy-and-healthy-life-expectancy [Accessed 1 April 2022].
 
 [3] Kumar, S. and Panneerselvam, R., 2012. A Survey on the Vehicle Routing Problem and Its Variants. Intelligent Information Management, 04(03), pp.66-74.
+
+---
 
 
