@@ -59,5 +59,25 @@ Run it on your machine
 
 `npm start`
 
+After starting the website on a localhost server, you can find a website where you can interactively call for mediQal request, and a new node in your location will be created and the path will be adapted in real time with quantum annealing.
 
 
+## Explanation of Quantum Algorithm
+
+The code for constructing the problem QUBO and finding a solution via classical or quantum annealing is contained in `vrp_qubo.py`. All that is needed as input is an `edge_list` which is passed into the `wrapper()` function.
+
+As an example, a simple input graph may be represented by the edge list:
+
+```python
+edge_list = [(0,1,{'weight':4.7}), (1,2,{'weight':10.9}), ...]
+```
+
+Calling this function will 
+1. Construct the problem QUBO
+2. Find a solution via classical or quantum annealing
+3. Return the shortest found path and the cost of traversing that path
+
+```python
+[2,1,5,2,...], 32
+```
+are the order of coordinates and the total cost of the path, which will be the output of the `wrapper()` function.
