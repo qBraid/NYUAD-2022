@@ -1,6 +1,7 @@
 // The Auth0 client, initialized in configureClient()
 let auth0 = null;
 
+
 /**
  * Starts the authentication flow
  */
@@ -22,9 +23,6 @@ const login = async (targetUrl) => {
   }
 };
 
-/**
- * Executes the logout flow
- */
 const logout = () => {
   try {
     console.log("Logging out");
@@ -36,14 +34,8 @@ const logout = () => {
   }
 };
 
-/**
- * Retrieves the auth configuration from the server
- */
 const fetchAuthConfig = () => fetch("/auth_config.json");
 
-/**
- * Initializes the Auth0 client
- */
 const configureClient = async () => {
   const response = await fetchAuthConfig();
   const config = await response.json();
@@ -55,11 +47,6 @@ const configureClient = async () => {
   });
 };
 
-/**
- * Checks to see if the user is authenticated. If so, `fn` is executed. Otherwise, the user
- * is prompted to log in
- * @param {*} fn The function to execute if the user is logged in
- */
 const requireAuth = async (fn, targetUrl) => {
   const isAuthenticated = await auth0.isAuthenticated();
 
@@ -70,9 +57,6 @@ const requireAuth = async (fn, targetUrl) => {
   return login(targetUrl);
 };
 
-/**
- * Calls the API endpoint with an authorization token
- */
 const callApi = async () => {
   try {
     const token = await auth0.getTokenSilently();
@@ -100,7 +84,7 @@ const callApi = async () => {
   }
 };
 
-// Will run when page finishes loading
+
 window.onload = async () => {
   await configureClient();
 
@@ -199,12 +183,6 @@ class Coordinate {
   }
 }
 
-var coordinates = [];
-var markers = [];
-var buses = [[24.474, 54.368]];
-
-
-
 // async function getLocation() {
 //     navigator.geolocation.getCurrentPosition(position => {
 //     const { latitude, longitude } = position.coords;
@@ -250,13 +228,13 @@ var buses = [[24.474, 54.368]];
 
 
 
-// var coords1 = [24.7, 24.9]
-// var coords2 = [24.46, 54.37]
-// var coords3 = [24.45, 54.39]
+var coords1 = [24.7, 24.9]
+var coords2 = [24.46, 54.37]
+var coords3 = [24.45, 54.39]
 
-// var marker1 = L.marker(coords1).addTo(map);
-// var marker2 = L.marker(coords2).addTo(map);
-// var marker2 = L.marker(coords3).addTo(map);
+var marker1 = L.marker(coords1).addTo(map);
+var marker2 = L.marker(coords2).addTo(map);
+var marker2 = L.marker(coords3).addTo(map);
 
 
 
@@ -286,6 +264,8 @@ var buses = [[24.474, 54.368]];
 
 // organise our code here
 
+// FIXME: fetch this from backend
+let buses = [24.47, 54.36]
 
 
 // fetch marker coords from backend
@@ -368,7 +348,7 @@ function drawEverything(coordinates) {
   drawBuses(buses)
 }
 
-drawEverything(coordinates)
+// drawEverything(coordinates)
 
 function distanceMatrix(coordinates) {
   var matrix = []
@@ -434,5 +414,84 @@ function validateForm() {
 requestBtn.onclick = validateForm
 
 
+function getPositionWrapped(options) {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+  );
+}
 
+const getPosition = async () => {
+  const location = await getPositionWrapped({});
+  return [location.coords.latitude, location.coords.longitude]
+}
 
+// insert new node in the graph
+const insertSelfNode = async (graph) => {
+  const token = await auth0.getTokenSilently();
+  const location = await getPosition()
+
+  const markersRaw = await fetch("http://localhost:3000/api/markers")
+  const markersRes = await markersRaw.json()
+  const markers = markersRes.markers;
+
+  const newNodeNumber = markers.length;
+
+  for (let i = 0; i < newNodeNumber; i++) {
+    let distance = calculateDistance(markers[i], location);
+    graph.push([i, newNodeNumber, { weight: distance }]);
+  }
+  // update graph on backend
+  await fetch("/api/graph", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      graph
+    })
+  });
+
+  markers.push(location)
+  // update markers on backend
+  await fetch("/api/markers", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      markers
+    })
+  });
+}
+
+function calculateDistance(pos1, pos2) {
+  var wayPoint1 = L.latLng(pos1[0], pos1[1]);
+  var wayPoint2 = L.latLng(pos2[0], pos2[1]);
+  rWP1 = new L.Routing.Waypoint;
+  rWP1.latLng = wayPoint1;
+  rWP2 = new L.Routing.Waypoint;
+  rWP2.latLng = wayPoint2;
+
+  var myRoute = L.Routing.osrmv1();
+  myRoute.route([rWP1, rWP2], function (err, routes) {
+    distance = routes[0].summary.totalDistance;
+    console.log(distance)
+  });
+}
+
+function drawMarkers(markers) {
+  console.log("drawing markers")
+  for (let i = 0; i < markers.length; i++) {
+    L.marker(markers[i]).addTo(map);
+  }
+}
+
+// (async () => {
+//   console.log(calculateDistance([21.41, 52.04], [21.11, 52.4]));
+//   drawMarkers([21.41, 52.04], [21.11, 52.4])
+//   L.marker([21.41, 52.04]).addTo(map);
+// })();
+
+console.log(calculateDistance([21.41, 52.04], [21.11, 52.4]));
+drawMarkers([21.41, 52.04], [21.11, 52.4])
+L.marker([21.41, 52.04]).addTo(map);
