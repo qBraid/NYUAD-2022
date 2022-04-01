@@ -31,24 +31,16 @@ cv2.imshow(window,gray)
 
 (T, thresh) = cv2.threshold(gray, 155, 255, cv2.THRESH_BINARY)
 cv2.imshow(window,thresh)
-
-(T, threshInv) = cv2.threshold(gray, 155, 255,cv2.THRESH_BINARY_INV)
-cv2.imshow(window,threshInv)
-
+cv2.waitKey(2000)
+# (T, threshInv) = cv2.threshold(gray, 155, 255,cv2.THRESH_BINARY_INV)
+# cv2.imshow(window,threshInv)
+# cv2.waitKey(2000)
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 5))
 closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
 cv2.imshow(window,closed)
-
+cv2.waitKey(2000)
 
 closed = cv2.erode(closed, None, iterations = 14)
 closed = cv2.dilate(closed, None, iterations = 13)
-lower = 100 # Lower Threshold
-upper = 350 # Upper threshold
-aperture_size = 5 # Aperture size
-L2Gradient = True # Boolean
-edged = cv2.Canny(image, lower, upper,L2gradient=L2Gradient)
-cv2.imshow(window,edged)
-cv2.waitKey(5000)
-image=cv2.resize(edged, (8,8))
-cv2.imshow(window,image)
-cv2.waitKey(5000)
+cv2.imshow(window,closed)
+cv2.waitKey(2000)
