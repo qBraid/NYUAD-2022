@@ -7,6 +7,14 @@ from setuptools import setup, find_namespace_packages
 
 REQUIREMENTS = [
     "qiskit",
+    "qiskit-optimization",
+    "dimod",
+    "matplotlib",
+    "seaborn",
+    "dwave-ocean-sdk",
+    "amazon-braket-default-simulator",
+    "amazon-braket-sdk",
+    "amazon-braket-ocean-plugin",
 ]
 
 EXTRA_REQUIREMENTS = {
