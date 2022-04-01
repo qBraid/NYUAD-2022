@@ -4,8 +4,6 @@ import axios from 'axios';
 
 import dynamic from 'next/dynamic'
 
-import { Images } from './images.js'
-
 const DynamicComponentWithNoSSR = dynamic(() =>
   import('../components/editor').then(mod => mod.Editor),
   { ssr: false }
@@ -21,6 +19,7 @@ let Wrapper = styled('div')`
 `;
 
 let ImageComponent = styled('img')`
+  width: 50vw;
 `;
 
 let LeftWrapper = styled('div')`
@@ -60,6 +59,9 @@ let Button = styled('div')`
 let DigitalLogicCircuitWrapper = styled('div')`
   background: var(--vapor-background);
   border-bottom: 1px solid var(--vapor-accent-8);
+  display: flex;
+  justify-content: center;
+  align-items: center; 
 `;
 
 let VerificationWrapper = styled('div')`
@@ -69,10 +71,19 @@ let VerificationWrapper = styled('div')`
 
 let BasisGateCircuitWrapper = styled('div')`
   background: var(--vapor-background);
+  display: flex;
+  justify-content: center;
+  align-items: center; 
 `;
 
 export default function Home() {
   let [code, setCode] = useState("");
+
+  let [equivalent, setEquivalent] = useState(false);
+  let [digitalLogicCircuitUrl, setDigitalLogicCircuitUrl] = useState("");
+  let [basisGateCircuitUrl, setBasisGateCircuitUrl] = useState("");
+
+  let [showLogo, setShowLogo] = useState(true);
 
   let onEditorChange = (newCode) => {
     setCode(newCode);
@@ -85,7 +96,7 @@ export default function Home() {
       console.log(res);
 
       // here stuff has to happen
-    });
+    }).catch(err => console.log(err));
   }
 
   return (
@@ -108,7 +119,14 @@ export default function Home() {
           <ImageComponent src={"/placeHolder.png"} />
         </DigitalLogicCircuitWrapper>
 
-        <VerificationWrapper></VerificationWrapper>
+        <VerificationWrapper>
+          {showLogo ? (
+            <ImageComponent src={"/logo.png"} />
+          ) : (
+            <ImageComponent src={equivalent ? "/checkmark.png" : "x.png"} />
+          )}
+
+        </VerificationWrapper>
 
         <BasisGateCircuitWrapper>
           <ImageComponent src={"/placeHolder.png"} />
