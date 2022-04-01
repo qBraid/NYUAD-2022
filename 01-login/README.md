@@ -86,6 +86,10 @@ are the order of coordinates and the total cost of the path, which will be the o
 Our QUBO formulation of the problem was adapted from:
 > Borowski, M. et al. (2020). [New Hybrid Quantum Annealing Algorithms for Solving Vehicle Routing Problem](https://link.springer.com/chapter/10.1007/978-3-030-50433-5_42#citeas). In: Computational Science – ICCS 2020. ICCS 2020. Lecture Notes in Computer Science, vol 12142. Springer, Cham. https://doi.org/10.1007/978-3-030-50433-5_42
 
+Access to the DWave quantum annealers was made possible by:
+- [Amazon Braket](https://aws.amazon.com/braket/quantum-computers/dwave/)
+- [qBraid](https://account.qbraid.com)
+
 We utilized the following APIs:
 - [OpenStreetMap](https://www.openstreetmap.org/copyright): OpenStreetMap® is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF).
 - [Leaflet](https://leafletjs.com)
