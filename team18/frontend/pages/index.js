@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import dynamic from 'next/dynamic'
 
-import {Images} from './images.js'
+import { Images } from './images.js'
 
 const DynamicComponentWithNoSSR = dynamic(() =>
   import('../components/editor').then(mod => mod.Editor),
@@ -18,6 +18,9 @@ let Wrapper = styled('div')`
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
   }
+`;
+
+let ImageComponent = styled('img')`
 `;
 
 let LeftWrapper = styled('div')`
@@ -101,11 +104,15 @@ export default function Home() {
       </LeftWrapper>
 
       <RightWrapper>
-        <DigitalLogicCircuitWrapper></DigitalLogicCircuitWrapper>
+        <DigitalLogicCircuitWrapper>
+          <ImageComponent src={"/placeHolder.png"} />
+        </DigitalLogicCircuitWrapper>
 
         <VerificationWrapper></VerificationWrapper>
 
-        <BasisGateCircuitWrapper></BasisGateCircuitWrapper>
+        <BasisGateCircuitWrapper>
+          <ImageComponent src={"/placeHolder.png"} />
+        </BasisGateCircuitWrapper>
       </RightWrapper>
     </Wrapper>
   )
