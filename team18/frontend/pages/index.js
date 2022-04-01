@@ -86,7 +86,7 @@ export default function Home() {
 
   let [showLogo, setShowLogo] = useState(true);
 
-  let [introduceError, setIntroduceError] = useState(false);
+  let [introduceError, setIntroduceError] = useState(true);
 
   let onEditorChange = (newCode) => {
     setCode(newCode);
@@ -112,8 +112,8 @@ export default function Home() {
             value={code}
             onChange={onEditorChange}
           />
-          <label for="errorBox" style={{ color: 'white' }}>Introduce Error</label>
-          <input name="errorBox" type="checkbox" value={introduceError} onChange={() => setIntroduceError(!introduceError)} />
+          <label form="errorBox" style={{ color: 'white' }}>Error in the compilation flow </label>
+          <input name="errorBox" type="checkbox" value={introduceError} defaultChecked={true} onChange={() => setIntroduceError(!introduceError)} />
         </EditorWrapper>
 
         <Button onClick={onClickCompile}>
