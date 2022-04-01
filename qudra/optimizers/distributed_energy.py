@@ -8,6 +8,8 @@ from qiskit import Aer
 from qiskit.algorithms import QAOA, VQE, NumPyMinimumEigensolver
 from qiskit_optimization.algorithms import MinimumEigenOptimizer, GroverOptimizer
 from qiskit.utils import QuantumInstance, algorithm_globals
+from braket.ocean_plugin import BraketDWaveSampler
+from dwave.system.composites import EmbeddingComposite
 import dimod
 
 
@@ -74,10 +76,9 @@ class DistributedEnergyOptimizer:
         """
         Offset
         """
-        return 0
-        # if self._offset is None:
-        #     self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
-        # return self._offset
+        if self._offset is None:
+            self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
+        return self._offset
 
     @property
     def linear_terms(self):
@@ -141,24 +142,24 @@ class DistributedEnergyOptimizer:
 
         # cost function
         # ==========================================================================
-        # A_i (1-v_i)
+        # A_i (1-v_i) done
         for i in range(n):
             linear_terms[vindx(i)] = -A[i]
-        offset += alpha
+            offset += A[i]
 
-        # B_i p_i
+        # B_i p_i done
         for i in range(n):
             for k in range(0, N + 1):
-                linear_terms[zindx(i, k)] = B[i] * (p_min[i] + k * h[i])
+                val = B[i] * (p_min[i] + k * h[i])
+                linear_terms[zindx(i, k)] = val
 
-        # C_i p_i^2
+        # C_i p_i^2 done
         for i in range(n):
             for k in range(0, N + 1):
                 for m in range(k, N + 1):
                     if m == k:
                         linear_terms[zindx(i, k)] = (
                             linear_terms.get(zindx(i, k), 0)
-                            + linear_terms.get(zindx(i, k), 0)
                             + C[i] * (p_min[i] + k * h[i]) ** 2
                         )
                         continue
@@ -167,7 +168,7 @@ class DistributedEnergyOptimizer:
                         i
                     ] * (p_min[i] + k * h[i]) * (p_min[i] + m * h[i])
 
-        # v_i + sum_k z_ik = 1
+        # alpha sum_i (v_i + sum_k z_ik - 1)^2
         for i in range(n):
             linear_terms[vindx(i)] = linear_terms.get(vindx(i), 0) - alpha
             for k in range(0, N + 1):
@@ -176,28 +177,30 @@ class DistributedEnergyOptimizer:
                 quadratic_terms[label2] = quadratic_terms.get(label2, 0) + 2 * alpha
                 for m in range(k, N + 1):
                     if m == k:
-                        linear_terms[zindx(i, k)] = 2 * alpha
+                        linear_terms[zindx(i, k)] += alpha
                         continue
 
                     label3 = (zindx(i, k), zindx(i, m))
-                    quadratic_terms[label3] += 4 * alpha
-        offset += alpha
+                    quadratic_terms[label3] += 2 * alpha
+            offset += alpha
 
-        # sum_i p_i = L
+        # sum_i p_i = L done
         for i in range(n):
             for k in range(0, N + 1):
                 linear_terms[zindx(i, k)] += -2 * beta * L * (p_min[i] + k * h[i])
                 for j in range(i, n):
                     for m in range(k, N + 1):
                         if i == j and m == k:
-                            linear_terms[zindx(i, k)] = (
+                            linear_terms[zindx(i, k)] += (
                                 beta * (p_min[i] + k * h[i]) ** 2
                             )
                             continue
                         label4 = (zindx(i, k), zindx(j, m))
+
                         quadratic_terms[label4] = quadratic_terms.get(
                             label4, 0
-                        ) + 4 * beta * (p_min[i] + k * h[i]) * (p_min[j] + m * h[j])
+                        ) + 2 * beta * (p_min[i] + k * h[i]) * (p_min[j] + m * h[j])
+
         offset += beta * L**2
 
         return linear_terms, quadratic_terms, offset
@@ -330,7 +333,7 @@ class DistributedEnergyOptimizer:
 
     # D-WAVE
     # ==============================================================================
-    def run_qubo(self, label="qubo", num_shots=100):
+    def run_qubo_sim(self, label="qubo_sim", num_shots=100):
         """
         TODO: qubo
         """
@@ -349,26 +352,52 @@ class DistributedEnergyOptimizer:
         }
         return self.results[label]
 
+    def run_qubo_qpu(self, label="qubo_qpu", num_shots=100, device_name="DW_2000Q_6"):
+        """
+        TODO: qubo
+        """
+
+        device = "arn:aws:braket:::device/qpu/d-wave/" + device_name
+        vartype = dimod.SPIN
+
+        # define BQM
+        model = dimod.BinaryQuadraticModel(
+            self.linear_terms, self.quadratic_terms, self.offset, vartype
+        )
+
+        s3_folder = ("amazon-braket-qbraid-jobs", "5f2001ee89-40iitp-2eac-2ein")
+
+        # run BQM: solve with the D-Wave device
+        sampler = BraketDWaveSampler(s3_folder, device_arn=device)
+        sampler = EmbeddingComposite(sampler)
+        response = sampler.sample(model, num_read=num_shots)
+
+        # print results
+        self.results[label] = {
+            "results": response,
+        }
+        return self.results[label]
+
     # Visualizations
     # ==============================================================================
     def print_results(self, label="qaoa"):
         """
         Print results
         """
-        if label in ["qaoa", "vqe", "grover"]:
-            qaoa_result = self.results[label]["results"]
-            qaoa_eval_count = self.results[label].get("eval_count", 0)
+        if label in ["qaoa", "vqe", "grover", "classical"]:
+            result = self.results[label]["results"]
+            eval_count = self.results[label].get("eval_count", 0)
 
             print(f"Solution found using the {label} method:\n")
-            print(f"Minimum Cost: {qaoa_result.fval} ul")
+            print(f"Minimum Cost: {result.fval} ul")
             print(f"Optimal State: ")
             for source_contribution, source_name in zip(
-                qaoa_result.x, qaoa_result.variable_names
+                result.x, result.variable_names
             ):
                 print(f"{source_name}:\t{source_contribution}")
 
             print(
-                f"\nThe solution was found within {qaoa_eval_count} evaluations of {label}."
+                f"\nThe solution was found within {eval_count} evaluations of {label}."
             )
         elif label == "qubo":
             results = self.results["qubo"]["results"]

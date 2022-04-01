@@ -9,6 +9,10 @@ REQUIREMENTS = [
     "qiskit",
     "qiskit-optimization",
     "dimod",
+    "dwave-ocean-sdk",
+    "amazon-braket-default-simulator",
+    "amazon-braket-sdk",
+    "amazon-braket-ocean-plugin",
 ]
 
 EXTRA_REQUIREMENTS = {
