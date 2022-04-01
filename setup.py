@@ -9,6 +9,8 @@ REQUIREMENTS = [
     "qiskit",
     "qiskit-optimization",
     "dimod",
+    "amazon-braket-default-simulator",
+    "amazon-braket-sdk",
 ]
 
 EXTRA_REQUIREMENTS = {
