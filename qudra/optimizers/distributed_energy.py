@@ -74,9 +74,10 @@ class DistributedEnergyOptimizer:
         """
         Offset
         """
-        if self._offset is None:
-            self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
-        return self._offset
+        return 0
+        # if self._offset is None:
+        #     self._linear_terms, self._quadratic_terms, self._offset = self.gen_coeff()
+        # return self._offset
 
     @property
     def linear_terms(self):
@@ -101,7 +102,7 @@ class DistributedEnergyOptimizer:
         """
         Quadratic Program
         """
-        if self._quadratic_terms is None:
+        if self._quadratic_program is None:
             self._quadratic_program = self.gen_quadratic_program()
         return self._quadratic_program
 
@@ -329,17 +330,15 @@ class DistributedEnergyOptimizer:
 
     # D-WAVE
     # ==============================================================================
-    def run_qubo(self, label="qubo"):
+    def run_qubo(self, label="qubo", num_shots=100):
         """
         TODO: qubo
         """
-        num_shots = 100
-        offset = 0
         vartype = dimod.SPIN
 
         # run classical simulated annealing
         model = dimod.BinaryQuadraticModel(
-            self.linear_terms, self.quadratic_terms, offset, vartype
+            self.linear_terms, self.quadratic_terms, self.offset, vartype
         )
         sampler = dimod.SimulatedAnnealingSampler()
         response = sampler.sample(model, num_reads=num_shots)
@@ -356,20 +355,24 @@ class DistributedEnergyOptimizer:
         """
         Print results
         """
-        qaoa_result = self.results[label]["results"]
-        qaoa_eval_count = self.results[label].get("eval_count", 0)
+        if label in ["qaoa", "vqe", "grover"]:
+            qaoa_result = self.results[label]["results"]
+            qaoa_eval_count = self.results[label].get("eval_count", 0)
 
-        print(f"Solution found using the {label} method:\n")
-        print(f"Minimum Cost: {qaoa_result.fval} ul")
-        print(f"Optimal State: ")
-        for source_contribution, source_name in zip(
-            qaoa_result.x, qaoa_result.variable_names
-        ):
-            print(f"{source_name}:\t{source_contribution}")
+            print(f"Solution found using the {label} method:\n")
+            print(f"Minimum Cost: {qaoa_result.fval} ul")
+            print(f"Optimal State: ")
+            for source_contribution, source_name in zip(
+                qaoa_result.x, qaoa_result.variable_names
+            ):
+                print(f"{source_name}:\t{source_contribution}")
 
-        print(
-            f"\nThe solution was found within {qaoa_eval_count} evaluations of {label}."
-        )
+            print(
+                f"\nThe solution was found within {qaoa_eval_count} evaluations of {label}."
+            )
+        elif label == "qubo":
+            results = self.results["qubo"]["results"]
+            pass
 
     def plot_histogram(self, label="qaoa"):
         if label == "qaoa":
