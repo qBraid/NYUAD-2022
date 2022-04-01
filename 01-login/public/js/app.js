@@ -516,3 +516,9 @@ async function fetchBuses(urlVehicles){
   let data = await response.json()
   return data
 }
+
+
+
+function refreshPage(){
+    window.location.reload();
+} 
