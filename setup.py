@@ -9,6 +9,8 @@ REQUIREMENTS = [
     "qiskit",
     "qiskit-optimization",
     "dimod",
+    "matplotlib",
+    "seaborn",
     "dwave-ocean-sdk",
     "amazon-braket-default-simulator",
     "amazon-braket-sdk",
