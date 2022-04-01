@@ -8,7 +8,7 @@ const authConfig = require("./auth_config.json");
 const axios = require("axios");
 const app = express();
 
-const quantumServer = "http://ddc0-44-200-14-72.ngrok.io"
+const quantumServer = "http://2e5b-3-81-125-211.ngrok.io"
 
 if (!authConfig.domain || !authConfig.audience) {
   throw "Please make sure that auth_config.json is in place and populated";
@@ -96,17 +96,24 @@ app.get("/auth_config.json", (req, res) => {
   res.sendFile(join(__dirname, "auth_config.json"));
 });
 
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
 });
 
-app.post("/api/path", async (req, res) => {
-  console.log(req.body)
-  const graph = req.body.graph
-  const response = axios.post(quantumServer + "/test", { graph })
+app.get("/map", (req, res) => {
+  res.sendFile(join(__dirname, "index.html"));
+});
+
+app.get("/request", (req, res) => {
+  res.sendFile(join(__dirname, "index.html"));
+});
+
+app.get("/api/path", async (req, res) => {
+  // console.log(req.body)
+  const response = await axios.get(quantumServer + "/test")
+  console.log(response.data)
   res.json(response.data)
 })
-
 
 
 app.use(function (err, req, res, next) {

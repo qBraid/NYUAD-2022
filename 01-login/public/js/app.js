@@ -1,6 +1,7 @@
 // The Auth0 client, initialized in configureClient()
 let auth0 = null;
-
+let graph = []
+let markers = []
 
 /**
  * Starts the authentication flow
@@ -61,13 +62,39 @@ const callApi = async () => {
   try {
     const token = await auth0.getTokenSilently();
 
+    console.log(graph)
+    await insertSelfNode();
+    console.log(graph)
+    await fetch("http://localhost:3000/api/graph", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        graph
+      })
+    })
+
+    const pathData = await fetch("http://localhost:3000/api/path", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      method: 'GET'
+    })
+    const path = await pathData.json()
+    let path_to_markers = []
+    for (let i = 0; i < path.path.length; i++) {
+      path_to_markers.push(markers[path.path[i]])
+    }
+    drawEntirePath(path_to_markers)
+
     const response = await fetch("/api/external", {
       headers: {
         Authorization: `Bearer ${token}`
       },
       method: 'POST',
       body: JSON.stringify({
-        position: [0, 0]
+        position: position
       })
     });
 
@@ -87,6 +114,10 @@ const callApi = async () => {
 
 window.onload = async () => {
   await configureClient();
+  const location = await getPosition();
+  console.log(location)
+  L.marker(location).addTo(map)
+
 
   // If unable to parse the history hash, default to the root URL
   if (!showContentFromUrl(window.location.pathname)) {
@@ -112,19 +143,20 @@ window.onload = async () => {
   });
 
   const isAuthenticated = await auth0.isAuthenticated();
+  const token = await auth0.getTokenSilently();
+
 
   if (isAuthenticated) {
     console.log("> User is authenticated");
     window.history.replaceState({}, document.title, window.location.pathname);
     updateUI();
-    return;
   }
 
   console.log("> User not authenticated");
 
   const query = window.location.search;
   const shouldParseResult = query.includes("code=") && query.includes("state=");
-
+  console.log("is this working")
   if (shouldParseResult) {
     console.log("> Parsing redirect");
     try {
@@ -141,6 +173,55 @@ window.onload = async () => {
 
     window.history.replaceState({}, document.title, "/");
   }
+
+  const graphData = await fetch("http://localhost:3000/api/graph", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    method: 'GET'
+  })
+  const graphObj = await graphData.json()
+  graph = graphObj.graph
+  console.log(graphObj)
+
+  const markerData = await fetch("http://localhost:3000/api/markers", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    method: 'GET'
+  })
+  const markerObj = await markerData.json()
+  markers = markerObj.markers
+  console.log(graphObj)
+
+  const pathData = await fetch("http://localhost:3000/api/path", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    method: 'GET'
+  })
+  const pathObj = await pathData.json()
+  const path = pathObj.path
+
+  // drawMarkers(markersObj)
+
+  // let actualMarkers = []
+
+
+  let actualMarkers = []
+  console.log(path)
+  console.log(markers)
+
+
+  for (let i = 0; i < path[0].length; i++) {
+    actualMarkers.push(markers[path[0][i]])
+    console.log(path[0][i])
+  }
+
+  console.log(actualMarkers)
+  // draw markers
+  drawEntirePath(actualMarkers)
+
 
   updateUI();
 };
@@ -228,14 +309,6 @@ class Coordinate {
 
 
 
-var coords1 = [24.7, 24.9]
-var coords2 = [24.46, 54.37]
-var coords3 = [24.45, 54.39]
-
-var marker1 = L.marker(coords1).addTo(map);
-var marker2 = L.marker(coords2).addTo(map);
-var marker2 = L.marker(coords3).addTo(map);
-
 
 
 
@@ -265,7 +338,7 @@ var marker2 = L.marker(coords3).addTo(map);
 // organise our code here
 
 // FIXME: fetch this from backend
-let buses = [24.47, 54.36]
+let buses = []
 
 
 // fetch marker coords from backend
@@ -426,22 +499,19 @@ const getPosition = async () => {
 }
 
 // insert new node in the graph
-const insertSelfNode = async (graph) => {
+const insertSelfNode = async () => {
   const token = await auth0.getTokenSilently();
   const location = await getPosition()
-
-  const markersRaw = await fetch("http://localhost:3000/api/markers")
-  const markersRes = await markersRaw.json()
-  const markers = markersRes.markers;
 
   const newNodeNumber = markers.length;
 
   for (let i = 0; i < newNodeNumber; i++) {
-    let distance = calculateDistance(markers[i], location);
+    let distance = await calculateDistance(markers[i], location);
     graph.push([i, newNodeNumber, { weight: distance }]);
   }
   // update graph on backend
-  await fetch("/api/graph", {
+  console.log(graph)
+  await fetch("http://localhost:3000/api/graph", {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -453,7 +523,7 @@ const insertSelfNode = async (graph) => {
 
   markers.push(location)
   // update markers on backend
-  await fetch("/api/markers", {
+  await fetch("http://localhost:3000/api/markers", {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -464,20 +534,31 @@ const insertSelfNode = async (graph) => {
   });
 }
 
-function calculateDistance(pos1, pos2) {
+async function calculateDistance(pos1, pos2) {
   var wayPoint1 = L.latLng(pos1[0], pos1[1]);
   var wayPoint2 = L.latLng(pos2[0], pos2[1]);
   rWP1 = new L.Routing.Waypoint;
   rWP1.latLng = wayPoint1;
   rWP2 = new L.Routing.Waypoint;
   rWP2.latLng = wayPoint2;
-
+  var d = 0
   var myRoute = L.Routing.osrmv1();
-  myRoute.route([rWP1, rWP2], function (err, routes) {
-    distance = routes[0].summary.totalDistance;
-    console.log(distance)
-  });
+
+  const wrapperPromise = (r1, r2) => {
+    return new Promise((resolve, reject) => {
+      myRoute.route([r1, r2], function (err, routes) {
+        d = routes[0].summary.totalDistance;
+        resolve(d)
+      });
+    })
+  }
+  d = await wrapperPromise(rWP1, rWP2)
+  return d
 }
+
+// (async () => {
+//   console.log(await calculateDistance([21.41, 52.04], [21.11, 52.4]));
+// })();
 
 function drawMarkers(markers) {
   console.log("drawing markers")
@@ -486,12 +567,23 @@ function drawMarkers(markers) {
   }
 }
 
+
+
 // (async () => {
 //   console.log(calculateDistance([21.41, 52.04], [21.11, 52.4]));
 //   drawMarkers([21.41, 52.04], [21.11, 52.4])
 //   L.marker([21.41, 52.04]).addTo(map);
 // })();
 
-console.log(calculateDistance([21.41, 52.04], [21.11, 52.4]));
-drawMarkers([21.41, 52.04], [21.11, 52.4])
-L.marker([21.41, 52.04]).addTo(map);
+
+// var coords1 = [24.7, 54.3]
+// var coords2 = [24.46, 54.37]
+// var coords3 = [24.45, 54.39]
+
+// var marker1 = L.marker(coords1).addTo(map);
+// var marker2 = L.marker(coords2).addTo(map);
+// var marker2 = L.marker(coords3).addTo(map);
+
+
+// console.log(calculateDistance([24.41, 54.04], [22.11, 54.4]));
+// drawMarkers([[24.41, 54.04], [22.11, 54.4]])
