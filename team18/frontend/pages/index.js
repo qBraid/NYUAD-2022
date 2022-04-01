@@ -78,6 +78,8 @@ export default function Home() {
 
     axios.post(`http://127.0.0.1:5000/`, payload).then(res => {
       console.log(res);
+
+      // here stuff has to happen
     });
   }
 

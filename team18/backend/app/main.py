@@ -1,3 +1,5 @@
+import os
+
 import matplotlib
 matplotlib.use('Agg')
 from flask import Flask
@@ -28,7 +30,7 @@ def foo():
     circ.draw(fold=-1, filename="images/original_pic.png", output='mpl')
     circ_comp.draw(fold=-1, filename="images/compiled_pic.png", output='mpl')
 
-    # subprocess.run(["code.py"])
+    os.remove('app/code.py')
 
     response_body = {
         "dlgCircSrc": "localhost:5000/images/original_pic.png",

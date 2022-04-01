@@ -1,14 +1,18 @@
-# NYUAD Hackathon for social good in the arab world
-## Team 18 - Verified Compilation of Quantum Circuits
+# qVerified - Verified Quantum Circuit Compilation
+## NYUAD Hackathon for social good in the arab world
 
-### People
+### Team
 
  - Lukas Burgholzer (Mentor), Johannes Kepler University Linz, Austria
+ - Abdelkhalik Aljuneidi (Mentor), 
  - Geon Tack Lee (Hacker), New York University Abu Dhabi, UAE
  - Karim Wen Rahme (Hacker), New York University Abu Dhabi, UAE
  - Gayatri Tyagi (Hacker), New York University Tandon, UAE
  - Elijah Whittle (Hacker), New York University Tandon, UAE
- - Feel free to add yourself here
+ - Omar AlRemeithi (Hacker), Khalifa University, UAE
+ - Silvey Yu (Hacker), New York University Shanghai, China
+ - Wen Rahme (Hacker), New York University Abu Dhabi, UAE
+ - Iheb Nassim Aouadj (Hacker), Higher National School of Computer Science Algiers, UAE
 
 ### Getting started
 
@@ -16,7 +20,7 @@ Clone this repository
 ```console 
 git clone https://github.com/burgholzer/NYUAD-2022
 ```
-Our team's contribution is supposed to go into the `team18` folder. So move there
+Our team's contribution is in the `team18` folder. So move there
 ```console
 cd NYUAD-2022/team18
 ```

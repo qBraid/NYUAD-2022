@@ -5,7 +5,8 @@ click==8.1.1
 colorama==0.4.4
 cryptography==36.0.2
 dill==0.3.4
-Flask==2.1.1
+flask==2.1.1
+flask-cors==3.0.10
 idna==3.3
 importlib-metadata==4.11.3
 itsdangerous==2.1.2
