@@ -9,7 +9,8 @@ from qiskit.algorithms import QAOA, VQE, NumPyMinimumEigensolver
 from qiskit_optimization.algorithms import MinimumEigenOptimizer, GroverOptimizer
 from qiskit.utils import QuantumInstance, algorithm_globals
 import dimod
-
+from braket.aws import AwsDevice
+from braket.ocean_plugin import BraketSampler, BraketDWaveSampler
 
 # def gen_transportation_losses():
 #     return "Transportation Loss": [(A1,B1,C1),(A2,B2,C2),(A3,B3,C3)],
@@ -330,7 +331,7 @@ class DistributedEnergyOptimizer:
 
     # D-WAVE
     # ==============================================================================
-    def run_qubo(self, label="qubo", num_shots=100):
+    def run_qubo_simulator(self, label="qubo_simulator", num_shots=100):
         """
         TODO: qubo
         """
@@ -349,6 +350,32 @@ class DistributedEnergyOptimizer:
         }
         return self.results[label]
 
+    def run_qubo_qpu(self, label="qubo_qpu", num_shots=100):
+        """
+        TODO: qubo
+        """
+        vartype = dimod.SPIN
+
+
+        # define BQM
+        model = dimod.BinaryQuadraticModel(
+            self.linear_terms, self.quadratic_terms, self.offset, vartype
+        )
+
+        s3_folder = ("amazon-braket-qbraid-jobs", "5f2001ee89-40iitp-2eac-2ein")
+
+        # run BQM: solve with the D-Wave 2000Q device
+        sampler = BraketDWaveSampler(s3_folder, device_arn='arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6')
+        sampler = EmbeddingComposite(sampler)
+        response = sampler.sample(model, num_read=num_shots)
+      
+
+
+        # print results
+        self.results[label] = {
+        "results": response,
+        }
+        return self.results[label]
     # Visualizations
     # ==============================================================================
     def print_results(self, label="qaoa"):
