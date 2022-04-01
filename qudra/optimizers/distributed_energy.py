@@ -107,9 +107,8 @@ class DistributedEnergyOptimizer:
 
     def gen_coeff(self):
         """
-        Generate Coefficients
+        TODO: write coeff
         """
-
         # setup
         # ==========================================================================
         # parameters
