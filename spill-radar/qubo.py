@@ -70,7 +70,7 @@ def create_oil_qubo(ships, oilspill):
     return mod
 
 qubo = create_oil_qubo(SHIPS, oilspill)
-#print(qubo.export_as_lp_string())
+print(qubo.export_as_lp_string())
 
 if args.quantum:
     backend = Aer.get_backend('statevector_simulator')
@@ -91,4 +91,4 @@ for i, ship in enumerate(SHIPS):
     if solution.samples[0].x[i] != 0:
         solution_json["ships"].append(ship)
 
-print(json.dumps(solution_json, indent=4))
+#print(json.dumps(solution_json, indent=4))
