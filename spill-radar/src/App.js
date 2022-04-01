@@ -16,7 +16,7 @@ const useMousePosition = () => { //get mouse position in coordinates
       window.removeEventListener("mousedown", setFromEvent);
     };
   }, []);
-  console.log(position);
+  //console.log(position);
   return position;
 };
 
@@ -28,10 +28,12 @@ const App = () => {
   const [cursorX, setCursorX] = useState();
   const [cursorY, setCursorY] = useState();
 
-  window.addEventListener('mousemove', (e) => { //tracking mouse movement
+  const stopMovement = (e) => { //tracking mouse movement
     setCursorX(e.pageX);
     setCursorY(e.pageY);
-  })
+  };
+
+  window.addEventListener('mousemove', stopMovement, false);
 
   React.useEffect(() => { 
     return () => stopCounter();
@@ -49,6 +51,7 @@ const App = () => {
       clearInterval(interval.current);
       interval.current = null
     }
+    window.removeEventListener('mousemove', stopMovement, false);
   };
 
   const circleStyle = {
@@ -76,8 +79,8 @@ const App = () => {
       <button onClick={ //fetching data from backend
         fetch('http://127.0.0.1:5000/qubo?size=20&x=0&y=5', 
         {mode: 'cors'})
-        .then(response => response.json()) //use data to move the ships
-        .then(data => console.log(data))}></button>
+        .then(response => response.json()) //use data to move the ships .then(data => console.log(data)
+        }></button> 
         
       <div> 
         <img className="App-map" src={map} alt="map of persian gulf" />
