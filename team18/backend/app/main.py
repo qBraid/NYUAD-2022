@@ -27,14 +27,14 @@ def foo():
     circ_comp, equivalent = compile_and_verify(circ)
     print('Compiled circuit is equivalent to original circuit:', equivalent)
 
-    circ.draw(fold=-1, filename="images/original_pic.png", output='mpl')
-    circ_comp.draw(fold=-1, filename="images/compiled_pic.png", output='mpl')
+    circ.draw(fold=-1, filename="../frontend/public/original_pic.png", output='mpl')
+    circ_comp.draw(fold=-1, filename="../frontend/public/compiled_pic.png", output='mpl')
 
     os.remove('app/code.py')
 
     response_body = {
-        "dlgCircSrc": "localhost:5000/images/original_pic.png",
-        "bsgCircSrc": "localhost:5000/images/compiled_pic.png",
+        "dlgCircSrc": "original_pic.png",
+        "bsgCircSrc": "compiled_pic.png",
         "equivalent": equivalent
     }
 
