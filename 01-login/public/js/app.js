@@ -1,10 +1,7 @@
 // The Auth0 client, initialized in configureClient()
 let auth0 = null;
-<<<<<<< HEAD
 let graph = []
 let markers = []
-=======
->>>>>>> d5782eb1dc1205fdc3a84358b4dfded020e033ca
 
 /**
  * Starts the authentication flow
@@ -285,7 +282,6 @@ class Coordinate {
 }
 
 var coordinates = [];
-var markers = [];
 var buses = [[24.474, 54.368]];
 
 
