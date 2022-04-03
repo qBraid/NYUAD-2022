@@ -45,11 +45,11 @@ def gen_transportation_losses(
     n = len(distances)
     avg_distance = np.mean(distances)
     std_distance = np.std(distances)
-    cost = []
+    cost: List[Tuple[float, float, float]] = []
     for i in range(n):
         cost.append(
             (
-                0,  # Ai
+                0.0,  # Ai
                 distances[i] / avg_distance,  # Bi
                 (distances[i] - avg_distance) / std_distance,  # Ci
             )
