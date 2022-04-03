@@ -1,16 +1,18 @@
-# qudra
+# qudra | قُدرة
 *Quantum Energy Management*
 
-[![License](https://img.shields.io/github/license/Q-Energy-2022/qudra.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
-[![](https://img.shields.io/github/release/Q-Energy-2022/qudra.svg?style=popout-square)](https://github.com/Q-Energy-2022/qudra/releases)
+[![License](https://img.shields.io/github/license/qcenergy/qudra.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![](https://img.shields.io/github/release/qcenergy/qudra.svg?style=popout-square)](https://github.com/qcenergy/qudra/releases)
 [![](https://img.shields.io/pypi/dm/qudra.svg?style=popout-square)](https://pypi.org/project/qudra/)
 
 
 ## Motivation
 
-Leveraging quantum advantage to distributed grids for energy security and sustainability.
+**qudra**:  power, capacity, ability
 
-*Please check out these slides for more [information](https://www.canva.com/design/DAE8pdmu5A0/F-bEPUubsNa9QMclkktCsg/view).*
+Leveraging quantum advantage to optimize distributed grids for energy security and sustainability.
+
+*Please check out these slides for more [information](https://www.canva.com/design/DAE8k9ZTusE/yADryUs2shHHs5LKuvO9pQ/view).*
 ## Installation
 
 Our team's contribution is supposed to go into the `qudra` folder. So move there
@@ -39,7 +41,7 @@ To check if the installation was successful, run:
 To build `qudra` from source, pip install using:
 
 ```bash
-git clone https://github.com/Q-Energy-2022/qudra.git
+git clone https://github.com/qcenergy/qudra.git
 cd qudra
 pip install --upgrade .
 ```
@@ -51,7 +53,7 @@ If you also want to download the dependencies needed to run optional tutorials, 
 
 If you intend to contribute to this project, please install `qudra` in editable mode as follows:
 ```bash
-git clone https://github.com/Q-Energy-2022/qudra.git
+git clone https://github.com/qcenergy/qudra.git
 cd qudra
 pip install -e .[dev]
 ```
