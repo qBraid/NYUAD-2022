@@ -14,6 +14,7 @@ import dimod
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
+import numpy as np
 
 
 # def gen_transportation_losses():
@@ -50,19 +51,54 @@ class DistributedEnergyOptimizer:
     """
     Optimizing unit commitment from a distributed energy network.
     """
+    
+    REQUIRED_PARAMS = ["A", "B", "C", "P_min", "P_max", "L", "N"]
 
     # helper
-    def z_to_p(self, n, N, arr):
-        p_dict = {}
-        i = n
-        while i < ((n + 1) * (N + 1) - 1):
-            for k in range(N + 1):
-                label = "xp%s" % i
-                p_dict[label] = p_dict.get(label, 0) + arr[i + k]
-            i += N + 1
-        return p_dict
+    def digest_params(self, arr, arr_keys):
+        """
+        arr: [0, 0, 0, 1, 1, 0]
+        arr_keys: ["xv0", "xv1", "xz00", "xz01", "xz10", "xz11"]
+        """
+        num_qubits = len(arr)
+        n = len(self.params["A"])
+        N = self.params["N"]
+        vs = [0 for _ in range(n)]
+        zs = {}
+        
+        for i in range(num_qubits):
+            val = arr[i]
+            key = arr_keys[i]
+            
+            # getting v values
+            if key[0:2] == "xv":
+                v_indx = int(key[2:])
+                vs[v_indx] = val
+                
+            if key[0:2] == "xz":
+                z_indx_str = key[2:]
+                i,j = [int(x) for x in z_indx_str.split(",")]
+                zs[(i,j)] = val
+        
+        ps = [0 for _ in range(n)]
 
-    REQUIRED_PARAMS = ["A", "B", "C", "P_min", "P_max", "L", "N"]
+        for i in range(n):
+            p_min_val = self.params["P_min"][i]
+            p_max_val = self.params["P_max"][i]
+            h_val = (p_max_val - p_min_val)/N
+            
+            if vs[i] == 1:
+                continue
+                
+            curr_max_indx = 0
+            for k in range(N+1):
+                if zs[(i,k)] == 1:
+                    curr_max_indx = k
+            
+            ps[i] = p_min_val + h_val*curr_max_indx
+        
+        return vs, zs, ps
+                    
 
     def __init__(self, params) -> None:
 
@@ -141,7 +177,7 @@ class DistributedEnergyOptimizer:
 
         # helpers
         def zindx(i: int, k: int) -> str:
-            return "xz%s%s" % (i, k)
+            return "xz%s,%s" % (i, k)
 
         def vindx(i: int) -> str:
             return "xv%s" % i
@@ -232,7 +268,7 @@ class DistributedEnergyOptimizer:
         qubo.binary_var_dict(n, key_format="v{}")
         for i in range(n):
             qubo.binary_var_dict(
-                key_format="z" + str(i) + "{}", keys=list(range(N + 1))
+                key_format="z" + str(i) + ",{}", keys=list(range(N + 1))
             )
 
         qubo.minimize(
@@ -413,9 +449,6 @@ class DistributedEnergyOptimizer:
             print(
                 f"\nThe solution was found within {eval_count} evaluations of {label}."
             )
-        elif label == "qubo":
-            results = self.results["qubo"]["results"]
-            pass
 
     def plot_histogram(self, label="qaoa"):
         """
@@ -432,16 +465,22 @@ class DistributedEnergyOptimizer:
         if label in ["qaoa", "vqe", "grover", "classical"]:
             results = self.results[label]["results"]
             eval_count = self.results[label].get("eval_count", 0)
+            
+            var_values = results.x
+            var_names = results.variable_names
+            
             print(f"Plot using the {label} method:\n")
         elif label == "qubo":
-            results = self.results["qubo"]["results"]
+            energies = self.results["qubo_qpu"]["results"].record["energy"]
+            min_indx = np.argmin(energies)
+            var_values = self.results["qubo_qpu"]["results"].record["sample"][min_indx]
+            var_names = list(self.results["qubo_qpu"]["results"].variables)
             pass
 
         n = len(self.params["A"])
         N = self.params["N"]
-        trial = self.z_to_p(n, N, results.x)
-        P = list(trial.values())
-        fig = plt.figure()
+        _, _, P = self.digest_params(var_values, var_names)
+        fig = plt.figure(figsize=(8,6), dpi=200)
         barplt = fig.add_axes([0, 0, 1, 1])
         sns.barplot(
             x=plant_names,
