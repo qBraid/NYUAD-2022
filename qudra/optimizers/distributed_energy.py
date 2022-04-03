@@ -3,19 +3,20 @@ DistributedEnergyOptimizer
 """
 
 from typing import Dict, List, Tuple, Any, Optional
-from matplotlib.axes import Axes
-from qiskit_optimization import QuadraticProgram
-from qiskit import Aer
-from qiskit.algorithms import QAOA, VQE, NumPyMinimumEigensolver
-from qiskit_optimization.algorithms import MinimumEigenOptimizer, GroverOptimizer
-from qiskit.utils import QuantumInstance, algorithm_globals
+
 from braket.ocean_plugin import BraketDWaveSampler
 from dwave.system.composites import EmbeddingComposite
-import dimod
-import seaborn as sns
-import matplotlib.pyplot as plt
 from matplotlib import rcParams
+from qiskit import Aer
+from qiskit.algorithms import QAOA, VQE, NumPyMinimumEigensolver
+from qiskit.utils import QuantumInstance, algorithm_globals
+from qiskit_optimization import QuadraticProgram
+from qiskit_optimization.algorithms import MinimumEigenOptimizer, GroverOptimizer
+
+import dimod
+import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 
 def gen_transportation_losses(
