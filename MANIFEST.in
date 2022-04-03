@@ -1,0 +1,2 @@
+include qudra/VERSION.txt
+include README.md
