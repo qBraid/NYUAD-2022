@@ -6,12 +6,14 @@ import os
 from setuptools import setup, find_namespace_packages
 
 REQUIREMENTS = [
+    "numpy",
     "qiskit",
     "qiskit-optimization",
     "dimod",
     "matplotlib",
     "seaborn",
     "dwave-ocean-sdk",
+    "dwave_networkx",
     "amazon-braket-default-simulator",
     "amazon-braket-sdk",
     "amazon-braket-ocean-plugin",
