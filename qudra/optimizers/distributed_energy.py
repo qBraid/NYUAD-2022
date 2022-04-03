@@ -808,7 +808,7 @@ class DistributedEnergyOptimizer:
             var_names = results.variable_names
 
         elif label[:8] == "annealer":
-            var_values = self.results[label].extras["opt_values"]
+            var_values = self.results[label].extras["opt_state"]
             var_names = self.results[label].extras["names"]
 
         _, _, P = self.parse_params(var_values, var_names)
