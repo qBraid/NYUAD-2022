@@ -1,0 +1,30 @@
+{
+  "name": "workbox-streams",
+  "version": "6.5.2",
+  "license": "MIT",
+  "author": "Google's Web DevRel Team",
+  "description": "A library that makes it easier to work with Streams in the browser.",
+  "repository": "googlechrome/workbox",
+  "bugs": "https://github.com/googlechrome/workbox/issues",
+  "homepage": "https://github.com/GoogleChrome/workbox",
+  "keywords": [
+    "workbox",
+    "workboxjs",
+    "service worker",
+    "sw",
+    "streams",
+    "readablestream"
+  ],
+  "workbox": {
+    "browserNamespace": "workbox.streams",
+    "packageType": "sw"
+  },
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "dependencies": {
+    "workbox-core": "6.5.2",
+    "workbox-routing": "6.5.2"
+  },
+  "gitHead": "85bdecd24ded38c215b4e8943ee9b3eb0e2c3ee9"
+}
