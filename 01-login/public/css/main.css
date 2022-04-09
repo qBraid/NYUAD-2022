@@ -1,0 +1,23 @@
+.hidden {
+  display: none;
+}
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.navbar {
+  min-height: 115px;
+}
+
+#map {
+  height: 70vh;
+  width: 100%;
+}
+body {
+  background-image: url("../images/Road.jpg");
+  background-repeat: repeat;
+  backdrop-filter: blur(5px);
+
+
+}
