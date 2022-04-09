@@ -1,0 +1,93 @@
+<html>
+<html lang="en" class="light-style  customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="assets/"
+  data-template="vertical-menu-template-no-customizer">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Qloud 9</title>
+
+  <meta name="description" content="Team 11-9" />
+
+  <!-- Team icon -->
+  <link rel="icon" href="assets/images/logo_icon.png" type="image/x-icon">
+
+  <!-- Fonts -->
+  <!-- Specify the font -->
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="assets/css/bootstrap.css" />
+  <script src="/assets/js/form.js"></script>
+  <script src="/assets/js/index.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- Navigation bar -->
+  <div id="first-container">
+    <nav class="navbar">
+      <ul class="navbar-nav">
+        <li class="navbar-button"><img src="assets/images/logo_icon.png" class="logo"></li>
+        <li class="navbar-button"><a class="navbar-link" href="Home.html">HOME</a></li>
+        <li class="navbar-button"><a class="navbar-link" href="Background.html">BACKGROUND</a></li>
+        <li class="navbar-button"><a class="navbar-link" href="Team.html">THE TEAM</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Container map and the list -->
+  <div class="container-map-list">
+    <div class="textbox">
+      <h3>Enter Your Stops</h3>
+      <p>Search for your destinations with the searchbar, or enter them directly in the map. Begin by selecting your
+        origin location, then add your destinations in any order.</p>
+    </div>
+    <div class="searchbar">
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Where are we starting from?" aria-label="Search"
+          id="searchbar">
+        <button class="btn" type="submit">Search</button>
+        <label class="accordion-numeric"> Number of Vehicles </label>
+        <label class="accordion-input-numeric"> 2 </label>
+      </form>
+    </div>
+
+    <table>
+    <div class="row" id="bottom-row">
+
+      <!-- Google map -->
+      <div class="col-7">
+        <div id="googleMap" style="width:100%; height:90%;"></div>
+
+
+        <!--  Init map -->
+
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqeAPYq7aUWmy3CZWPEqLKYJF4iaZ-YPw&callback=initMap&v=weekly"
+          async></script>
+      </div>
+
+      <!-- Selected List (Auto updated list) -->
+      <div class="col-auto" style="width: 20%;">
+        <ul class="list-group" id="locationList">
+        </ul>
+
+      </div>
+
+    </div>
+
+    <!-- Done button -->
+    <div class="row justify-content-md-center">
+      <button class="btn" type="submit" style="width:100px;" id="submit-button" onclick="drop()">Demo</button>
+      <button class="btn" type="submit" style="width:100px; margin-left: 6px;" id="submit-button"  onclick="getOptimizedRoute()">Go</button>
+
+    </div>
+    </table>
+  </div>
+</body>
+
+</html>
