@@ -1,0 +1,14 @@
+3 <- Number of magazines
+1 2 3 <- Magazines
+
+5 <- Number of deliveries
+2 1 100 7 <- vertex, start of time window, end of time window, weight
+3 1 50 10
+4 25 50 13
+10 1 100 1
+
+
+3 <- number of vehicles
+10 <- capacity
+20
+30
